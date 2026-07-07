@@ -100,12 +100,11 @@ li.selected a{
     font-family: sans-serif;
     font-size: 14px;
     margin-left: 16px;
-    gap: 0;
+    padding-bottom: 8px;
 }
 
 .nome-profissional{
     margin: 0;
-    margin-top: 8px;
     font-size: 14px;
     font-weight: 600;
     color: black;
