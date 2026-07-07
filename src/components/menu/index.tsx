@@ -3,7 +3,7 @@ import { TbChartInfographic } from 'react-icons/tb';
 import { GoPeople } from 'react-icons/go';
 import { Link, useLocation } from 'react-router-dom';
 
-import './styles.css';
+import styles from "./menu.module.css";
 
 const opcoes = [
     { label: 'Dashboard', path: '/', icon: <LuLayoutDashboard size={18} /> },
@@ -16,22 +16,22 @@ const opcoes = [
 
 export function Menu() {
     const location = useLocation();
-
+    
     return (
-        <div className="container-menu">
-            <div className="cabecalho">
-                <h1>Cammis</h1>
-                <h2>Gestão de Consultório</h2>
+        <div className={styles['container-menu']}>
+            <div className={styles['cabecalho']}>
+                <h1 className={styles['h1-menu']}>Cammis</h1>
+                <h2 className={styles['h2-menu']}>Gestão de Consultório</h2>
             </div>
 
             <hr />
 
-            <div className="opcoes">
-                <ul>
+            <div className={styles['opcoes']}>
+                <ul className={styles['ul-menu']}>
                     {opcoes.map((opcao) => (
                         <li
                             key={opcao.path}
-                            className={location.pathname === opcao.path ? 'selected' : ''}
+                            className={location.pathname === opcao.path ? styles['li-menu'] + ' ' + styles.selected : styles['li-menu']}
                         >
                             <Link to={opcao.path}>
                                 {opcao.icon}
@@ -44,9 +44,9 @@ export function Menu() {
 
             <div>
                 <hr />
-                <div className="rodape">
-                    <h1 className="nome-profissional">Camila Patricio</h1>
-                    <h2 className="crp">CRP: 123456</h2>
+                <div className={styles['rodape']}>
+                    <h1 className={styles['nome-profissional']}>Camila Patricio</h1>
+                    <h2 className={styles['crp']}>CRP: 123456</h2>
                 </div>
             </div>
         </div>

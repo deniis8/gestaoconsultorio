@@ -16,26 +16,22 @@
     align-items: start;
     margin-top: 16px;
     margin-left: 16px;
-    gap: 1px;
-    
+    gap: 1px;    
 }
 
-h1{
+.h1-menu{
     color: #6D4AFF;
     font-size: 20px;
     font-family: sans-serif;
+    margin: 0;
 }
 
-h2{
+.h2-menu{
     color: #9b9a9a;
     font-size: 14px;
     font-family: sans-serif;
     font-weight: 400;
-}
-
-.cabecalho h1,
-.cabecalho h2{
-    margin: 0;
+    margin-top: 5px;
 }
 
 hr{
@@ -50,13 +46,13 @@ hr{
     margin-left: 10px;
 }
 
-ul{
+.ul-menu{
     padding-left: 0;
     margin: 0;
     font-family: sans-serif;
 }
 
-li{
+.li-menu{
     display: flex;
     align-items: center;
     list-style: none;
@@ -71,7 +67,7 @@ li{
     padding: 0;
 }
 
-li a{
+.li-menu a{
     display: flex;
     align-items: center;
     gap: 8px;
