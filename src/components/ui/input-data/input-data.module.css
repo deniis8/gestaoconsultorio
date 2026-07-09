@@ -22,4 +22,6 @@
   font-size: var(--font-size-input);
   box-sizing: border-box;
   font-family: var(--font-family);
+  background-color: #ffffff;
+  color: var(--color-text);
 }

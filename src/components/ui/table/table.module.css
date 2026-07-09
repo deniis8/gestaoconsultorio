@@ -9,13 +9,13 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  font-family: sans-serif;
+  font-family: var(--font-family);
 }
 
 .th {
   text-align: left;
   padding: 12px 14px;
-  font-size: 14px;
+  font-size: var(--font-size-table-th);
   font-weight: 600;
   color: --color-text;
   border-bottom: 1px solid  --color-border;
@@ -24,7 +24,7 @@
 
 .td {
   padding: 12px 14px;
-  font-size: 14px;
+  font-size: var(--font-size-table-td);
   color: #333333;
   border-bottom: 1px solid #F0F0F0;
 }
@@ -35,9 +35,9 @@
 
 .empty {
   padding: 16px;
-  border: 1px solid  --color-border;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   background-color: #FFFFFF;
-  color: --color-text-secondary;
+  color: var(--color-text-secondary);
   font-size: 14px;
 }

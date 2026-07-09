@@ -1,8 +1,9 @@
-import { Header } from "../../components/layout/header";
-import { Button } from "../../components/ui/button";
-import { Card } from "../../components/ui/card";
-import { InputPesquisar } from "../../components/ui/input-pesquisar";
-import { Table } from "../../components/ui/table";
+import { useNavigate } from "react-router-dom";
+import { Header } from "../../../components/layout/header";
+import { Button } from "../../../components/ui/button";
+import { Card } from "../../../components/ui/card";
+import { InputPesquisar } from "../../../components/ui/input-pesquisar";
+import { Table } from "../../../components/ui/table";
 import styles from './pacientes.module.css';
 
 type Paciente = {
@@ -42,13 +43,15 @@ const pacientes: Paciente[] = [
 ];
 
 export function Pacientes() {
+    const navigate = useNavigate();
+
     return (
         <div className={styles['container-principal']}>
             <Header
                 title="Pacientes"
                 subtitle="Gerencie seus pacientes e acompanhe histórico"
             >
-                <Button type="submit" icon="add">Novo Paciente</Button>
+                <Button type="submit" onClick={() => navigate('/pacientes/novo')} icon="add">Novo Paciente</Button>
             </Header>
             <Card>
                 <div className={styles['container-pesquisa']}>

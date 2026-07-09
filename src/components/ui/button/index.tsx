@@ -6,12 +6,15 @@ import { RiDeleteBin5Line } from "react-icons/ri";
 
 type ButtonIcon = "add" | "search" | "delete";
 
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+type ButtonType = "button" | "submit" | "reset" | "cancel";
+
+type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   children?: ReactNode;
   icon?: ButtonIcon;
+  type?: ButtonType;
 };
 
-export function Button({ children, className, icon, ...props }: ButtonProps) {
+export function Button({ children, className, icon, type = "button", ...props }: ButtonProps) {
   const renderIcon = () => {
     switch (icon) {
       case "search":
@@ -24,8 +27,13 @@ export function Button({ children, className, icon, ...props }: ButtonProps) {
     }
   };
 
+  const htmlType = type === "cancel" ? "button" : type;
+  const buttonClass = [styles.button, type === "cancel" ? styles.cancel : "", className]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <button className={`${styles.button} ${className ?? ""}`.trim()} {...props}>
+    <button type={htmlType} className={buttonClass} {...props}>
       {icon ? <span className={styles.icon} aria-hidden="true">{renderIcon()}</span> : null}
       {children}
     </button>

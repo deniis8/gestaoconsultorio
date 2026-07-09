@@ -1,0 +1,39 @@
+:root {
+
+    /* Fonte */
+
+    --font-family: "Inter", "Poppins", sans-serif;
+
+        /* Títulos */
+
+    --font-size-display:30px;
+    --font-size-h1:20px;
+    --font-size-h2:16px;
+    --font-size-h3:14px;
+    --font-size-h4:12px;
+
+    /* Button */
+
+    --font-size-button: 14px;
+
+    /* Label */
+
+    --font-size-label: 14px;
+
+    /* Input */
+
+    --font-size-input: 14px;
+
+    /* Tabela */
+
+    --font-size-table-td: 14px;
+    --font-size-table-th: 14px;
+
+    /* Icon */
+
+    --font-size-icon: 14px;
+
+    /* TextArea*/
+
+    --font-size-text-area: 14px
+}

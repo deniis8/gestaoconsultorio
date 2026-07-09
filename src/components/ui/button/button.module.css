@@ -5,13 +5,19 @@
   gap: 8px;
   background-color: var(--color-primary);
   color: #FFFFFF;
-  font-size: 14px;
+  font-size: var(--font-size-button);
   font-weight: 600;
   padding: 10px 20px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-family: sans-serif;
+  font-family: var(--font-family);
+}
+
+.cancel {
+  background-color: #FFFFFF;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
 }
 
 .icon {
@@ -25,4 +31,8 @@
   background-color: var(--color-primary-hover);
   border-radius: 8px;
   transition: background-color 0.2s ease;
+}
+
+.cancel:hover {
+  background-color: #F7F7F7;
 }
