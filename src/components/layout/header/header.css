@@ -1,0 +1,30 @@
+.container-principal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.container-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header-title {
+  color: var(--color-text);
+  font-weight: 400;
+  font-size: 30px;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.header-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  font-family: sans-serif;
+  font-weight: 400;
+  margin-top: 16px;
+  margin: 0;
+}

@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+  border: 1px solid  --color-border;
+  background-color: #FFFFFF;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 16px 20px 20px;
+}
+
+.card-title {
+  color: --color-text;
+  font-weight: 600;
+  font-size: 16px;
+  font-family: sans-serif;
+  margin: 0 0 16px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

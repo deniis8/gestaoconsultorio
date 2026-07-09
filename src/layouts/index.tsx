@@ -1,5 +1,5 @@
 import { Outlet, ScrollRestoration } from "react-router-dom";
-import { Menu } from "../components/menu";
+import { Menu } from "../components/layout/menu";
 
 export function Layout(){
     return (

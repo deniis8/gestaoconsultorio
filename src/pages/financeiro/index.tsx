@@ -1,8 +1,16 @@
+import { Header } from "../../components/layout/header";
+import styles from "./financeiro.module.css";
 
 export function Financeiro() {
     return (
         <div>
-            <h1>Financeiro</h1>
+            <div className={styles['container-principal']}>
+            <Header
+                title="Financeiro"
+                subtitle="Controle de pagamentos e receitas"
+            >
+            </Header>
+        </div>
         </div>
     )
 }

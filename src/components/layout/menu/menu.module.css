@@ -4,7 +4,7 @@
     width: 220px;
     height: 100vh;
     background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
+    border: 1px solid var(--color-border);
     gap: 16px;
     box-sizing: border-box;
 }
@@ -20,7 +20,7 @@
 }
 
 .h1-menu{
-    color: #6D4AFF;
+    color: var(--color-primary);
     font-size: 20px;
     font-family: sans-serif;
     margin: 0;
@@ -36,7 +36,7 @@
 
 hr{
     width: 100%;
-    border: 1px solid #E0E0E0;
+    border: 1px solid  --color-border;
 }
 
 .opcoes{
@@ -83,7 +83,7 @@ li a:hover{
 }
 
 li.selected{
-    background-color: #6D4AFF;
+    background-color: var(--color-primary);
 }
 
 li.selected a{

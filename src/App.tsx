@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Layout } from "./layout";
+import { Layout } from "./layouts";
 import { Dashboard } from "./pages/dashboard";
 import { Configuracoes } from "./pages/configuracoes";
 import { Pacientes } from "./pages/pacientes";
