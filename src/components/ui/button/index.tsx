@@ -3,8 +3,9 @@ import styles from "./button.module.css";
 import { IoMdAdd } from "react-icons/io";
 import { IoSearch } from "react-icons/io5";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
-type ButtonIcon = "add" | "search" | "delete";
+type ButtonIcon = "add" | "search" | "delete" | "back";
 
 type ButtonType = "button" | "submit" | "reset" | "cancel";
 
@@ -21,9 +22,12 @@ export function Button({ children, className, icon, type = "button", ...props }:
         return <IoSearch />;
       case "delete":
         return <RiDeleteBin5Line />;
+      case "back":
+        return <FaArrowAltCircleLeft />;
       case "add":
-      default:
         return <IoMdAdd />;
+      default:
+        return <></>
     }
   };
 

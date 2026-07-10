@@ -1,0 +1,4 @@
+[
+  { "codigo": "ativo", "nome": "Ativo" },
+  { "codigo": "inativo", "nome": "Inativo" }
+]

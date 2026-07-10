@@ -6,32 +6,39 @@ import { InputData } from "../../../components/ui/input-data";
 import toast from "react-hot-toast";
 import styles from "./novo-paciente.module.css";
 import { TextArea } from "../../../components/ui/textArea";
+import { Combobox } from "../../../components/ui/combobox";
+import planosCobrancaMock from "../../../mocks/mock-planos-cobranca.json";
+import statusPlano from "../../../mocks/mock-status-plano.json";
+import { Header } from "../../../components/layout/header";
 
 export function NovoPaciente() {
 
     const navigate = useNavigate();
+    const planosCobrancaOptions = planosCobrancaMock.map((plano) => ({
+        label: plano.nome,
+        value: plano.codigo,
+    }));
+
+    const statusPlanoOptions = statusPlano.map((status) => ({
+        label: status.nome,
+        value: status.codigo,
+    }));
 
     function handleSalvarCliente() {
         //Salva o cliente no banco de dados
-
-        toast.success("Paciente salvo!", {
-            duration: 3000,
-            style: {
-                background: "#047857",
-                color: "#ffffff",
-                border: "1px solid rgba(255,255,255,0.12)",
-            },
-        });
+        toast.success("Paciente salvo!");
 
         navigate(-1);
     }
 
     return (
         <div className={styles['container-principal']}>
-            <div>
-                <h1 className={styles['h1-configuracoes']}>Novo Paciente</h1>
-                <h2 className={styles['h2-configuracoes']}>Preencha os dados do paciente</h2>
-            </div>
+            <Header
+                title="Novo Paciente"
+                subtitle="Preencha os dados do paciente"
+            >
+                <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
+            </Header>
             <Card title="Dados Pessoais">
                 <div className={styles['linha-campo']}>
                     <Input name="Nome Completo *" placeholder="Digite o nome do paciente" />
@@ -77,7 +84,12 @@ export function NovoPaciente() {
             </Card>
             <Card title="Plano de Cobrança">
                 <div>
-                    <Input name="Plano de Cobrança *" placeholder="" type="" />
+                    <Combobox
+                        label="Plano de Cobrança"
+                        name="plano-cobranca"
+                        placeholder="Selecione um plano"
+                        options={planosCobrancaOptions}
+                    />
                 </div>
                 <div className={styles['linha-campo']}>
                     <InputData name="Data de Início *" placeholder="" />
@@ -88,12 +100,16 @@ export function NovoPaciente() {
                     <Input name="Sessões Contratadas *" placeholder="" type="" />
                 </div>
                 <div className={styles['linha-campo-metade']}>
-                    <Input name="Status do Plano" placeholder="" type="" />
+                    <Combobox
+                        label="Status do Plano"
+                        name="status-plano"
+                        placeholder="Escolher status"
+                        options={statusPlanoOptions}
+                    />
                 </div>
             </Card>
 
             <Card title="Observações">
-                <Input name="Status do Plano" placeholder="" type="" />
                 <TextArea name="Observações Administrativas"></TextArea>
             </Card>
 

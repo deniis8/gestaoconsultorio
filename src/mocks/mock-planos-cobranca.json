@@ -1,0 +1,5 @@
+[
+  { "codigo": "basico", "nome": "Básico" },
+  { "codigo": "intermediario", "nome": "Intermediário" },
+  { "codigo": "premium", "nome": "Premium" }
+]
