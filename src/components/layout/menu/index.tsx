@@ -1,4 +1,5 @@
 import { LuCalendar, LuDollarSign, LuLayoutDashboard, LuSettings } from 'react-icons/lu';
+import { BsBox2 } from "react-icons/bs";
 import { TbChartInfographic } from 'react-icons/tb';
 import { GoPeople } from 'react-icons/go';
 import { Link, useLocation } from 'react-router-dom';
@@ -10,6 +11,7 @@ const opcoes = [
     { label: 'Pacientes', path: '/pacientes', icon: <GoPeople size={18} /> },
     { label: 'Agenda', path: '/agenda', icon: <LuCalendar size={18} /> },
     { label: 'Financeiro', path: '/financeiro', icon: <LuDollarSign size={18} /> },
+    { label: 'Planos de Cobrança', path: '/planos-cobranca', icon: <BsBox2 size={18} /> },
     { label: 'Relatórios', path: '/relatorios', icon: <TbChartInfographic size={18} /> },
     { label: 'Configurações', path: '/configuracoes', icon: <LuSettings size={18} /> },
 ];

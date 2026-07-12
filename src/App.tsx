@@ -7,6 +7,7 @@ import { Relatorios } from "./pages/relatorios";
 import { Financeiro } from "./pages/financeiro";
 import { Agenda } from "./pages/agenda";
 import { NovoPaciente } from "./pages/pacientes/novo-paciente";
+import { PlanoCobranca } from "./pages/cobranca";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
       {
         path: "/financeiro",
         element: <Financeiro />
+      },
+      
+      {
+        path: "/planos-cobranca",
+        element: <PlanoCobranca />
       },
       {
         path: "/relatorios",
