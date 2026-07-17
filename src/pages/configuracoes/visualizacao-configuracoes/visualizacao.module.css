@@ -1,0 +1,16 @@
+.container-principal {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 20px);
+  max-width: calc(100% - 40px);
+  margin-top: 20px;
+  margin-left: 30px;
+  box-sizing: border-box;
+  padding-right: 20px;
+}
+
+.informacoes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 32px;
+}

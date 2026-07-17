@@ -1,0 +1,16 @@
+.container-label{
+    display: flex;
+    flex-direction: column;
+    font-family: var(--font-family);
+    gap: 8px;
+}
+
+.title{
+    color: #737373;
+    font-size: 12px;
+}
+
+.value{
+    color: #1A1A1A;
+    font-size: 16px;
+}
