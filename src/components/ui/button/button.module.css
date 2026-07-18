@@ -12,6 +12,11 @@
   border-radius: 8px;
   cursor: pointer;
   font-family: var(--font-family);
+  transition: background-color 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--color-primary-hover);
 }
 
 .cancel {
@@ -20,19 +25,23 @@
   border: 1px solid var(--color-border);
 }
 
+.cancel:hover {
+  background-color: #F7F7F7;
+}
+
+.edit {
+  background-color: #cacaca;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.edit:hover {
+  background-color: #b1b1b1;
+}
+
 .icon {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 16px;
-}
-
-.button:hover {
-  background-color: var(--color-primary-hover);
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-}
-
-.cancel:hover {
-  background-color: #F7F7F7;
 }

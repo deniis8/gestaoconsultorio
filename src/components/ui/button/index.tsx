@@ -8,7 +8,7 @@ import { FaPencil } from "react-icons/fa6";
 
 type ButtonIcon = "add" | "search" | "delete" | "back" | "edit";
 
-type ButtonType = "button" | "submit" | "reset" | "cancel";
+type ButtonType = "button" | "submit" | "reset" | "cancel" | "edit";
 
 type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   children?: ReactNode;
@@ -16,7 +16,13 @@ type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   type?: ButtonType;
 };
 
-export function Button({ children, className, icon, type = "button", ...props }: ButtonProps) {
+export function Button({
+  children,
+  className,
+  icon,
+  type = "button",
+  ...props
+}: ButtonProps) {
   const renderIcon = () => {
     switch (icon) {
       case "search":
@@ -28,20 +34,36 @@ export function Button({ children, className, icon, type = "button", ...props }:
       case "add":
         return <IoMdAdd />;
       case "edit":
-        return <FaPencil />
+        return <FaPencil />;
       default:
-        return <></>
+        return null;
     }
   };
 
-  const htmlType = type === "cancel" ? "button" : type;
-  const buttonClass = [styles.button, type === "cancel" ? styles.cancel : "", className]
+  // O atributo HTML aceita apenas button, submit ou reset
+  const htmlType: "button" | "submit" | "reset" =
+    type === "submit"
+      ? "submit"
+      : type === "reset"
+      ? "reset"
+      : "button";
+
+  const buttonClass = [
+    styles.button,
+    type === "cancel" && styles.cancel,
+    type === "edit" && styles.edit,
+    className,
+  ]
     .filter(Boolean)
     .join(" ");
 
   return (
     <button type={htmlType} className={buttonClass} {...props}>
-      {icon ? <span className={styles.icon} aria-hidden="true">{renderIcon()}</span> : null}
+      {icon && (
+        <span className={styles.icon} aria-hidden="true">
+          {renderIcon()}
+        </span>
+      )}
       {children}
     </button>
   );

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import "./header.css";
+import styles from "./header.module.css";
 
 type HeaderProps = {
   title: string;
@@ -9,12 +9,12 @@ type HeaderProps = {
 
 export function Header({ title, subtitle, children }: HeaderProps) {
   return (
-    <div className="container-principal">
-      <div className="container-title">
-        <h1 className="header-title">{title}</h1>
-        {subtitle ? <h2 className="header-subtitle">{subtitle}</h2> : null}
+    <div className={styles["container-principal"]}>
+      <div className={styles["container-title"]}>
+        <h1 className={styles["header-title"]}>{title}</h1>
+        {subtitle ? <h2 className={styles["header-subtitle"]}>{subtitle}</h2> : null}
       </div>
-      {children ? <div className="children">{children}</div> : null}
+      {children ? <div className={styles["children"]}>{children}</div> : null}
     </div>
   );
 }

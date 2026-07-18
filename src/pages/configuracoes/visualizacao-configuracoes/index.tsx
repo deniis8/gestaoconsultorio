@@ -14,13 +14,13 @@ export function ConfiguracoesVisualizacao() {
 
     useEffect(() => {
         async function carregarUsuario() {
-            try{
+            try {
                 const usuario = await usuariosService.listar();
-                if(usuario.length > 0){
+                if (usuario.length > 0) {
                     setUsuario(usuario[0]);
                 }
                 console.log(usuario);
-            } catch(error){
+            } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
             }
         }
@@ -34,10 +34,19 @@ export function ConfiguracoesVisualizacao() {
                     title="Configurações"
                     subtitle="Personalize seu consultório e preferências"
                 >
-                    <Button type="submit" onClick={() => navigate('/configuracoes/editar')} icon="edit">Editar</Button>
                 </Header>
             </div>
-            <Card title="Informações Pessoais">
+            <Card title="Informações Pessoais"
+                actions={
+                    <Button
+                        type="edit"
+                        icon="edit"
+                        onClick={() => navigate("/configuracoes/editar")}
+                    >
+                        Editar
+                    </Button>
+                }
+            >
                 <div className={styles.informacoes}>
                     <Label name="Nome Completo" value={usuario?.nome_completo ?? ""} />
                     <Label name="CRP" value={usuario?.crp ?? ""} />
