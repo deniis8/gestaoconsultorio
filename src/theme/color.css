@@ -1,8 +1,29 @@
 :root {
 
-    /* Principal */
+    /* Primary */
     --color-primary: #6D4AFF;
     --color-primary-hover: #5B39F0;
+    --color-primary-text: #FFFFFF;
+
+    /* Secondary */
+    --color-secondary: #6B7280;
+    --color-secondary-hover: #4B5563;
+    --color-secondary-text: #FFFFFF;
+
+    /* Success */
+    --color-success: #22C55E;
+    --color-success-hover: #12863d;
+    --color-success-text: #FFFFFF;
+
+    /* Warning */
+    --color-warning: #F59E0B;
+    --color-warning-hover: #D97706;
+    --color-warning-text: #FFFFFF;
+
+    /* Danger */
+    --color-danger: #EF4444;
+    --color-danger-hover: #DC2626;
+    --color-danger-text: #FFFFFF;
 
     /* Fundo */
     --color-background: #f3f3f3;
@@ -18,5 +39,4 @@
     /* Estados */
     --color-success: #16A34A;
     --color-warning: #F59E0B;
-    --color-danger: #DC2626;
 }

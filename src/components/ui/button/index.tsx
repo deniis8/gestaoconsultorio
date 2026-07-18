@@ -8,19 +8,27 @@ import { FaPencil } from "react-icons/fa6";
 
 type ButtonIcon = "add" | "search" | "delete" | "back" | "edit";
 
-type ButtonType = "button" | "submit" | "reset" | "cancel" | "edit";
+type ButtonType = "button" | "submit" | "reset";
+
+type ButtonVariant =
+    | "primary"
+    | "secondary"
+    | "danger"
+    | "warning"
+    | "success"
 
 type ButtonProps = Omit<ButtonHTMLAttributes<HTMLButtonElement>, "type"> & {
   children?: ReactNode;
   icon?: ButtonIcon;
   type?: ButtonType;
+  variant?: ButtonVariant
 };
 
 export function Button({
   children,
   className,
   icon,
-  type = "button",
+  variant = "primary",
   ...props
 }: ButtonProps) {
   const renderIcon = () => {
@@ -40,25 +48,19 @@ export function Button({
     }
   };
 
-  // O atributo HTML aceita apenas button, submit ou reset
-  const htmlType: "button" | "submit" | "reset" =
-    type === "submit"
-      ? "submit"
-      : type === "reset"
-      ? "reset"
-      : "button";
-
   const buttonClass = [
     styles.button,
-    type === "cancel" && styles.cancel,
-    type === "edit" && styles.edit,
+    variant === "secondary" && styles.secondary,
+    variant === "danger" && styles.danger,
+    variant === "warning" && styles.warning,
+    variant === "success" && styles.success,
     className,
   ]
     .filter(Boolean)
     .join(" ");
 
   return (
-    <button type={htmlType} className={buttonClass} {...props}>
+    <button className={buttonClass} {...props}>
       {icon && (
         <span className={styles.icon} aria-hidden="true">
           {renderIcon()}

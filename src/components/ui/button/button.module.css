@@ -19,24 +19,44 @@
   background-color: var(--color-primary-hover);
 }
 
-.cancel {
-  background-color: #FFFFFF;
-  color: var(--color-text);
+.secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-danger-text);
   border: 1px solid var(--color-border);
 }
 
-.cancel:hover {
-  background-color: #F7F7F7;
+.secondary:hover {
+  background-color: var(--color-secondary-hover);
 }
 
-.edit {
-  background-color: #cacaca;
-  color: var(--color-text);
+.danger {
+  background-color: var(--color-danger);
+  color: var(--color-danger-text);
   border: 1px solid var(--color-border);
 }
 
-.edit:hover {
-  background-color: #b1b1b1;
+.danger:hover {
+  background-color: var(--color-danger-hover);
+}
+
+.success {
+  background-color: var(--color-success);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-border);
+}
+
+.success:hover {
+  background-color: var(--color-success-hover);
+}
+
+.warning {
+  background-color: var(--color-warning);
+  color: var(--color-warning-text);
+  border: 1px solid var(--color-border);
+}
+
+.warning:hover {
+  background-color: var(--color-warning-hover);
 }
 
 .icon {

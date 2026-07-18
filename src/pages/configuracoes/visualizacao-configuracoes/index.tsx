@@ -39,7 +39,7 @@ export function ConfiguracoesVisualizacao() {
             <Card title="Informações Pessoais"
                 actions={
                     <Button
-                        type="edit"
+                        variant="secondary"
                         icon="edit"
                         onClick={() => navigate("/configuracoes/editar")}
                     >

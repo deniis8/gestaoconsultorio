@@ -1,7 +1,7 @@
 .wrapper {
   width: 100%;
   overflow-x: auto;
-  border: 1px solid  --color-border;
+  border: 1px solid var(--color-border);
   border-radius: 12px;
   background-color: #FFFFFF;
 }
@@ -17,7 +17,7 @@
   padding: 12px 14px;
   font-size: var(--font-size-table-th);
   font-weight: 600;
-  color: --color-text;
+  color: var(--color-text);
   border-bottom: 1px solid  --color-border;
   background-color: #FAFAFA;
 }

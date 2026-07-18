@@ -114,8 +114,8 @@ export function NovoPaciente() {
             </Card>
 
             <div className={styles['linha-botao']}>
-                <Button type="cancel" onClick={() => navigate(-1)}>Cancelar</Button>
-                <Button type="submit" onClick={() => handleSalvarCliente()}>Salvar</Button>
+                <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
+                <Button variant="success" onClick={() => handleSalvarCliente()}>Salvar</Button>
             </div>
         </div>
     )

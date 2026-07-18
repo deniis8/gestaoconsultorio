@@ -86,14 +86,3 @@
   margin-top: 8px;
   border-radius: 16px;
 }
-
-.botao-salvar button {
-  background-color: var(--color-primary);
-  color: #FFFFFF;
-  font-size: var(--font-size-button);
-  font-weight: 600;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}

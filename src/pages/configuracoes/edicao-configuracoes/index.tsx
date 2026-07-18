@@ -74,7 +74,7 @@ export function ConfiguracoesEdicao() {
                     value={usuario?.sobre_voce ?? ""}
                     placeholder="Conte um pouco sobre você" />
                 <div className={styles['botao-salvar']}>
-                    <Button type="submit" onClick={() => handleSalvar()}>Salvar Alterações</Button>
+                    <Button variant="success" onClick={() => handleSalvar()}>Salvar Alterações</Button>
                 </div>
             </Card>
         </div>
