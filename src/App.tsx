@@ -13,6 +13,10 @@ import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
+    path: "/login",
+    element: <Login />
+  },
+  {
     element: <Layout />,
     children: [
       {
@@ -35,7 +39,7 @@ const router = createBrowserRouter([
         path: "/financeiro",
         element: <Financeiro />
       },
-      
+
       {
         path: "/planos-cobranca",
         element: <PlanoCobranca />
@@ -47,14 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/configuracoes",
         element: <ConfiguracoesVisualizacao />
-      },      
+      },
       {
         path: "/configuracoes/editar",
         element: <ConfiguracoesEdicao />
-      },      
-      {
-        path: "/login",
-        element: <Login />
       }
     ]
   }

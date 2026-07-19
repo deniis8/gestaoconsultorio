@@ -13,7 +13,7 @@ export function Login() {
                         <LuBrain size={25} />
                     </div>
 
-                    <span className={styles["software"]}>Cammis</span>
+                    <span className={styles["my-app"]}>Cammis</span>
                 </div>
                 <div className={styles["titles"]}>
                     <h1 className={styles["h1-header"]}>Gestão do seu
@@ -34,9 +34,9 @@ export function Login() {
                     </div>
 
                     <div className={styles['inputs']}>
-                        <Input name="E-mail"></Input>
-                        <Input name="Senha"></Input>
-                        <Button>Entrar</Button>
+                        <Input name="E-mail" />
+                        <Input name="Senha" />
+                        <Button type="submit">Entrar</Button>
                     </div>
                 </div>
             </div>
