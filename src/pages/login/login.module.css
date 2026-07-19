@@ -1,0 +1,65 @@
+.container-login{
+    display: flex;
+    align-items: center;
+    flex-direction: row;   
+}
+
+.login-detalhamento{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: 100vh;
+    background-color: var(--color-primary);
+}
+
+.login-icone{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 12px;
+    margin: 50px 50px 0 50px;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #9e8ce4;
+    color: white;
+    border-radius: 30%;
+}
+
+.nome-cammis{
+    font-family: var(--font-family);
+    color: var(--color-primary-text);
+}
+
+.login-descricao{
+    font-family: var(--font-family);
+    color: var(--color-primary-text);
+    margin: 100px 50px 0 50px;
+}
+.login-h1{
+    font-weight: 700;
+
+}
+.login-h4{
+    font-weight: 400;
+    color: #c1b9df;
+}
+
+.login{
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+    margin: 0 50px 0 50px;
+    gap: 20px
+}
+
+.button-login-entrar{
+    width: 100%;
+}

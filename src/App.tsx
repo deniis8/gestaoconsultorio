@@ -9,6 +9,7 @@ import { NovoPaciente } from "./pages/pacientes/novo-paciente";
 import { PlanoCobranca } from "./pages/cobranca";
 import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-configuracoes";
 import { ConfiguracoesEdicao } from "./pages/configuracoes/edicao-configuracoes";
+import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/configuracoes/editar",
         element: <ConfiguracoesEdicao />
+      },      
+      {
+        path: "/login",
+        element: <Login />
       }
     ]
   }
