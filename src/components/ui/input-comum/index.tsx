@@ -8,6 +8,7 @@ type InputProps = {
   id?: string;
   value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean
 };
 
 export function Input({
@@ -17,6 +18,7 @@ export function Input({
   id,
   value,
   onChange,
+  error = false
 }: InputProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
 
@@ -32,7 +34,7 @@ export function Input({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className={styles.input}
+        className={`${styles.input} ${error ? styles.error : ""}`}
       />
     </div>
   );

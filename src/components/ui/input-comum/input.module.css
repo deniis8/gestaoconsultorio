@@ -23,3 +23,11 @@
   box-sizing: border-box;
   font-family: var(--font-family);
 }
+
+.error {
+    border-color: var(--color-danger);
+}
+
+.error:focus {
+    border-color: var(--color-danger);
+}

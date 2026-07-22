@@ -25,7 +25,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #9e8ce4;
+    background: #8365FF;
     color: white;
     border-radius: 12px;
 }
@@ -84,9 +84,74 @@
     margin: 0;
 }
 
+.tags {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 10px;
+    margin-left: 50px;
+}
+
+.tags-itens {
+    border: 1px solid var(--color-border);
+    border-color: #8365FF;
+    border-radius: 16px;
+    background: #8365FF;
+    color: white;
+    font-weight: 300;
+    padding: 4px 10px 4px 10px;
+
+}
+
+.footer {
+    position: fixed;
+    bottom: 20px;
+    left: 50px;
+    color: #c1b9df;
+    font-weight: 300;
+}
+
 .inputs {
     display: flex;
     flex-direction: column;
     gap: 16px;
     margin-top: 30px;
+}
+
+.senha {
+    display: flex;
+    flex-direction: column;
+}
+
+.dados-invalidos{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-danger);
+    background-color: #f7c5c5;
+    border-radius: 5px;
+    height: 30px;
+    gap: 8px;
+}
+
+.icone-invalido{
+    color: var(--color-danger);
+}
+
+.texto-invalido{
+    color: var(--color-danger);
+}
+
+.button-senha {  
+    align-self: flex-end;
+    margin-top: 8px;
+    font-weight: 100;
+    border: 0;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.button-senha:hover{
+    color: var(--color-primary-hover);
 }
