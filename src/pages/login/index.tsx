@@ -70,6 +70,7 @@ export function Login() {
                             type="email"
                             value={email}
                             error={loginError}
+                            icon="email"
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <div className={styles["senha"]}>
@@ -78,6 +79,7 @@ export function Login() {
                                 type="password"
                                 value={password}
                                 error={loginError}
+                                icon="password"
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                             <button

@@ -1,17 +1,27 @@
 .campo {
   display: flex;
-  flex: 1;
   flex-direction: column;
-  min-width: 220px;
   width: 100%;
 }
 
-.label {
-  color: var(--color-text);
-  font-size: var(--font-size-label);
-  font-weight: 600;
-  margin-bottom: 6px;
-  font-family: var(--font-family);
+.input-container {
+  position: relative;
+  width: 100%;
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-icon);
+  color: var(--color-text-secondary);
+
+  /* evita que o clique no ícone impeça focar o input */
+  pointer-events: none;
 }
 
 .input {
@@ -24,10 +34,14 @@
   font-family: var(--font-family);
 }
 
+.input-with-icon {
+  padding-left: 42px;
+}
+
 .error {
-    border-color: var(--color-danger);
+  border-color: var(--color-danger);
 }
 
 .error:focus {
-    border-color: var(--color-danger);
+  border-color: var(--color-danger);
 }
