@@ -10,6 +10,8 @@ import { Combobox } from "../../../components/ui/combobox";
 import planosCobrancaMock from "../../../mocks/mock-planos-cobranca.json";
 import statusPlano from "../../../mocks/mock-status-plano.json";
 import { Header } from "../../../components/layout/header";
+import { InputValor } from "../../../components/ui/input-valor";
+import { useState } from "react";
 
 export function NovoPaciente() {
 
@@ -30,6 +32,8 @@ export function NovoPaciente() {
 
         navigate(-1);
     }
+
+    const [valor, setValor] = useState("");
 
     return (
         <div className={styles['container-principal']}>
@@ -96,8 +100,8 @@ export function NovoPaciente() {
                     <InputData name="Data de Término (opcional)" placeholder="" />
                 </div>
                 <div className={styles['linha-campo']}>
-                    <Input name="Valor Contratado (R$ *)" placeholder="" type="" />
-                    <Input name="Sessões Contratadas *" placeholder="" type="" />
+                    <InputValor name="Valor Contratado (R$ *)" value={valor} onChange={setValor}/>
+                    <Input name="Sessões Contratadas *" placeholder=""/>
                 </div>
                 <div className={styles['linha-campo-metade']}>
                     <Combobox

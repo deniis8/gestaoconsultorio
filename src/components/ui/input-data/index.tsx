@@ -23,7 +23,7 @@ export function InputData({
   return (
     <div className={styles.campo}>
       {name ? (
-        <label htmlFor={inputId} className={styles.label}>
+        <label htmlFor={inputId}>
           {name}
         </label>
       ) : null}

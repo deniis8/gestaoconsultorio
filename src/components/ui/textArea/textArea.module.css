@@ -23,3 +23,8 @@
   font-family: var(--font-family);
   resize: vertical;
 }
+
+.textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+}

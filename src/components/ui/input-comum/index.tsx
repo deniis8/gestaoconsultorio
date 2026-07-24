@@ -42,7 +42,7 @@ export function Input({
 
   return (
     <div className={styles.campo}>
-      <label htmlFor={inputId} className={styles.label}>
+      <label htmlFor={inputId}>
         {name}
       </label>
 

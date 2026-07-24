@@ -1,6 +1,8 @@
 .campo {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  min-width: 220px;
   width: 100%;
 }
 
@@ -36,6 +38,11 @@
 
 .input-with-icon {
   padding-left: 42px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #4f46e5;
 }
 
 .error {

@@ -6,14 +6,6 @@
   width: 100%;
 }
 
-.label {
-  color: var(--color-text);
-  font-size: var(--font-size-label);
-  font-weight: 600;
-  margin-bottom: 6px;
-  font-family: var(--font-family);
-}
-
 .select {
   width: 100%;
   padding: 10px 12px;
@@ -36,7 +28,6 @@
 .select:focus {
   outline: none;
   border-color: #4f46e5;
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.15);
 }
 
 .select:disabled {

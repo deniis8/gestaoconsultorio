@@ -32,7 +32,7 @@ export function Combobox({
   return (
     <div className={styles.campo}>
       {label && (
-        <label htmlFor={selectId} className={styles.label}>
+        <label htmlFor={selectId}>
           {label}
         </label>
       )}
