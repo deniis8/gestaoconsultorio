@@ -25,6 +25,8 @@ export function NovoPlanoCobranca() {
     const [ativo, setAtivo] = useState(true);
     const [valor, setValor] = useState("");
 
+    const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
+
     return (
         <div className={styles['container-principal']}>
             <Header
@@ -43,7 +45,10 @@ export function NovoPlanoCobranca() {
             <Card>
                 <span>Forma de Cobrança</span>
                 <div className={styles["formas-cobranca"]}>
-                    <div className={styles["cobranca-sessao"]}>
+                    <button
+                        className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
+                        onClick={() => setTipoCobranca("SESSAO")}
+                    >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-sessao-ico"]}>
                                 <SlEnergy />
@@ -51,8 +56,11 @@ export function NovoPlanoCobranca() {
                             <span className={styles["cobranca-sessao-nome"]}>Por Sessão</span>
                             <span className={styles["cobranca-sessao-descricao"]}>Cobrado a cada sessão realizada</span>
                         </div>
-                    </div>
-                    <div className={styles["cobranca-pacote"]}>
+                    </button>
+                    <button
+                        className={`${styles["cobranca-pacote"]} ${tipoCobranca === "PACOTE" ? styles["cobranca-pacote-selecionado"] : ""}`}
+                        onClick={() => setTipoCobranca("PACOTE")}
+                    >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-pacote-ico"]}>
                                 <BsBoxSeam />
@@ -60,8 +68,11 @@ export function NovoPlanoCobranca() {
                             <span className={styles["cobranca-pacote-nome"]}>Pacote</span>
                             <span className={styles["cobranca-pacote-descricao"]}>Cobrado uma única vez no pacote</span>
                         </div>
-                    </div>
-                    <div className={styles["cobranca-mensal"]}>
+                    </button>
+                    <button
+                        className={`${styles["cobranca-mensal"]} ${tipoCobranca === "MENSAL" ? styles["cobranca-mensal-selecionado"] : ""}`}
+                        onClick={() => setTipoCobranca("MENSAL")}
+                    >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-mensal-ico"]}>
                                 <LuCalendarDays />
@@ -69,7 +80,7 @@ export function NovoPlanoCobranca() {
                             <span className={styles["cobranca-mensal-nome"]}>Mensal</span>
                             <span className={styles["cobranca-mensal-descricao"]}>Cobrado ao fechar o ciclo mensal</span>
                         </div>
-                    </div>
+                    </button>
                 </div>
             </Card>
 

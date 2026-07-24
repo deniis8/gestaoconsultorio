@@ -15,129 +15,178 @@
   flex-wrap: wrap;
 }
 
-.linha-botao{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    margin: 16px 0 16px 0;
-    gap: 20px;
+.linha-botao {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 16px 0 16px 0;
+  gap: 20px;
 }
 
-.card-toggle{
+.card-toggle {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
 }
 
-.formas-cobranca{
+.formas-cobranca {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px; 
+  gap: 16px;
 }
 
-.cobranca-sessao{
+.cobranca-sessao {
   display: flex;
   flex-direction: column;
+  background-color: #FFFFFF;
+  align-items: start;
   border: 1px solid var(--color-border);
   width: 100%;
   height: 90px;
   border-radius: 15px;
 }
 
-.cobranca-sessao:hover{
+.cobranca-sessao:hover {
   border: 1px solid var(--color-primary-hover);
 }
 
-.cobranca-sessao:focus{
-    border-color: var(--color-primary);
-  outline: none;
+.cobranca-sessao-selecionado {
+  border-color: var(--color-primary);
+  background-color: #eff4fa;
+  box-shadow:
+    0 0 0 3px rgba(109, 74, 255, 0.15),
+    0 8px 20px rgba(109, 74, 255, 0.12);
+  transform: translateY(-2px);
+  animation: selecionado 0.2s ease;
 }
 
-.cobranca-item{
+.cobranca-item {
   display: flex;
   flex-direction: column;
+  align-items: start;
   margin: 8px;
   gap: 8px;
 }
 
-.cobranca-sessao-ico{
+.cobranca-sessao-ico {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
   background-color: #DBEAFE;
   width: 30px;
   height: 30px;
 }
 
-.cobranca-sessao-nome{
+.cobranca-sessao-nome {
   font-weight: 700;
   font-size: 14px;
 }
 
-.cobranca-sessao-descricao{
+.cobranca-sessao-descricao {
   font-size: 12px;
   color: var(--color-text-secondary);
 }
 
-.cobranca-pacote{
+.cobranca-pacote {
   display: flex;
   flex-direction: column;
+  background-color: #FFFFFF;
   border: 1px solid var(--color-border);
   width: 100%;
   height: 90px;
   border-radius: 15px;
 }
 
-.cobranca-pacote-ico{
+.cobranca-pacote:hover {
+  border: 1px solid var(--color-primary-hover);
+}
+
+.cobranca-pacote-selecionado {
+  border-color: var(--color-primary);
+  background-color: #e8f7ed;
+  box-shadow:
+    0 0 0 3px rgba(109, 74, 255, 0.15),
+    0 8px 20px rgba(109, 74, 255, 0.12);
+  transform: translateY(-2px);
+  animation: selecionado 0.2s ease;
+}
+
+.cobranca-pacote-ico {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
   background-color: #DCFCE7;
   width: 30px;
   height: 30px;
 }
 
-.cobranca-pacote-nome{
+.cobranca-pacote-nome {
   font-weight: 700;
   font-size: 14px;
 }
 
-.cobranca-pacote-descricao{
+.cobranca-pacote-descricao {
   font-size: 12px;
   color: var(--color-text-secondary);
 }
 
-.cobranca-mensal{
+.cobranca-mensal {
   display: flex;
   flex-direction: column;
+  background-color: #FFFFFF;
   border: 1px solid var(--color-border);
   width: 100%;
   height: 90px;
   border-radius: 15px;
 }
 
-.cobranca-mensal-ico{
+.cobranca-mensal:hover {
+  border: 1px solid var(--color-primary-hover);
+}
+
+.cobranca-mensal-selecionado {
+  border-color: var(--color-primary);
+  background-color: #f3ecfa;
+  box-shadow:
+    0 0 0 3px rgba(109, 74, 255, 0.15),
+    0 8px 20px rgba(109, 74, 255, 0.12);
+  transform: translateY(-2px);
+  animation: selecionado 0.2s ease;
+}
+
+@keyframes selecionado {
+  from {
+    transform: scale(0.98);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.cobranca-mensal-ico {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
   background-color: #F3E8FF;
   width: 30px;
   height: 30px;
 }
 
-.cobranca-mensal-nome{
+.cobranca-mensal-nome {
   font-weight: 700;
   font-size: 14px;
 }
 
-.cobranca-mensal-descricao{
+.cobranca-mensal-descricao {
   font-size: 12px;
   color: var(--color-text-secondary);
 }
