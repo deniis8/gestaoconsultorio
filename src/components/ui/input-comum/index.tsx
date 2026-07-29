@@ -14,7 +14,8 @@ type InputProps = {
   value?: string;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   icon?: ButtonIcon;
-  error?: boolean
+  error?: boolean;
+  disabled?: boolean
 };
 
 export function Input({
@@ -25,7 +26,8 @@ export function Input({
   value,
   onChange,
   error = false,
-  icon
+  icon,
+  disabled = false
 }: InputProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
 
@@ -60,6 +62,7 @@ export function Input({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          disabled={disabled}
           className={`
             ${styles.input}
             ${icon ? styles["input-with-icon"] : ""}

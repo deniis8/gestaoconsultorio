@@ -7,14 +7,17 @@ import styles from "./visualizacao.module.css";
 import { useEffect, useState } from "react";
 import { usuariosService } from "../../../services/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
+import { SkeletonConfiguracoes } from "./skeleton";
 
 export function ConfiguracoesVisualizacao() {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState<Usuario | null>(null);
+    const [loadingUSuario, setLoadingUsuario] = useState(false);
 
     useEffect(() => {
         async function carregarUsuario() {
             try {
+                setLoadingUsuario(true);
                 const usuario = await usuariosService.listar();
                 if (usuario.length > 0) {
                     setUsuario(usuario[0]);
@@ -22,39 +25,44 @@ export function ConfiguracoesVisualizacao() {
                 console.log(usuario);
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
+            } finally {
+                setLoadingUsuario(false);
             }
         }
         carregarUsuario();
     }, [])
 
     return (
-        <div className={styles['container-principal']}>
-            <div>
-                <Header
-                    title="Configurações"
-                    subtitle="Personalize seu consultório e preferências"
-                >
-                </Header>
-            </div>
-            <Card title="Informações Pessoais"
-                actions={
-                    <Button
-                        variant="secondary"
-                        icon="edit"
-                        onClick={() => navigate("/configuracoes/editar")}
+        loadingUSuario ? (
+            <SkeletonConfiguracoes />) : (
+            <div className={styles['container-principal']}>
+                <div>
+                    <Header
+                        title="Configurações"
+                        subtitle="Personalize seu consultório e preferências"
                     >
-                        Editar
-                    </Button>
-                }
-            >
-                <div className={styles.informacoes}>
-                    <Label name="Nome Completo" value={usuario?.nome_completo ?? ""} />
-                    <Label name="CRP" value={usuario?.crp ?? ""} />
-                    <Label name="E-mail" value={usuario?.email ?? ""} />
-                    <Label name="Telefone" value={usuario?.telefone ?? ""} />
-                    <Label name="Sobre Você" value={usuario?.sobre_voce ?? ""} />
+                    </Header>
                 </div>
-            </Card>
-        </div>
+                <Card title="Informações Pessoais"
+                    actions={
+                        <Button
+                            variant="secondary"
+                            icon="edit"
+                            onClick={() => navigate("/configuracoes/editar")}
+                        >
+                            Editar
+                        </Button>
+                    }
+                >
+                    <div className={styles.informacoes}>
+                        <Label name="Nome Completo" value={usuario?.nome_completo ?? ""} />
+                        <Label name="CRP" value={usuario?.crp ?? ""} />
+                        <Label name="E-mail" value={usuario?.email ?? ""} />
+                        <Label name="Telefone" value={usuario?.telefone ?? ""} />
+                        <Label name="Sobre Você" value={usuario?.sobre_voce ?? ""} />
+                    </div>
+                </Card>
+            </div>
+        )
     )
 }

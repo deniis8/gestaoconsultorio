@@ -31,7 +31,7 @@ export class UsuariosService {
         });
     }
 
-    async atualizar(id: number, usuario: Partial<Usuario>) {
+    async atualizar(id: string, usuario: Partial<Usuario>) {
 
         return api<Usuario[]>(
             `${ENDPOINTS.usuarios}?id_usuario=eq.${id}`,

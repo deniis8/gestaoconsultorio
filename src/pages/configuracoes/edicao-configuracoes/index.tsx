@@ -16,9 +16,40 @@ export function ConfiguracoesEdicao() {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const navigate = useNavigate();
 
+    function handleChange(
+        campo: keyof Usuario,
+        valor: string
+    ) {
+        setUsuario(prev =>
+            prev
+                ? {
+                    ...prev,
+                    [campo]: valor
+                }
+                : prev
+        );
+    }
+
     function handleSalvar() {
-        navigate(-1);
-        toast.success("As informações do usuário foram salvas!");
+
+        if (!usuario) {
+            toast.error("Não foi possível carregar os dados do usuário.");
+            return;
+        }
+        const alteracaoUsuario = usuariosService.atualizar(usuario.id_usuario, {
+            nome_completo: usuario.nome_completo,
+            crp: usuario.crp,
+            telefone: usuario.telefone,
+            sobre_voce: usuario.sobre_voce
+        }).
+            then(() => {
+                console.log(alteracaoUsuario);
+                navigate(-1);
+                toast.success("As informações do usuário foram salvas!");
+            }).catch((error) => {
+                console.error("Erro ao atualizar usuário:", error);
+                toast.error("Não foi possível salvar as alterações.");
+            })
     }
 
     useEffect(() => {
@@ -51,28 +82,39 @@ export function ConfiguracoesEdicao() {
                     <Input
                         name="Nome completo"
                         value={usuario?.nome_completo ?? ""}
-                        placeholder="Digite seu nome" />
+                        placeholder="Digite seu nome"
+                        onChange={(e) => handleChange("nome_completo", e.target.value)}
+                    />
                     <Input
                         name="CRP"
                         value={usuario?.crp ?? ""}
-                        placeholder="Digite seu CRP" />
+                        placeholder="Digite seu CRP"
+                        onChange={(e) => handleChange("crp", e.target.value)}
+                    />
                 </div>
 
                 <div className={styles['linha-campo']}>
                     <Input
                         name="E-mail"
                         value={usuario?.email ?? ""}
-                        placeholder="Digite seu e-mail" type="email" />
+                        placeholder="Digite seu e-mail" type="email"
+                        disabled={true}
+                        onChange={(e) => handleChange("email", e.target.value)}
+                    />
                     <Input
                         name="Telefone"
                         value={usuario?.telefone ?? ""}
-                        placeholder="Digite seu telefone" type="tel" />
+                        placeholder="Digite seu telefone" type="tel"
+                        onChange={(e) => handleChange("telefone", e.target.value)}
+                    />
                 </div>
 
                 <TextArea
                     name="Sobre você"
                     value={usuario?.sobre_voce ?? ""}
-                    placeholder="Conte um pouco sobre você" />
+                    placeholder="Conte um pouco sobre você"
+                    onChange={(e) => handleChange("sobre_voce", e.target.value)}
+                />
                 <div className={styles['botao-salvar']}>
                     <Button variant="success" onClick={() => handleSalvar()}>Salvar Alterações</Button>
                 </div>
