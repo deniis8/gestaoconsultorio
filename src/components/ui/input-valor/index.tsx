@@ -6,6 +6,7 @@ type InputValorProps = {
   placeholder?: string;
   id?: string;
   value?: string;
+  disabled?: boolean;
   onChange?: (value: string) => void;
 };
 
@@ -14,6 +15,7 @@ export function InputValor({
   placeholder = "R$ 0,00",
   id,
   value = "",
+  disabled = false,
   onChange,
 }: InputValorProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
@@ -51,6 +53,7 @@ export function InputValor({
         value={value}
         onChange={handleChange}
         className={styles.input}
+        disabled={disabled}
       />
     </div>
   );

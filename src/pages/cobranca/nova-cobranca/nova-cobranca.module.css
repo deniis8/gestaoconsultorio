@@ -181,6 +181,14 @@
   height: 30px;
 }
 
+.inputs-valor {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  gap: 16px;
+  margin-top: 16px;
+}
+
 .cobranca-mensal-nome {
   font-weight: 700;
   font-size: 14px;

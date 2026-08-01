@@ -24,6 +24,7 @@ export function NovoPlanoCobranca() {
 
     const [ativo, setAtivo] = useState(true);
     const [valor, setValor] = useState("");
+    const [sessoesPorCiclo, setSessoesPorCiclo] = useState("");
 
     const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
 
@@ -85,11 +86,19 @@ export function NovoPlanoCobranca() {
             </Card>
 
             <Card>
-                <InputValor
-                    name="Valor por Sessão (R$) *"
-                    value={valor}
-                    onChange={setValor}
-                />
+                <div className={styles["inputs-valor"]}>
+                    <InputValor
+                        name="Valor por Sessão (R$) *"
+                        value={valor}
+                        onChange={setValor}
+                    />
+                    <InputValor
+                        name="Sessões por Ciclo (R$) *"
+                        value={sessoesPorCiclo}
+                        disabled={tipoCobranca === "SESSAO"}
+                        onChange={setSessoesPorCiclo}
+                    />
+                </div>
             </Card>
 
             <Card >
