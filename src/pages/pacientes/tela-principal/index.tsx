@@ -5,70 +5,63 @@ import { Card } from "../../../components/ui/card";
 import { InputPesquisar } from "../../../components/ui/input-pesquisar";
 import { Table } from "../../../components/ui/table";
 import styles from './pacientes.module.css';
+import { useEffect, useState } from "react";
+import { pacientesService } from "../../../services/usuarios/pacientes.service";
+import { Paciente } from "../../../types/pacientes/pacientes.types";
+import { SkeletonPacientes } from "../skeleton/skeleton";
 
-type Paciente = {
-    paciente: string;
-    contato: string;
-    tipo: string;
-    ultimaConsulta: string;
-    status: string;
-    acoes: string;
-};
-
-const pacientes: Paciente[] = [
-    {
-        paciente: "Ana Souza",
-        contato: "(11) 99999-1111",
-        tipo: "Particular",
-        ultimaConsulta: "08/07/2026",
-        status: "Em dia",
-        acoes: "Ver",
-    },
-    {
-        paciente: "Bruno Lima",
-        contato: "(11) 98888-2222",
-        tipo: "Convênio",
-        ultimaConsulta: "05/07/2026",
-        status: "Atrasado",
-        acoes: "Ver",
-    },
-    {
-        paciente: "Carla Mendes",
-        contato: "(11) 97777-3333",
-        tipo: "Particular",
-        ultimaConsulta: "01/07/2026",
-        status: "Em dia",
-        acoes: "Ver",
-    },
-];
 
 export function Pacientes() {
     const navigate = useNavigate();
+    const [pacientes, setPacientes] = useState<Paciente[] | null>(null);
+    const [loadingPacientes, setLoadingPacientes] = useState(false);
+
+    useEffect(() => {
+        async function fetchPacientes() {
+            try {
+                setLoadingPacientes(true);
+                const pacientes = await pacientesService.listar();
+                console.log(pacientes);
+                setPacientes(pacientes);
+            } catch (error) {
+                console.error("Erro ao buscar pacientes:", error);
+            } finally {
+                setLoadingPacientes(false);
+            }
+        }
+        fetchPacientes();
+    }, []);
 
     return (
-        <div className={styles['container-principal']}>
-            <Header
-                title="Pacientes"
-                subtitle="Gerencie seus pacientes e acompanhe histórico"
-            >
-                <Button type="submit" onClick={() => navigate('/pacientes/novo')} icon="add">Novo Paciente</Button>
-            </Header>
-            <Card>
-                <div className={styles['container-pesquisa']}>
-                    <InputPesquisar placeholder="Buscar paciente" />
-                    <Table
-                        columns={[
-                            { key: "paciente", header: "Paciente" },
-                            { key: "contato", header: "Contato" },
-                            { key: "tipo", header: "Tipo" },
-                            { key: "ultimaConsulta", header: "Última Consulta" },
-                            { key: "status", header: "Status" },
-                            { key: "acoes", header: "Ações" },
-                        ]}
-                        data={pacientes}
-                    />
-                </div>
-            </Card>
-        </div>
+        loadingPacientes ? (
+            <SkeletonPacientes />) : (
+            <div className={styles['container-principal']}>
+                <Header
+                    title="Pacientes"
+                    subtitle="Gerencie seus pacientes e acompanhe histórico"
+                >
+                    <Button type="submit" onClick={() => navigate('/pacientes/novo')} icon="add">Novo Paciente</Button>
+                </Header>
+                <Card>
+                    <div className={styles['container-pesquisa']}>
+                        <InputPesquisar placeholder="Buscar paciente" />
+                        <Table
+                            columns={[
+                                { key: "paciente", header: "Paciente" },
+                                { key: "telefone", header: "Telefone" },
+                                { key: "email", header: "E-mail" },
+                                { key: "idade", header: "Idade" }
+                            ]}
+                            data={pacientes?.map((paciente) => ({
+                                paciente: paciente.nome_completo,
+                                telefone: paciente.telefone_principal,
+                                email: paciente.email,
+                                idade: paciente.data_nascimento ? new Date().getFullYear() - new Date(paciente.data_nascimento).getFullYear() : "N/A"
+                            })) || []}
+                        />
+                    </div>
+                </Card>
+            </div>
+        )
     )
 }

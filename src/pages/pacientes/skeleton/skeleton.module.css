@@ -1,0 +1,48 @@
+.container-principal {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 20px);
+  max-width: calc(100% - 40px);
+  margin-top: 20px;
+  margin-left: 30px;
+  box-sizing: border-box;
+  padding-right: 20px;
+}
+
+.container-principal {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.container-pesquisa {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.tabela {
+    display: flex;
+    flex-direction: column;
+}
+
+.linha-cabecalho,
+.linha {
+    display: grid;
+    grid-template-columns: 2.5fr 1.5fr 2.5fr 0.8fr;
+    gap: 24px;
+    align-items: center;
+    padding: 16px 0;
+}
+
+.linha-cabecalho {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.linha {
+    border-bottom: 1px solid var(--color-border);
+}
+
+.linha:last-child {
+    border-bottom: none;
+}
