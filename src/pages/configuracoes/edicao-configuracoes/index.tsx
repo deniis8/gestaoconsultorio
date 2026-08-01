@@ -9,12 +9,14 @@ import { usuariosService } from "../../../services/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { Skeletonfiguracoes } from "../skeleton/skeleton";
 
 
 export function ConfiguracoesEdicao() {
 
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const navigate = useNavigate();
+    const [loadingUsuario, setLoadingUsuario] = useState(false);
 
     function handleChange(
         campo: keyof Usuario,
@@ -55,6 +57,7 @@ export function ConfiguracoesEdicao() {
     useEffect(() => {
         async function carregarUsuario() {
             try {
+                setLoadingUsuario(true);
                 const usuario = await usuariosService.listar();
                 if (usuario.length > 0) {
                     setUsuario(usuario[0]);
@@ -62,63 +65,67 @@ export function ConfiguracoesEdicao() {
                 console.log(usuario);
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
+            } finally {
+                setLoadingUsuario(false);
             }
         }
         carregarUsuario();
     }, [])
 
     return (
-        <div className={styles['container-principal']}>
-            <div>
-                <Header
-                    title="Configurações"
-                    subtitle="Personalize seu consultório e preferências"
-                >
-                    <Button type="submit" onClick={() => navigate(-1)} icon="back">Voltar</Button>
-                </Header>
-            </div>
-            <Card title="Informações Pessoais">
-                <div className={styles['linha-campo']}>
-                    <Input
-                        name="Nome completo"
-                        value={usuario?.nome_completo ?? ""}
-                        placeholder="Digite seu nome"
-                        onChange={(e) => handleChange("nome_completo", e.target.value)}
-                    />
-                    <Input
-                        name="CRP"
-                        value={usuario?.crp ?? ""}
-                        placeholder="Digite seu CRP"
-                        onChange={(e) => handleChange("crp", e.target.value)}
-                    />
+        loadingUsuario ? (
+            <Skeletonfiguracoes />) : (
+            <div className={styles['container-principal']}>
+                <div>
+                    <Header
+                        title="Configurações"
+                        subtitle="Personalize seu consultório e preferências"
+                    >
+                        <Button type="submit" onClick={() => navigate(-1)} icon="back">Voltar</Button>
+                    </Header>
                 </div>
+                <Card title="Informações Pessoais">
+                    <div className={styles['linha-campo']}>
+                        <Input
+                            name="Nome completo"
+                            value={usuario?.nome_completo ?? ""}
+                            placeholder="Digite seu nome"
+                            onChange={(e) => handleChange("nome_completo", e.target.value)}
+                        />
+                        <Input
+                            name="CRP"
+                            value={usuario?.crp ?? ""}
+                            placeholder="Digite seu CRP"
+                            onChange={(e) => handleChange("crp", e.target.value)}
+                        />
+                    </div>
 
-                <div className={styles['linha-campo']}>
-                    <Input
-                        name="E-mail"
-                        value={usuario?.email ?? ""}
-                        placeholder="Digite seu e-mail" type="email"
-                        disabled={true}
-                        onChange={(e) => handleChange("email", e.target.value)}
-                    />
-                    <Input
-                        name="Telefone"
-                        value={usuario?.telefone ?? ""}
-                        placeholder="Digite seu telefone" type="tel"
-                        onChange={(e) => handleChange("telefone", e.target.value)}
-                    />
-                </div>
+                    <div className={styles['linha-campo']}>
+                        <Input
+                            name="E-mail"
+                            value={usuario?.email ?? ""}
+                            placeholder="Digite seu e-mail" type="email"
+                            disabled={true}
+                            onChange={(e) => handleChange("email", e.target.value)}
+                        />
+                        <Input
+                            name="Telefone"
+                            value={usuario?.telefone ?? ""}
+                            placeholder="Digite seu telefone" type="tel"
+                            onChange={(e) => handleChange("telefone", e.target.value)}
+                        />
+                    </div>
 
-                <TextArea
-                    name="Sobre você"
-                    value={usuario?.sobre_voce ?? ""}
-                    placeholder="Conte um pouco sobre você"
-                    onChange={(e) => handleChange("sobre_voce", e.target.value)}
-                />
-                <div className={styles['botao-salvar']}>
-                    <Button variant="success" onClick={() => handleSalvar()}>Salvar Alterações</Button>
-                </div>
-            </Card>
-        </div>
+                    <TextArea
+                        name="Sobre você"
+                        value={usuario?.sobre_voce ?? ""}
+                        placeholder="Conte um pouco sobre você"
+                        onChange={(e) => handleChange("sobre_voce", e.target.value)}
+                    />
+                    <div className={styles['botao-salvar']}>
+                        <Button variant="success" onClick={() => handleSalvar()}>Salvar Alterações</Button>
+                    </div>
+                </Card>
+            </div>)
     )
 }

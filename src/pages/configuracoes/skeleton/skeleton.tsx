@@ -1,10 +1,10 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Card } from "../../../components/ui/card";
-import styles from "./visualizacao.module.css";
 import { Header } from "../../../components/layout/header";
+import styles from "./skeleton.module.css"
 
-export function SkeletonConfiguracoes() {
+export function Skeletonfiguracoes() {
     return (
         <div className={styles['container-principal']}>
             <div>

@@ -7,7 +7,7 @@ import styles from "./visualizacao.module.css";
 import { useEffect, useState } from "react";
 import { usuariosService } from "../../../services/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
-import { SkeletonConfiguracoes } from "./skeleton";
+import { Skeletonfiguracoes } from "../skeleton/skeleton";
 
 export function ConfiguracoesVisualizacao() {
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ export function ConfiguracoesVisualizacao() {
 
     return (
         loadingUSuario ? (
-            <SkeletonConfiguracoes />) : (
+            <Skeletonfiguracoes />) : (
             <div className={styles['container-principal']}>
                 <div>
                     <Header
