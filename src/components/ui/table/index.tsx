@@ -11,12 +11,14 @@ type TableProps<T> = {
   columns: TableColumn<T>[];
   data: T[];
   emptyMessage?: string;
+  onRowClick?: (item: T, index: number) => void;
 };
 
 export function Table<T extends Record<string, unknown>>({
   columns,
   data,
   emptyMessage = "Nenhum registro encontrado",
+  onRowClick,
 }: TableProps<T>) {
   if (!data.length) {
     return <div className={styles.empty}>{emptyMessage}</div>;
@@ -36,7 +38,12 @@ export function Table<T extends Record<string, unknown>>({
         </thead>
         <tbody>
           {data.map((item, index) => (
-            <tr key={index} className={styles.tr}>
+            <tr
+              key={index}
+              className={styles.tr}
+              onClick={() => onRowClick?.(item, index)}
+              style={{ cursor: onRowClick ? "pointer" : "default" }}
+            >
               {columns.map((column) => (
                 <td key={String(column.key)} className={styles.td}>
                   {column.render ? column.render(item) : String(item[column.key] ?? "")}

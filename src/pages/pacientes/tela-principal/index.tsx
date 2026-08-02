@@ -10,6 +10,13 @@ import { pacientesService } from "../../../services/pacientes/pacientes.service"
 import { Paciente } from "../../../types/pacientes/pacientes.types";
 import { SkeletonPacientes } from "../skeleton/skeleton";
 
+type PacienteTableRow = {
+    paciente: string;
+    telefone: string;
+    email: string;
+    idade: string | number;
+    original: Paciente;
+};
 
 export function Pacientes() {
     const navigate = useNavigate();
@@ -21,7 +28,6 @@ export function Pacientes() {
             try {
                 setLoadingPacientes(true);
                 const pacientes = await pacientesService.listar();
-                console.log(pacientes);
                 setPacientes(pacientes);
             } catch (error) {
                 console.error("Erro ao buscar pacientes:", error);
@@ -31,6 +37,18 @@ export function Pacientes() {
         }
         fetchPacientes();
     }, []);
+
+    const rows: PacienteTableRow[] = (pacientes || []).map((paciente) => ({
+        paciente: paciente.nome_completo || "",
+        telefone: paciente.telefone_principal || "",
+        email: paciente.email || "",
+        idade: paciente.data_nascimento ? new Date().getFullYear() - new Date(paciente.data_nascimento).getFullYear() : "N/A",
+        original: paciente,
+    }));
+
+    const handleRowClick = (item: PacienteTableRow) => {
+        alert(`Paciente selecionado: ${item.paciente}`);
+    };
 
     return (
         loadingPacientes ? (
@@ -52,12 +70,8 @@ export function Pacientes() {
                                 { key: "email", header: "E-mail" },
                                 { key: "idade", header: "Idade" }
                             ]}
-                            data={pacientes?.map((paciente) => ({
-                                paciente: paciente.nome_completo,
-                                telefone: paciente.telefone_principal,
-                                email: paciente.email,
-                                idade: paciente.data_nascimento ? new Date().getFullYear() - new Date(paciente.data_nascimento).getFullYear() : "N/A"
-                            })) || []}
+                            data={rows}
+                            onRowClick={handleRowClick}
                         />
                     </div>
                 </Card>

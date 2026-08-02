@@ -29,6 +29,19 @@
   border-bottom: 1px solid #F0F0F0;
 }
 
+.tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.tr:hover {
+  background-color: #f5f7ff;
+}
+
+.tr:active {
+  background-color: #e8ecff;
+  transform: scale(0.995);
+}
+
 .tr:last-child .td {
   border-bottom: none;
 }

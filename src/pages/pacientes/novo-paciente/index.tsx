@@ -18,7 +18,6 @@ import { pacientesService } from "../../../services/pacientes/pacientes.service"
 export function NovoPaciente() {
 
     const navigate = useNavigate();
-    const [loadingPaciente, setLoadingPaciente] = useState(false);
     const [paciente, setPaciente] = useState<Paciente>({
         id_paciente: "",
         nome_completo: "",
@@ -62,7 +61,6 @@ export function NovoPaciente() {
     async function handleSalvarCliente() {
 
         try {
-            setLoadingPaciente(true);
             const novoPaciente = await pacientesService.inserir({
                 nome_completo: paciente?.nome_completo || "",
                 data_nascimento: paciente?.data_nascimento || new Date(),
@@ -86,8 +84,6 @@ export function NovoPaciente() {
         } catch (error) {
             console.error("Erro ao salvar paciente:", error);
             toast.error("Não foi possível salvar o paciente. Erro: " + (error instanceof Error ? error.message : String(error)));
-        } finally {
-            setLoadingPaciente(false);
         }
     }
 
