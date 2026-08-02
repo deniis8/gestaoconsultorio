@@ -12,10 +12,33 @@ import statusPlano from "../../../mocks/mock-status-plano.json";
 import { Header } from "../../../components/layout/header";
 import { InputValor } from "../../../components/ui/input-valor";
 import { useState } from "react";
+import { Paciente } from "../../../types/pacientes/pacientes.types";
+import { pacientesService } from "../../../services/pacientes/pacientes.service";
 
 export function NovoPaciente() {
 
     const navigate = useNavigate();
+    const [loadingPaciente, setLoadingPaciente] = useState(false);
+    const [paciente, setPaciente] = useState<Paciente>({
+        id_paciente: "",
+        nome_completo: "",
+        data_nascimento: new Date(),
+        cpf: "",
+        telefone_principal: "",
+        telefone_secundario: "",
+        email: "",
+        cep: "",
+        logradouro: "",
+        numero: "",
+        complemento: "",
+        bairro: "",
+        cidade: "",
+        estado: "",
+        observacoes_administrativas: "",
+        id_usuario: "",
+        created_at: new Date()
+    });
+
     const planosCobrancaOptions = planosCobrancaMock.map((plano) => ({
         label: plano.nome,
         value: plano.codigo,
@@ -26,11 +49,46 @@ export function NovoPaciente() {
         value: status.codigo,
     }));
 
-    function handleSalvarCliente() {
-        //Salva o cliente no banco de dados
-        toast.success("Paciente salvo!");
+    function handleChange(
+        campo: keyof Paciente,
+        valor: string
+    ) {
+        setPaciente(prev => ({
+            ...prev,
+            [campo]: valor
+        }));
+    }
 
-        navigate(-1);
+    async function handleSalvarCliente() {
+
+        try {
+            setLoadingPaciente(true);
+            const novoPaciente = await pacientesService.inserir({
+                nome_completo: paciente?.nome_completo || "",
+                data_nascimento: paciente?.data_nascimento || new Date(),
+                cpf: paciente?.cpf || "",
+                telefone_principal: paciente?.telefone_principal || "",
+                telefone_secundario: paciente?.telefone_secundario || "",
+                email: paciente?.email || "",
+                cep: paciente?.cep || "",
+                logradouro: paciente?.logradouro || "",
+                numero: paciente?.numero || "",
+                bairro: paciente?.bairro || "",
+                cidade: paciente?.cidade || "",
+                estado: paciente?.estado || "",
+                complemento: paciente?.complemento || "",
+                observacoes_administrativas: paciente?.observacoes_administrativas || "",
+                id_usuario: "2a959e5b-dee7-4786-a6df-37883406bae7"
+            });
+            console.log(novoPaciente);
+            toast.success("Paciente salvo com sucesso!");
+            navigate(-1);
+        } catch (error) {
+            console.error("Erro ao salvar paciente:", error);
+            toast.error("Não foi possível salvar o paciente. Erro: " + (error instanceof Error ? error.message : String(error)));
+        } finally {
+            setLoadingPaciente(false);
+        }
     }
 
     const [valor, setValor] = useState("");
@@ -45,43 +103,51 @@ export function NovoPaciente() {
             </Header>
             <Card title="Dados Pessoais">
                 <div className={styles['linha-campo']}>
-                    <Input name="Nome Completo *" placeholder="Digite o nome do paciente" />
+                    <Input
+                        name="Nome Completo *"
+                        placeholder="Digite o nome do paciente"
+                        onChange={(e) => handleChange("nome_completo", e.target.value)}
+                    />
                 </div>
 
                 <div className={styles['linha-campo']}>
-                    <InputData name="Data de Nascimento *" placeholder="" />
-                    <Input name="Cpf" placeholder="Digite o CPF" />
+                    <InputData
+                        name="Data de Nascimento *"
+                        placeholder=""
+                        onChange={(e) => handleChange("data_nascimento", e.target.value)}
+                    />
+                    <Input name="Cpf" placeholder="Digite o CPF" onChange={(e) => handleChange("cpf", e.target.value)} />
                 </div>
 
                 <div className={styles['linha-campo']}>
-                    <Input name="Telefone *" placeholder="Digite seu telefone" type="tel" />
-                    <Input name="Telefone Secundário" placeholder="Digite seu telefone" type="tel" />
+                    <Input name="Telefone *" placeholder="Digite seu telefone" type="tel" onChange={(e) => handleChange("telefone_principal", e.target.value)} />
+                    <Input name="Telefone Secundário" placeholder="Digite seu telefone" type="tel" onChange={(e) => handleChange("telefone_secundario", e.target.value)} />
                 </div>
 
                 <div>
-                    <Input name="E-mail" placeholder="E-mail" type="email" />
+                    <Input name="E-mail" placeholder="E-mail" type="email" onChange={(e) => handleChange("email", e.target.value)} />
                 </div>
 
                 <div className={styles['linha-campo-metade']}>
-                    <Input name="CEP" placeholder="00000-000" type="" />
+                    <Input name="CEP" placeholder="00000-000" type="" onChange={(e) => handleChange("cep", e.target.value)} />
                 </div>
 
                 <div>
-                    <Input name="Logradouro" placeholder="Rua, Avenida, Travessa..." type="" />
+                    <Input name="Logradouro" placeholder="Rua, Avenida, Travessa..." type="" onChange={(e) => handleChange("logradouro", e.target.value)} />
                 </div>
 
                 <div className={styles['linha-campo']}>
-                    <Input name="Número" placeholder="123" type="" />
-                    <Input name="Complemento" placeholder="Próximo..." type="" />
+                    <Input name="Número" placeholder="123" type="" onChange={(e) => handleChange("numero", e.target.value)} />
+                    <Input name="Complemento" placeholder="Próximo..." type="" onChange={(e) => handleChange("complemento", e.target.value)} />
                 </div>
 
                 <div className={styles['linha-campo']}>
-                    <Input name="Bairro" placeholder="Bairro" type="" />
-                    <Input name="Cidade" placeholder="Cidade" type="" />
+                    <Input name="Bairro" placeholder="Bairro" type="" onChange={(e) => handleChange("bairro", e.target.value)} />
+                    <Input name="Cidade" placeholder="Cidade" type="" onChange={(e) => handleChange("cidade", e.target.value)} />
                 </div>
 
                 <div className={styles['linha-campo-metade']}>
-                    <Input name="Estado" placeholder="Nome de estado" type="" />
+                    <Input name="Estado" placeholder="Nome de estado" type="" onChange={(e) => handleChange("estado", e.target.value)} />
                 </div>
 
 
@@ -100,8 +166,8 @@ export function NovoPaciente() {
                     <InputData name="Data de Término (opcional)" placeholder="" />
                 </div>
                 <div className={styles['linha-campo']}>
-                    <InputValor name="Valor Contratado (R$ *)" value={valor} onChange={setValor}/>
-                    <Input name="Sessões Contratadas *" placeholder=""/>
+                    <InputValor name="Valor Contratado (R$ *)" value={valor} onChange={setValor} />
+                    <Input name="Sessões Contratadas *" placeholder="" />
                 </div>
                 <div className={styles['linha-campo-metade']}>
                     <Combobox
@@ -114,7 +180,7 @@ export function NovoPaciente() {
             </Card>
 
             <Card title="Observações">
-                <TextArea name="Observações Administrativas"></TextArea>
+                <TextArea name="Observações Administrativas" onChange={(e) => handleChange("observacoes_administrativas", e.target.value)}></TextArea>
             </Card>
 
             <div className={styles['linha-botao']}>

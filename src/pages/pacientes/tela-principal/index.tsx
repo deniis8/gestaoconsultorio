@@ -6,7 +6,7 @@ import { InputPesquisar } from "../../../components/ui/input-pesquisar";
 import { Table } from "../../../components/ui/table";
 import styles from './pacientes.module.css';
 import { useEffect, useState } from "react";
-import { pacientesService } from "../../../services/usuarios/pacientes.service";
+import { pacientesService } from "../../../services/pacientes/pacientes.service";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
 import { SkeletonPacientes } from "../skeleton/skeleton";
 
