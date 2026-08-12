@@ -15,5 +15,4 @@ export interface Paciente {
     complemento?: string;
     observacoes_administrativas?: string;
     id_usuario?: string;
-    created_at?: Date;
 }

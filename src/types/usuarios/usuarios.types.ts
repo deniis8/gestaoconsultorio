@@ -5,5 +5,4 @@ export interface Usuario {
     email: string;
     telefone: string;
     sobre_voce: string;
-    created_at: Date;
 }

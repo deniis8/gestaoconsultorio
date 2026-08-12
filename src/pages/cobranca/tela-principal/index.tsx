@@ -78,7 +78,7 @@ export function PlanoCobranca() {
                             { key: "nome", header: "Nome" },
                             { key: "formaCobranca", header: "Forma de Cobrança" },
                             { key: "valorPadrao", header: "Valor Padrão" },
-                            { key: "sessoesPadrao", header: "Sessões Padrão" },
+                            { key: "sessoesPadrao", header: "Sessões no Pacote" },
                             { key: "status", header: "Status" },
                         ]}
                         data={planos}

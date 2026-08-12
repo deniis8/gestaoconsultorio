@@ -12,21 +12,62 @@ import { InputValor } from "../../../components/ui/input-valor";
 import { SlEnergy } from "react-icons/sl";
 import { BsBoxSeam } from "react-icons/bs";
 import { LuCalendarDays } from "react-icons/lu";
+import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 
 export function NovoPlanoCobranca() {
 
     const navigate = useNavigate();
+    const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
+    const [valor, setValor] = useState("");
+    const [ativo, setAtivo] = useState(true);
 
-    const handleSalvarPlano = () => {
-        toast.success("Plano salvo com sucesso!");
-        navigate(-1);
+    const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca>({
+        nome: "",
+        forma_cobranca: "",
+        valor_padrao: 0,
+        quantidade_padrao_sessoes: 0,
+        ativo: true,
+        id_usuario: ""
+    });
+
+    function handleChange(
+        campo: keyof PlanosCobranca,
+        valor: string | boolean
+    ) {
+        const normalizedValue =
+            campo === "valor_padrao" && typeof valor === "string"
+                ? parseFloat(valor.replace(/[^0-9,.-]/g, "").replace(",", ".")) || 0
+                : campo === "quantidade_padrao_sessoes" && typeof valor === "string"
+                ? parseInt(valor, 10) || 0
+                : campo === "ativo" && typeof valor === "boolean"
+                ? (valor ? "S" : "N")
+                : valor;
+
+        setPlanosCobranca(prev => ({
+            ...prev,
+            [campo]: normalizedValue
+        }));
     }
 
-    const [ativo, setAtivo] = useState(true);
-    const [valor, setValor] = useState("");
-    const [sessoesPorCiclo, setSessoesPorCiclo] = useState("");
-
-    const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
+    async function handleSalvarPlano() {
+        try {
+            const novoPlano = await planosCobrancaService.inserir({
+                nome: planosCobranca.nome || "",
+                forma_cobranca: planosCobranca.forma_cobranca || "",
+                valor_padrao: planosCobranca.valor_padrao || 0,
+                quantidade_padrao_sessoes: planosCobranca.quantidade_padrao_sessoes || 0,
+                ativo: planosCobranca.ativo !== undefined ? planosCobranca.ativo : true,
+                id_usuario: planosCobranca.id_usuario || "2a959e5b-dee7-4786-a6df-37883406bae7"
+            });
+            console.log(novoPlano);
+            toast.success("Plano salvo com sucesso!");
+            navigate(-1);
+        } catch (error) {
+            console.error("Erro ao salvar plano:", error);
+            toast.error("Não foi possível salvar o plano. Erro: " + (error instanceof Error ? error.message : String(error)));
+        }
+    }
 
     return (
         <div className={styles['container-principal']}>
@@ -39,7 +80,11 @@ export function NovoPlanoCobranca() {
 
             <Card>
                 <div>
-                    <Input name="Nome do Plano *" placeholder="Ex: Sessão Avulsa, Pacote Trimestral, mensal 4x..." />
+                    <Input
+                        name="Nome do Plano *"
+                        placeholder="Ex: Sessão Avulsa, Pacote Trimestral, mensal 4x..."
+                        onChange={(e) => handleChange("nome", e.target.value)}
+                    />
                 </div>
             </Card>
 
@@ -48,7 +93,10 @@ export function NovoPlanoCobranca() {
                 <div className={styles["formas-cobranca"]}>
                     <button
                         className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
-                        onClick={() => setTipoCobranca("SESSAO")}
+                        onClick={() => {
+                            setTipoCobranca("SESSAO");
+                            handleChange("forma_cobranca", "SESSAO");
+                        }}
                     >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-sessao-ico"]}>
@@ -60,7 +108,10 @@ export function NovoPlanoCobranca() {
                     </button>
                     <button
                         className={`${styles["cobranca-pacote"]} ${tipoCobranca === "PACOTE" ? styles["cobranca-pacote-selecionado"] : ""}`}
-                        onClick={() => setTipoCobranca("PACOTE")}
+                        onClick={() => {
+                            setTipoCobranca("PACOTE");
+                            handleChange("forma_cobranca", "PACOTE");
+                        }}
                     >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-pacote-ico"]}>
@@ -72,7 +123,10 @@ export function NovoPlanoCobranca() {
                     </button>
                     <button
                         className={`${styles["cobranca-mensal"]} ${tipoCobranca === "MENSAL" ? styles["cobranca-mensal-selecionado"] : ""}`}
-                        onClick={() => setTipoCobranca("MENSAL")}
+                        onClick={() => {
+                            setTipoCobranca("MENSAL");
+                            handleChange("forma_cobranca", "MENSAL");
+                        }}
                     >
                         <div className={styles["cobranca-item"]}>
                             <div className={styles["cobranca-mensal-ico"]}>
@@ -88,15 +142,17 @@ export function NovoPlanoCobranca() {
             <Card>
                 <div className={styles["inputs-valor"]}>
                     <InputValor
-                        name="Valor por Sessão (R$) *"
+                        name="Valor do Plano (R$) *"
                         value={valor}
-                        onChange={setValor}
+                        onChange={(value) => {
+                            setValor(value);
+                            handleChange("valor_padrao", value);
+                        }}
                     />
-                    <InputValor
-                        name="Sessões por Ciclo (R$) *"
-                        value={sessoesPorCiclo}
+                    <Input
+                        name="Sessões no Pacote *"
                         disabled={tipoCobranca === "SESSAO"}
-                        onChange={setSessoesPorCiclo}
+                        onChange={(e) => handleChange("quantidade_padrao_sessoes", e.target.value)}
                     />
                 </div>
             </Card>
@@ -104,7 +160,13 @@ export function NovoPlanoCobranca() {
             <Card >
                 <div className={styles["card-toggle"]}>
                     <Label name="Plano ativo" value="Apenas planos ativos aparecem para seleção no cadastro de pacientes" />
-                    <Toggle checked={ativo} onChange={setAtivo} />
+                    <Toggle
+                        checked={ativo}
+                        onChange={(value) => {
+                            setAtivo(value);
+                            handleChange("ativo", value);
+                        }}
+                    />
                 </div>
             </Card>
 

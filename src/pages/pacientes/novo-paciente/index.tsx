@@ -34,8 +34,7 @@ export function NovoPaciente() {
         cidade: "",
         estado: "",
         observacoes_administrativas: "",
-        id_usuario: "",
-        created_at: new Date()
+        id_usuario: ""
     });
 
     const planosCobrancaOptions = planosCobrancaMock.map((plano) => ({
@@ -148,7 +147,7 @@ export function NovoPaciente() {
 
 
             </Card>
-            <Card title="Plano de Cobrança">
+            <Card title="Plano do Paciente">
                 <div>
                     <Combobox
                         label="Plano de Cobrança"
