@@ -16,7 +16,7 @@ export class UsuariosService {
         );
     }
 
-    async buscarPorId(id: number): Promise<Usuario[]> {
+    async buscarPorId(id: string): Promise<Usuario[]> {
 
         return api<Usuario[]>(
             `${ENDPOINTS.usuarios}?id_usuario=eq.${id}`
@@ -42,7 +42,7 @@ export class UsuariosService {
         );
     }
 
-    async excluir(id: number) {
+    async excluir(id: string) {
 
         return api<void>(
             `${ENDPOINTS.usuarios}?id_usuario=eq.${id}`,

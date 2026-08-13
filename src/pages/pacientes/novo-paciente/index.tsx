@@ -33,8 +33,7 @@ export function NovoPaciente() {
         bairro: "",
         cidade: "",
         estado: "",
-        observacoes_administrativas: "",
-        id_usuario: ""
+        observacoes_administrativas: ""
     });
 
     const planosCobrancaOptions = planosCobrancaMock.map((plano) => ({
@@ -74,8 +73,7 @@ export function NovoPaciente() {
                 cidade: paciente?.cidade || "",
                 estado: paciente?.estado || "",
                 complemento: paciente?.complemento || "",
-                observacoes_administrativas: paciente?.observacoes_administrativas || "",
-                id_usuario: "2a959e5b-dee7-4786-a6df-37883406bae7"
+                observacoes_administrativas: paciente?.observacoes_administrativas || ""
             });
             console.log(novoPaciente);
             toast.success("Paciente salvo com sucesso!");
