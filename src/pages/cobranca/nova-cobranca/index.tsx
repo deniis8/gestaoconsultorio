@@ -27,8 +27,7 @@ export function NovoPlanoCobranca() {
         forma_cobranca: "",
         valor_padrao: 0,
         quantidade_padrao_sessoes: 0,
-        ativo: true,
-        id_usuario: ""
+        ativo: true
     });
 
     function handleChange(
@@ -57,8 +56,7 @@ export function NovoPlanoCobranca() {
                 forma_cobranca: planosCobranca.forma_cobranca || "",
                 valor_padrao: planosCobranca.valor_padrao || 0,
                 quantidade_padrao_sessoes: planosCobranca.quantidade_padrao_sessoes || 0,
-                ativo: planosCobranca.ativo !== undefined ? planosCobranca.ativo : true,
-                id_usuario: planosCobranca.id_usuario || "2a959e5b-dee7-4786-a6df-37883406bae7"
+                ativo: planosCobranca.ativo !== undefined ? planosCobranca.ativo : true
             });
             console.log(novoPlano);
             toast.success("Plano salvo com sucesso!");

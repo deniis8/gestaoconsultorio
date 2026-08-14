@@ -5,61 +5,31 @@ import { Card } from "../../../components/ui/card";
 import { InputPesquisar } from "../../../components/ui/input-pesquisar";
 import { Table } from "../../../components/ui/table";
 import styles from "./cobranca.module.css";
+import { useEffect, useState } from "react";
+import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 
 export function PlanoCobranca() {
 
     const navigate = useNavigate();
+    const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca[]>([]);
+    const [loadingCobranca, setLoadingCobranca] = useState(false);
 
-    const planos = [
-        {
-            id: 1,
-            nome: "Sessão Avulsa",
-            formaCobranca: "Por sessão",
-            valorPadrao: "R$ 180,00",
-            sessoesPadrao: "-",
-            status: "Ativo",
-        },
-        {
-            id: 2,
-            nome: "Plano Mensal - 4 Sessões",
-            formaCobranca: "Mensal",
-            valorPadrao: "R$ 700,00",
-            sessoesPadrao: 4,
-            status: "Ativo",
-        },
-        {
-            id: 3,
-            nome: "Plano Mensal - 8 Sessões",
-            formaCobranca: "Mensal",
-            valorPadrao: "R$ 1.350,00",
-            sessoesPadrao: 8,
-            status: "Ativo",
-        },
-        {
-            id: 4,
-            nome: "Pacote 10 Sessões",
-            formaCobranca: "Pacote",
-            valorPadrao: "R$ 1.600,00",
-            sessoesPadrao: 10,
-            status: "Ativo",
-        },
-        {
-            id: 5,
-            nome: "Pacote 20 Sessões",
-            formaCobranca: "Pacote",
-            valorPadrao: "R$ 3.000,00",
-            sessoesPadrao: 20,
-            status: "Ativo",
-        },
-        {
-            id: 6,
-            nome: "Atendimento Social",
-            formaCobranca: "Por sessão",
-            valorPadrao: "R$ 80,00",
-            sessoesPadrao: "-",
-            status: "Inativo",
-        },
-    ];
+    useEffect(() => {
+        async function carregarPlanos() {
+            try {
+                setLoadingCobranca(true);
+                const planos = await planosCobrancaService.listar();
+                setPlanosCobranca(planos);
+                console.log(planosCobranca);
+            } catch (error) {
+                console.error("Erro ao buscar usuários:", error);
+            } finally {
+                setLoadingCobranca(false);
+            }
+        }
+        carregarPlanos();
+    }, []);
 
     return (
         <div className={styles['container-principal']}>
@@ -81,7 +51,16 @@ export function PlanoCobranca() {
                             { key: "sessoesPadrao", header: "Sessões no Pacote" },
                             { key: "status", header: "Status" },
                         ]}
-                        data={planos}
+                        data={planosCobranca.map((plano) => ({
+                            nome: plano.nome,
+                            formaCobranca: plano.forma_cobranca,
+                            valorPadrao: plano.valor_padrao,
+                            sessoesPadrao: plano.quantidade_padrao_sessoes,
+                            status: plano.ativo ? "Ativo" : "Inativo",
+                        }))}
+                        onRowClick={(item) => {
+                            alert(`Plano selecionado: ${item.nome}`);
+                        }}
                     />
                 </div>
             </Card>
