@@ -3,6 +3,8 @@ import { BsBox2 } from "react-icons/bs";
 import { TbChartInfographic } from 'react-icons/tb';
 import { GoPeople } from 'react-icons/go';
 import { Link, useLocation } from 'react-router-dom';
+import { RxExit } from "react-icons/rx";
+
 
 import styles from "./menu.module.css";
 
@@ -14,6 +16,7 @@ const opcoes = [
     { label: 'Planos de Cobrança', path: '/planos-cobranca', icon: <BsBox2 size={18} /> },
     { label: 'Relatórios', path: '/relatorios', icon: <TbChartInfographic size={18} /> },
     { label: 'Configurações', path: '/configuracoes', icon: <LuSettings size={18} /> },
+    { label: 'Sair', path: '/login', icon: <RxExit size={18} /> },
 ];
 
 export function Menu() {

@@ -11,6 +11,7 @@ import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-co
 import { ConfiguracoesEdicao } from "./pages/configuracoes/edicao-configuracoes";
 import { Login } from "./pages/login";
 import { NovoPlanoCobranca } from "./pages/cobranca/nova-cobranca";
+import { PlanoCobrancaVisualizacao } from "./pages/cobranca/visualizacao-cobranca";
 
 const router = createBrowserRouter([
   {
@@ -45,8 +46,12 @@ const router = createBrowserRouter([
         element: <PlanoCobranca />
       },
       {
-        path: "/planos-cobranca/novo",
+        path: "/planos-cobranca/formulario/:id_plano_cobranca?",
         element: <NovoPlanoCobranca />
+      },
+      {
+        path: "/planos-cobranca/visualizacao/:id_plano_cobranca",
+        element: <PlanoCobrancaVisualizacao />
       },
       {
         path: "/relatorios",

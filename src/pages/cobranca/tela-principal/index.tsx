@@ -31,13 +31,17 @@ export function PlanoCobranca() {
         carregarPlanos();
     }, []);
 
+    const handleRowClick = (id_plano: string) => {
+        navigate(`/planos-cobranca/visualizacao/${id_plano}`);
+    }
+
     return (
         <div className={styles['container-principal']}>
             <Header
                 title="Planos de Cobrança"
                 subtitle="Modelos de cobrança disponíveis para vincular aos pacientes"
             >
-                <Button type="submit" icon="add" onClick={() => navigate("/planos-cobranca/novo")}>Novo Plano</Button>
+                <Button type="submit" icon="add" onClick={() => navigate("/planos-cobranca/formulario")}>Novo Plano</Button>
             </Header>
 
             <Card>
@@ -52,6 +56,7 @@ export function PlanoCobranca() {
                             { key: "status", header: "Status" },
                         ]}
                         data={planosCobranca.map((plano) => ({
+                            id_plano_cobranca: plano.id_plano_cobranca ?? "",
                             nome: plano.nome,
                             formaCobranca: plano.forma_cobranca,
                             valorPadrao: plano.valor_padrao,
@@ -59,7 +64,7 @@ export function PlanoCobranca() {
                             status: plano.ativo ? "Ativo" : "Inativo",
                         }))}
                         onRowClick={(item) => {
-                            alert(`Plano selecionado: ${item.nome}`);
+                            handleRowClick(item.id_plano_cobranca ?? "");
                         }}
                     />
                 </div>
