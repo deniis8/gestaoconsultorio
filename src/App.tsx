@@ -10,7 +10,7 @@ import { PlanoCobranca } from "./pages/cobranca/tela-principal";
 import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-configuracoes";
 import { ConfiguracoesEdicao } from "./pages/configuracoes/edicao-configuracoes";
 import { Login } from "./pages/login";
-import { NovoPlanoCobranca } from "./pages/cobranca/nova-cobranca";
+import { FormularioPlanoCobranca } from "./pages/cobranca/formulario-cobranca";
 import { PlanoCobrancaVisualizacao } from "./pages/cobranca/visualizacao-cobranca";
 
 const router = createBrowserRouter([
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/planos-cobranca/formulario/:id_plano_cobranca?",
-        element: <NovoPlanoCobranca />
+        element: <FormularioPlanoCobranca />
       },
       {
         path: "/planos-cobranca/visualizacao/:id_plano_cobranca",

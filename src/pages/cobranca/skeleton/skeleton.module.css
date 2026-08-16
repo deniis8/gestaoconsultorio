@@ -1,0 +1,98 @@
+.container-skeleton {
+    width: 100%;
+}
+
+.header-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+}
+
+.card-skeleton {
+    width: 100%;
+
+    padding: 24px;
+    margin-bottom: 20px;
+
+    border-radius: 12px;
+}
+
+.formas-cobranca {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 16px;
+}
+
+.cobranca-item {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 16px;
+
+    border-radius: 8px;
+}
+
+.cobranca-textos {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.inputs-valor {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+}
+
+.toggle-skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.linha-botao {
+    display: flex;
+    justify-content: flex-end;
+
+    gap: 12px;
+
+    margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+
+    .header-skeleton {
+        align-items: flex-start;
+    }
+
+    .formas-cobranca {
+        grid-template-columns: 1fr;
+    }
+
+    .inputs-valor {
+        grid-template-columns: 1fr;
+    }
+
+    .toggle-skeleton {
+        align-items: flex-start;
+    }
+
+    .linha-botao {
+        width: 100%;
+    }
+
+}

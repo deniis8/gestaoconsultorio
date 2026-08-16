@@ -14,8 +14,10 @@ import { BsBoxSeam } from "react-icons/bs";
 import { LuCalendarDays } from "react-icons/lu";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
+import { Loading } from "../../../components/layout/loading";
+import { SkeletonPlanoCobranca } from "../skeleton/skeleton";
 
-export function NovoPlanoCobranca() {
+export function FormularioPlanoCobranca() {
 
     const navigate = useNavigate();
     const { id_plano_cobranca } = useParams();
@@ -24,7 +26,9 @@ export function NovoPlanoCobranca() {
     const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
     const [valor, setValor] = useState("");
     const [ativo, setAtivo] = useState(true);
-    const [carregandoPlano, setCarregandoPlano] = useState(isEdicao);
+    const [loadingPlano, setloadingPlano] = useState(isEdicao);
+    const [loadingSalvar, setLoadingSalvar] = useState(false);
+
 
     const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca>({
         nome: "",
@@ -37,12 +41,12 @@ export function NovoPlanoCobranca() {
     useEffect(() => {
         async function carregarPlano() {
             if (!id_plano_cobranca) {
-                setCarregandoPlano(false);
+                setloadingPlano(false);
                 return;
             }
 
             try {
-                setCarregandoPlano(true);
+                setloadingPlano(true);
                 const plano = await planosCobrancaService.buscarPorId(id_plano_cobranca);
 
                 if (plano.length > 0) {
@@ -63,7 +67,7 @@ export function NovoPlanoCobranca() {
                 toast.error("Não foi possível carregar o plano para edição.");
                 navigate(-1);
             } finally {
-                setCarregandoPlano(false);
+                setloadingPlano(false);
             }
         }
 
@@ -89,6 +93,7 @@ export function NovoPlanoCobranca() {
 
     async function handleSalvarPlano() {
         try {
+            setLoadingSalvar(true);
             if (isEdicao && id_plano_cobranca) {
                 await planosCobrancaService.atualizar(id_plano_cobranca, {
                     nome: planosCobranca.nome || "",
@@ -109,6 +114,7 @@ export function NovoPlanoCobranca() {
                 console.log(novoPlano);
                 toast.success("Plano salvo com sucesso!");
             }
+            setLoadingSalvar(false);
             navigate(-1);
         } catch (error) {
             console.error("Erro ao salvar plano:", error);
@@ -122,7 +128,7 @@ export function NovoPlanoCobranca() {
         : "Defina como o paciente será cobrado ao usar este plano";
 
     return (
-        <div className={styles['container-principal']}>
+        loadingSalvar ? (<Loading loading={loadingSalvar} />) : (<div className={styles['container-principal']}>
             <Header
                 title={tituloPlano}
                 subtitle={subtituloPlano}
@@ -130,7 +136,7 @@ export function NovoPlanoCobranca() {
                 <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
             </Header>
 
-            {!carregandoPlano && (
+            {loadingPlano ? (<SkeletonPlanoCobranca />) : (
                 <>
                     <Card>
                         <div>
@@ -232,6 +238,6 @@ export function NovoPlanoCobranca() {
                     </div>
                 </>
             )}
-        </div>
+        </div>)
     )
 }
