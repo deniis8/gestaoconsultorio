@@ -3,9 +3,10 @@ import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input-comum"
 import styles from "./login.module.css"
 import { LuBrain } from "react-icons/lu";
-import { login, logout } from "../../services/auth/authService";
+import { login } from "../../services/auth/authService";
 import { useNavigate } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { useAuth } from "../../hooks/useAuth";
 
 export function Login() {
 
@@ -13,17 +14,23 @@ export function Login() {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const [loginError, setLoginError] = useState(false);
+    const { user, loading } = useAuth();
 
     useEffect(() => {
-        logout();
-    }, []);
+        if (loading) {
+            return;
+        }
+        if (user) {
+            navigate("/dashboard");
+        }
+    }, [user, loading, navigate]);
 
     const handleLogin = async () => {
         try {
             setLoginError(false);
             const data = await login(email, password);
             console.log("Sucesso: ", data)
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             setLoginError(true);
             console.log("E-mail ou senha inválidos" + error)
