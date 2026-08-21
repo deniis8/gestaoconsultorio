@@ -8,14 +8,23 @@ import { useEffect, useState } from "react";
 import { usuariosService } from "../../../services/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
 import { Skeletonfiguracoes } from "../skeleton/skeleton";
+import { useAuth } from "../../../hooks/useAuth";
 
 export function ConfiguracoesVisualizacao() {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const [loadingUSuario, setLoadingUsuario] = useState(false);
+    const { user, loading } = useAuth();
+    
 
     useEffect(() => {
         async function carregarUsuario() {
+            if (loading) {
+                return;
+            }
+            if (!user) {
+                navigate("/");
+            }
             try {
                 setLoadingUsuario(true);
                 const usuario = await usuariosService.listar();
@@ -30,7 +39,7 @@ export function ConfiguracoesVisualizacao() {
             }
         }
         carregarUsuario();
-    }, [])
+    }, [user, loading, navigate])
 
     return (
         loadingUSuario ? (
