@@ -1,5 +1,6 @@
 .container-skeleton {
     width: 100%;
+    box-sizing: border-box;
 }
 
 .header-skeleton {
@@ -12,6 +13,8 @@
 
 .card-skeleton {
     width: 100%;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
 
     padding: 24px;
     margin-bottom: 20px;

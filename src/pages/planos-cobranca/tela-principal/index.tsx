@@ -8,6 +8,7 @@ import styles from "./cobranca.module.css";
 import { useEffect, useState } from "react";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
+import { SkeletonPlanosCobranca } from "../skeleton/skeleton-principal/skeleton";
 
 export function PlanoCobranca() {
 
@@ -35,7 +36,9 @@ export function PlanoCobranca() {
         navigate(`/planos-cobranca/visualizacao/${id_plano}`);
     }
 
-    return (
+    return loadingCobranca ? (
+        <SkeletonPlanosCobranca />
+    ) : (
         <div className={styles['container-principal']}>
             <Header
                 title="Planos de Cobrança"

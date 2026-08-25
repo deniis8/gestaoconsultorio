@@ -3,7 +3,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import styles from "./skeleton.module.css";
 
-export function SkeletonPlanoCobranca() {
+export function SkeletonFormPlanoCobranca() {
     return (
         <div className={styles["container-skeleton"]}>
 

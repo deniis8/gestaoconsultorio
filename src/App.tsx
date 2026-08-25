@@ -6,12 +6,12 @@ import { Relatorios } from "./pages/relatorios";
 import { Financeiro } from "./pages/financeiro";
 import { Agenda } from "./pages/agenda";
 import { NovoPaciente } from "./pages/pacientes/novo-paciente";
-import { PlanoCobranca } from "./pages/cobranca/tela-principal";
+import { PlanoCobranca } from "./pages/planos-cobranca/tela-principal";
 import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-configuracoes";
 import { ConfiguracoesEdicao } from "./pages/configuracoes/edicao-configuracoes";
 import { Login } from "./pages/login";
-import { FormularioPlanoCobranca } from "./pages/cobranca/formulario-cobranca";
-import { PlanoCobrancaVisualizacao } from "./pages/cobranca/visualizacao-cobranca";
+import { FormularioPlanoCobranca } from "./pages/planos-cobranca/formulario-cobranca";
+import { PlanoCobrancaVisualizacao } from "./pages/planos-cobranca/visualizacao-cobranca";
 
 const router = createBrowserRouter([
   {

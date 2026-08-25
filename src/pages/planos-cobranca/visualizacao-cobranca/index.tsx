@@ -4,9 +4,9 @@ import { Header } from "../../../components/layout/header";
 import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Label } from "../../../components/ui/label";
-import { Skeletonfiguracoes } from "../../configuracoes/skeleton/skeleton";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { SkeletonVisualizarCobranca } from "../skeleton/skeleton-visualizar/skeleton";
 import styles from "./visualizacao-cobranca.module.css";
 
 
@@ -35,7 +35,7 @@ export function PlanoCobrancaVisualizacao() {
 
     return (
         loadingPlanoCobranca ? (
-            <Skeletonfiguracoes />) : (
+            <SkeletonVisualizarCobranca />) : (
             <div className={styles['container-principal']}>
                 <div>
                     <Header

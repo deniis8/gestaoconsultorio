@@ -15,7 +15,7 @@ import { LuCalendarDays } from "react-icons/lu";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { Loading } from "../../../components/layout/loading";
-import { SkeletonPlanoCobranca } from "../skeleton/skeleton";
+import { SkeletonFormPlanoCobranca } from "../skeleton/skeleton-formulario/skeleton";
 
 export function FormularioPlanoCobranca() {
 
@@ -136,7 +136,7 @@ export function FormularioPlanoCobranca() {
                 <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
             </Header>
 
-            {loadingPlano ? (<SkeletonPlanoCobranca />) : (
+            {loadingPlano ? (<SkeletonFormPlanoCobranca />) : (
                 <>
                     <Card>
                         <div>
@@ -231,7 +231,7 @@ export function FormularioPlanoCobranca() {
                             />
                         </div>
                     </Card>
-
+                                 
                     <div className={styles['linha-botao']}>
                         <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
                         <Button variant="success" onClick={() => handleSalvarPlano()}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
