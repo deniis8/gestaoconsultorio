@@ -82,8 +82,8 @@ export function FormularioPlanoCobranca() {
             campo === "valor_padrao" && typeof valor === "string"
                 ? parseFloat(valor.replace(/[^0-9,.-]/g, "").replace(",", ".")) || 0
                 : campo === "quantidade_padrao_sessoes" && typeof valor === "string"
-                ? parseInt(valor, 10) || 0
-                : valor;
+                    ? parseInt(valor, 10) || 0
+                    : valor;
 
         setPlanosCobranca(prev => ({
             ...prev,
@@ -128,116 +128,119 @@ export function FormularioPlanoCobranca() {
         : "Defina como o paciente será cobrado ao usar este plano";
 
     return (
-        loadingSalvar ? (<Loading loading={loadingSalvar} />) : (<div className={styles['container-principal']}>
-            <Header
-                title={tituloPlano}
-                subtitle={subtituloPlano}
-            >
-                <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
-            </Header>
+        <>
+            <div className={styles['container-principal']}>
+                <Header
+                    title={tituloPlano}
+                    subtitle={subtituloPlano}
+                >
+                    <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
+                </Header>
 
-            {loadingPlano ? (<SkeletonFormPlanoCobranca />) : (
-                <>
-                    <Card>
-                        <div>
-                            <Input
-                                name="Nome do Plano *"
-                                placeholder="Ex: Sessão Avulsa, Pacote Trimestral, mensal 4x..."
-                                value={planosCobranca.nome || ""}
-                                onChange={(e) => handleChange("nome", e.target.value)}
-                            />
-                        </div>
-                    </Card>
+                {loadingPlano ? (<SkeletonFormPlanoCobranca />) : (
+                    <>
+                        <Card>
+                            <div>
+                                <Input
+                                    name="Nome do Plano *"
+                                    placeholder="Ex: Sessão Avulsa, Pacote Trimestral, mensal 4x..."
+                                    value={planosCobranca.nome || ""}
+                                    onChange={(e) => handleChange("nome", e.target.value)}
+                                />
+                            </div>
+                        </Card>
 
-                    <Card>
-                        <span>Forma de Cobrança</span>
-                        <div className={styles["formas-cobranca"]}>
-                            <button
-                                className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
-                                onClick={() => {
-                                    setTipoCobranca("SESSAO");
-                                    handleChange("forma_cobranca", "SESSAO");
-                                }}
-                            >
-                                <div className={styles["cobranca-item"]}>
-                                    <div className={styles["cobranca-sessao-ico"]}>
-                                        <SlEnergy />
+                        <Card>
+                            <span>Forma de Cobrança</span>
+                            <div className={styles["formas-cobranca"]}>
+                                <button
+                                    className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
+                                    onClick={() => {
+                                        setTipoCobranca("SESSAO");
+                                        handleChange("forma_cobranca", "SESSAO");
+                                    }}
+                                >
+                                    <div className={styles["cobranca-item"]}>
+                                        <div className={styles["cobranca-sessao-ico"]}>
+                                            <SlEnergy />
+                                        </div>
+                                        <span className={styles["cobranca-sessao-nome"]}>Por Sessão</span>
+                                        <span className={styles["cobranca-sessao-descricao"]}>Cobrado a cada sessão realizada</span>
                                     </div>
-                                    <span className={styles["cobranca-sessao-nome"]}>Por Sessão</span>
-                                    <span className={styles["cobranca-sessao-descricao"]}>Cobrado a cada sessão realizada</span>
-                                </div>
-                            </button>
-                            <button
-                                className={`${styles["cobranca-pacote"]} ${tipoCobranca === "PACOTE" ? styles["cobranca-pacote-selecionado"] : ""}`}
-                                onClick={() => {
-                                    setTipoCobranca("PACOTE");
-                                    handleChange("forma_cobranca", "PACOTE");
-                                }}
-                            >
-                                <div className={styles["cobranca-item"]}>
-                                    <div className={styles["cobranca-pacote-ico"]}>
-                                        <BsBoxSeam />
+                                </button>
+                                <button
+                                    className={`${styles["cobranca-pacote"]} ${tipoCobranca === "PACOTE" ? styles["cobranca-pacote-selecionado"] : ""}`}
+                                    onClick={() => {
+                                        setTipoCobranca("PACOTE");
+                                        handleChange("forma_cobranca", "PACOTE");
+                                    }}
+                                >
+                                    <div className={styles["cobranca-item"]}>
+                                        <div className={styles["cobranca-pacote-ico"]}>
+                                            <BsBoxSeam />
+                                        </div>
+                                        <span className={styles["cobranca-pacote-nome"]}>Pacote</span>
+                                        <span className={styles["cobranca-pacote-descricao"]}>Cobrado uma única vez no pacote</span>
                                     </div>
-                                    <span className={styles["cobranca-pacote-nome"]}>Pacote</span>
-                                    <span className={styles["cobranca-pacote-descricao"]}>Cobrado uma única vez no pacote</span>
-                                </div>
-                            </button>
-                            <button
-                                className={`${styles["cobranca-mensal"]} ${tipoCobranca === "MENSAL" ? styles["cobranca-mensal-selecionado"] : ""}`}
-                                onClick={() => {
-                                    setTipoCobranca("MENSAL");
-                                    handleChange("forma_cobranca", "MENSAL");
-                                }}
-                            >
-                                <div className={styles["cobranca-item"]}>
-                                    <div className={styles["cobranca-mensal-ico"]}>
-                                        <LuCalendarDays />
+                                </button>
+                                <button
+                                    className={`${styles["cobranca-mensal"]} ${tipoCobranca === "MENSAL" ? styles["cobranca-mensal-selecionado"] : ""}`}
+                                    onClick={() => {
+                                        setTipoCobranca("MENSAL");
+                                        handleChange("forma_cobranca", "MENSAL");
+                                    }}
+                                >
+                                    <div className={styles["cobranca-item"]}>
+                                        <div className={styles["cobranca-mensal-ico"]}>
+                                            <LuCalendarDays />
+                                        </div>
+                                        <span className={styles["cobranca-mensal-nome"]}>Mensal</span>
+                                        <span className={styles["cobranca-mensal-descricao"]}>Cobrado ao fechar o ciclo mensal</span>
                                     </div>
-                                    <span className={styles["cobranca-mensal-nome"]}>Mensal</span>
-                                    <span className={styles["cobranca-mensal-descricao"]}>Cobrado ao fechar o ciclo mensal</span>
-                                </div>
-                            </button>
-                        </div>
-                    </Card>
+                                </button>
+                            </div>
+                        </Card>
 
-                    <Card>
-                        <div className={styles["inputs-valor"]}>
-                            <InputValor
-                                name="Valor do Plano (R$) *"
-                                value={valor}
-                                onChange={(value) => {
-                                    setValor(value);
-                                    handleChange("valor_padrao", value);
-                                }}
-                            />
-                            <Input
-                                name="Sessões no Pacote *"
-                                value={planosCobranca.quantidade_padrao_sessoes?.toString() || ""}
-                                disabled={tipoCobranca === "SESSAO"}
-                                onChange={(e) => handleChange("quantidade_padrao_sessoes", e.target.value)}
-                            />
-                        </div>
-                    </Card>
+                        <Card>
+                            <div className={styles["inputs-valor"]}>
+                                <InputValor
+                                    name="Valor do Plano (R$) *"
+                                    value={valor}
+                                    onChange={(value) => {
+                                        setValor(value);
+                                        handleChange("valor_padrao", value);
+                                    }}
+                                />
+                                <Input
+                                    name="Sessões no Pacote *"
+                                    value={planosCobranca.quantidade_padrao_sessoes?.toString() || ""}
+                                    disabled={tipoCobranca === "SESSAO"}
+                                    onChange={(e) => handleChange("quantidade_padrao_sessoes", e.target.value)}
+                                />
+                            </div>
+                        </Card>
 
-                    <Card >
-                        <div className={styles["card-toggle"]}>
-                            <Label name="Plano ativo" value="Apenas planos ativos aparecem para seleção no cadastro de pacientes" />
-                            <Toggle
-                                checked={ativo}
-                                onChange={(value) => {
-                                    setAtivo(value);
-                                    handleChange("ativo", value);
-                                }}
-                            />
+                        <Card >
+                            <div className={styles["card-toggle"]}>
+                                <Label name="Plano ativo" value="Apenas planos ativos aparecem para seleção no cadastro de pacientes" />
+                                <Toggle
+                                    checked={ativo}
+                                    onChange={(value) => {
+                                        setAtivo(value);
+                                        handleChange("ativo", value);
+                                    }}
+                                />
+                            </div>
+                        </Card>
+
+                        <div className={styles['linha-botao']}>
+                            <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
+                            <Button variant="success" onClick={() => handleSalvarPlano()}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
                         </div>
-                    </Card>
-                                 
-                    <div className={styles['linha-botao']}>
-                        <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
-                        <Button variant="success" onClick={() => handleSalvarPlano()}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
-                    </div>
-                </>
-            )}
-        </div>)
+                    </>
+                )}
+            </div>
+            <Loading loading={loadingSalvar} />
+        </>
     )
 }

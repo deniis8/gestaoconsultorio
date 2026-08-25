@@ -43,7 +43,7 @@ export function Login() {
     }
 
     return (
-        loadingLogin ? (<Loading loading={loadingLogin} />) : (
+        <>
             <div className={styles["container"]}>
                 <div className={styles["header"]}>
                     <div className={styles["icone"]}>
@@ -113,7 +113,9 @@ export function Login() {
                         </div>
                     </div>
                 </div>
-            </div>)
+            </div>
+            <Loading loading={loadingLogin} />
+        </>
 
     )
 }
