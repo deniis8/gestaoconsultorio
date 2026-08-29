@@ -15,7 +15,7 @@ import { useState } from "react";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
 import { pacientesService } from "../../../services/pacientes/pacientes.service";
 
-export function NovoPaciente() {
+export function FormularioPaciente() {
 
     const navigate = useNavigate();
     const [paciente, setPaciente] = useState<Paciente>({

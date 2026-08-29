@@ -14,7 +14,7 @@ export function Card({ title, actions, children, className }: CardProps) {
       {(title || actions) && (
         <div className={styles["card-header"]}>
           {title && <h2 className={styles["card-title"]}>{title}</h2>}
-          {actions}
+          {actions && <div className={styles["card-actions"]}>{actions}</div>}
         </div>
       )}
 

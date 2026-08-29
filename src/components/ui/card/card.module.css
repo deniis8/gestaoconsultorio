@@ -28,17 +28,14 @@
 .card-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.card-header > :last-child {
-  margin-left: auto;
-}
-
 .card-title {
   margin: 0;
+  flex: 1;
 }
 
 .card-actions {
@@ -47,4 +44,5 @@
   gap: 8px;
   flex-wrap: wrap;
   justify-content: flex-end;
+  margin-left: auto;
 }

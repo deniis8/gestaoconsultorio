@@ -5,13 +5,14 @@ import { Pacientes } from "./pages/pacientes/tela-principal";
 import { Relatorios } from "./pages/relatorios";
 import { Financeiro } from "./pages/financeiro";
 import { Agenda } from "./pages/agenda";
-import { NovoPaciente } from "./pages/pacientes/novo-paciente";
+import { FormularioPaciente } from "./pages/pacientes/formulario-paciente";
 import { PlanoCobranca } from "./pages/planos-cobranca/tela-principal";
 import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-configuracoes";
 import { ConfiguracoesEdicao } from "./pages/configuracoes/edicao-configuracoes";
 import { Login } from "./pages/login";
 import { FormularioPlanoCobranca } from "./pages/planos-cobranca/formulario-cobranca";
 import { PlanoCobrancaVisualizacao } from "./pages/planos-cobranca/visualizacao-cobranca";
+import { VisualizacaoPacientes } from "./pages/pacientes/visualizacao-pacientes";
 
 const router = createBrowserRouter([
   {
@@ -30,8 +31,12 @@ const router = createBrowserRouter([
         element: <Pacientes />
       },
       {
-        path: "/pacientes/novo",
-        element: <NovoPaciente />
+        path: "/pacientes/formulario/:id_paciente?",
+        element: <FormularioPaciente />
+      },
+      {
+        path: "/pacientes/visualizacao/:id_paciente",
+        element: <VisualizacaoPacientes />
       },
       {
         path: "/agenda",
