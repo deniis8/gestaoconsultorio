@@ -3,5 +3,6 @@ export const ENDPOINTS = {
     pacientes: "pacientes",
     agenda: "agenda",
     financeiro: "financeiro",
-    planos_cobranca: "planos_cobranca"
+    planos_cobranca: "planos_cobranca",
+    paciente_plano: "paciente_plano"
 };

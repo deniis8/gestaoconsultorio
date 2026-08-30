@@ -23,8 +23,8 @@ export async function api<T>(
         throw new Error("Usuário não autenticado.");
     }
 
-    console.log("Usuário:", session.user.id);
-    console.log("Access Token:", session.access_token);
+    //console.log("Usuário:", session.user.id);
+    //console.log("Access Token:", session.access_token);
 
 
     const response = await fetch(`${API_URL}/rest/v1/${endpoint}`, {

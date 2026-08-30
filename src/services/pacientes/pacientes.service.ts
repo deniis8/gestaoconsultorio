@@ -16,10 +16,10 @@ export class PacientesService {
         );
     }
 
-    async buscarPorId(id: string): Promise<Paciente[]> {
+    async buscarPorId(id_paciente: string): Promise<Paciente[]> {
 
         return api<Paciente[]>(
-            `${ENDPOINTS.pacientes}?id_paciente=eq.${id}`
+            `${ENDPOINTS.pacientes}?id_paciente=eq.${id_paciente}`
         );
     }
 

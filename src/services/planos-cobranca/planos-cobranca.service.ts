@@ -16,7 +16,7 @@ export class PlanosCobrancaService {
         );
     }
 
-    async buscarPorIdUsuario(id_plano_cobranca: number): Promise<PlanosCobranca[]> {
+    async buscarPorIdUsuario(id_plano_cobranca: string): Promise<PlanosCobranca[]> {
 
         return api<PlanosCobranca[]>(
             `${ENDPOINTS.planos_cobranca}?id_plano_cobranca=eq.${id_plano_cobranca}`
