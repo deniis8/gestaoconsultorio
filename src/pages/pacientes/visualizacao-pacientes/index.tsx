@@ -13,6 +13,7 @@ import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.type
 import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { formatMoney } from "../../../utils/moneyFormat";
 
 export function VisualizacaoPacientes() {
 
@@ -100,7 +101,7 @@ export function VisualizacaoPacientes() {
                     <Label name="Plano de Cobrança" value={planosCobranca?.nome ?? ""} />
                     <Label name="Data de Início" value={pacientePlano?.data_inicio ? formatSimpleDate(String(pacientePlano.data_inicio)) : ""} />
                     <Label name="Data de Término" value={pacientePlano?.data_fim ? formatSimpleDate(String(pacientePlano.data_fim)) : ""} />
-                    <Label name="Valor Contratado" value={pacientePlano?.valor_contratado != null ? pacientePlano.valor_contratado.toString() : ""} />
+                    <Label name="Valor Contratado" value={pacientePlano?.valor_contratado != null ? formatMoney(pacientePlano.valor_contratado.toString()) : ""} />
                     <Label name="Sessões Contratadas" value={pacientePlano?.quantidade_contratada_sessoes != null ? String(pacientePlano.quantidade_contratada_sessoes) : ""} />
                     <Label name="Status" value={pacientePlano?.status ?? ""} />
                 </Card>

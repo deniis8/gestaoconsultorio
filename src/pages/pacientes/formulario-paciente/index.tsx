@@ -4,7 +4,7 @@ import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input-comum";
 import { InputData } from "../../../components/ui/input-data";
 import toast from "react-hot-toast";
-import styles from "./novo-paciente.module.css";
+import styles from "./formulario-paciente.module.css";
 import { TextArea } from "../../../components/ui/textArea";
 import { Combobox } from "../../../components/ui/combobox";
 import statusPlano from "../../../mocks/mock-status-plano.json";
@@ -16,6 +16,7 @@ import { pacientesService } from "../../../services/pacientes/pacientes.service"
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.types";
 import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
+import { formatMoney } from "../../../utils/moneyFormat";
 
 function formatDateForInput(value?: string | Date) {
     if (!value) return "";
@@ -87,7 +88,9 @@ export function FormularioPaciente() {
                 }
 
                 if (planoSelecionado.length > 0) {
-                    setPacientePlano(planoSelecionado[0]);
+                    const plano = planoSelecionado[0];
+                    setPacientePlano(plano);
+                    setValor(plano.valor_contratado != null ? String(plano.valor_contratado) : "");
                 }
 
                 setPlanosCobrancaOptions(
@@ -376,7 +379,7 @@ export function FormularioPaciente() {
                 <div className={styles['linha-campo']}>
                     <InputValor
                         name="Valor Contratado (R$ *)"
-                        value={valor}
+                        value={formatMoney(valor)}
                         onChange={(nextValue) => {
                             setValor(nextValue);
                             setPacientePlano((prev) => ({

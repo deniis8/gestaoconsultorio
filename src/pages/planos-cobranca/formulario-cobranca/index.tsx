@@ -80,7 +80,7 @@ export function FormularioPlanoCobranca() {
     ) {
         const normalizedValue =
             campo === "valor_padrao" && typeof valor === "string"
-                ? parseFloat(valor.replace(/[^0-9,.-]/g, "").replace(",", ".")) || 0
+                ? Number(valor.replace(/\D/g, "")) || 0
                 : campo === "quantidade_padrao_sessoes" && typeof valor === "string"
                     ? parseInt(valor, 10) || 0
                     : valor;
