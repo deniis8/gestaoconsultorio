@@ -39,7 +39,7 @@ export function FormularioPlanoCobranca() {
     });
 
     useEffect(() => {
-        async function carregarPlano() {
+        const carregarPlano = async () => {
             if (!id_plano_cobranca) {
                 setloadingPlano(false);
                 return;
@@ -73,10 +73,10 @@ export function FormularioPlanoCobranca() {
         carregarPlano();
     }, [id_plano_cobranca, navigate]);
 
-    function handleChange(
+    const handleChange = (
         campo: keyof PlanosCobranca,
         valor: string | boolean
-    ) {
+    ) => {
         const normalizedValue =
             campo === "valor_padrao" && typeof valor === "string"
                 ? Number(valor.replace(/\D/g, "")) || 0
@@ -90,7 +90,7 @@ export function FormularioPlanoCobranca() {
         }));
     }
 
-    async function handleSalvarPlano() {
+    const handleSalvarPlano = async () => {
         try {
             setLoadingSalvar(true);
             if (isEdicao && id_plano_cobranca) {

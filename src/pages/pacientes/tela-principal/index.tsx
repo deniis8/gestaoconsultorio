@@ -8,7 +8,7 @@ import styles from "./pacientes.module.css";
 import { useEffect, useState } from "react";
 import { pacientesService } from "../../../services/pacientes/pacientes.service";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
-import { SkeletonPacientes } from "../skeleton/skeleton";
+import { SkeletonPacientes } from "../skeleton/skeleton-principal/skeleton";
 
 
 type PacienteTableRow = {

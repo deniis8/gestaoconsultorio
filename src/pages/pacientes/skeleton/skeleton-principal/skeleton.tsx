@@ -1,8 +1,8 @@
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Card } from "../../../components/ui/card";
-import { Header } from "../../../components/layout/header";
-import { Button } from "../../../components/ui/button";
+import { Card } from "../../../../components/ui/card";
+import { Header } from "../../../../components/layout/header";
+import { Button } from "../../../../components/ui/button";
 import styles from "./skeleton.module.css";
 
 export function SkeletonPacientes() {

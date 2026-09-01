@@ -17,15 +17,7 @@ import { planosCobrancaService } from "../../../services/planos-cobranca/planos-
 import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.types";
 import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
-
-function formatDateForInput(value?: string | Date) {
-    if (!value) return "";
-    if (value instanceof Date) {
-        return value.toISOString().slice(0, 10);
-    }
-
-    return value.toString().slice(0, 10);
-}
+import { SkeletonFormPaciente } from "../skeleton/skeleton-formulario/skeleton";
 
 export function FormularioPaciente() {
 
@@ -64,17 +56,25 @@ export function FormularioPaciente() {
         status: "ativo",
         id_usuario: ""
     });
+
     const [planosCobrancaOptions, setPlanosCobrancaOptions] = useState<{ label: string; value: string }[]>([]);
 
+    function formatDateForInput(value?: string | Date) {
+    if (!value) return "";
+    if (value instanceof Date) {
+        return value.toISOString().slice(0, 10);
+    }
+
+    return value.toString().slice(0, 10);
+}
+
     useEffect(() => {
-        console.log("isEdicao:", isEdicao);
-        console.log("idPaciente:", idPaciente);
         if (!isEdicao || !idPaciente) {
             setLoadingPaciente(false);
             return;
         }
 
-        async function listarPaciente() {
+         const listarPaciente = async () => {
             try {
                 setLoadingPaciente(true);
                 const [pacienteSelecionado, planoSelecionado, planosDisponiveis] = await Promise.all([
@@ -112,7 +112,7 @@ export function FormularioPaciente() {
     }, [isEdicao, idPaciente, navigate]);
 
     useEffect(() => {
-        async function listarPlanosDisponiveis() {
+        const listarPlanosDisponiveis = async () => {
             try {
                 const planosDisponiveis = await planosCobrancaService.listar();
                 setPlanosCobrancaOptions(
@@ -136,17 +136,17 @@ export function FormularioPaciente() {
         value: status.codigo,
     }));
 
-    function handleChange(
+    const handleChange = (
         campo: keyof Paciente,
         valor: string
-    ) {
+    ) => {
         setPaciente(prev => ({
             ...prev,
             [campo]: valor
         }));
     }
 
-    async function handleSalvarCliente() {
+    const handleSalvarCliente = async () => {
 
         try {
             if (!pacientePlano.id_plano_cobranca) {
@@ -228,7 +228,7 @@ export function FormularioPaciente() {
                 <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
             </Header>
             {loadingPaciente ? (
-                <div>Carregando...</div>
+                <SkeletonFormPaciente />
             ) : (
                 <>
             <Card title="Dados Pessoais">

@@ -14,6 +14,7 @@ import { pacientePlanoService } from "../../../services/paciente-plano/paciente-
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
+import { SkeletonVisualizarPaciente } from "../skeleton/skeleton-visualizar/skeleton";
 
 export function VisualizacaoPacientes() {
 
@@ -61,7 +62,7 @@ export function VisualizacaoPacientes() {
 
     return (
         loadingPaciente ? (
-            null) : (
+            <SkeletonVisualizarPaciente />) : (
             <div className={styles['container-principal']}>
                 <div>
                     <Header
