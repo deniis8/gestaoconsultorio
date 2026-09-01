@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { SkeletonPlanosCobranca } from "../skeleton/skeleton-principal/skeleton";
+import { mascaraMoney } from "../../../utils/moneyFormat";
 
 export function PlanoCobranca() {
 
@@ -62,7 +63,7 @@ export function PlanoCobranca() {
                             id_plano_cobranca: plano.id_plano_cobranca ?? "",
                             nome: plano.nome,
                             formaCobranca: plano.forma_cobranca,
-                            valorPadrao: plano.valor_padrao,
+                            valorPadrao: mascaraMoney(plano.valor_padrao?.toString() || ""),
                             sessoesPadrao: plano.quantidade_padrao_sessoes,
                             status: plano.ativo ? "Ativo" : "Inativo",
                         }))}

@@ -16,7 +16,7 @@ import { pacientesService } from "../../../services/pacientes/pacientes.service"
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.types";
 import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
-import { formatMoney } from "../../../utils/moneyFormat";
+import { mascaraMoney } from "../../../utils/moneyFormat";
 
 function formatDateForInput(value?: string | Date) {
     if (!value) return "";
@@ -90,7 +90,7 @@ export function FormularioPaciente() {
                 if (planoSelecionado.length > 0) {
                     const plano = planoSelecionado[0];
                     setPacientePlano(plano);
-                    setValor(plano.valor_contratado != null ? String(plano.valor_contratado) : "");
+                    setValor(mascaraMoney(plano.valor_contratado != null ? String(plano.valor_contratado) : ""));
                 }
 
                 setPlanosCobrancaOptions(
@@ -187,7 +187,7 @@ export function FormularioPaciente() {
             const payloadPacientePlano = {
                 id_paciente: pacienteId,
                 id_plano_cobranca: pacientePlano.id_plano_cobranca || "",
-                valor_contratado: Number((valor.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0),
+                valor_contratado: Number(valor.replace(/\./g, '').replace(',', '.')) || 0,
                 quantidade_contratada_sessoes: Number(pacientePlano.quantidade_contratada_sessoes || 0),
                 data_inicio: pacientePlano.data_inicio ? new Date(pacientePlano.data_inicio).toISOString() : undefined,
                 data_fim: pacientePlano.data_fim ? new Date(pacientePlano.data_fim).toISOString() : undefined,
@@ -379,12 +379,12 @@ export function FormularioPaciente() {
                 <div className={styles['linha-campo']}>
                     <InputValor
                         name="Valor Contratado (R$ *)"
-                        value={formatMoney(valor)}
+                        value={valor}
                         onChange={(nextValue) => {
                             setValor(nextValue);
                             setPacientePlano((prev) => ({
                                 ...prev,
-                                valor_contratado: Number(nextValue.replace(/[^\d,.-]/g, "").replace(",", ".")) || 0
+                                valor_contratado: valor.replace(',', '.') ? Number(nextValue.replace(',', '.')) : 0
                             }));
                         }}
                     />

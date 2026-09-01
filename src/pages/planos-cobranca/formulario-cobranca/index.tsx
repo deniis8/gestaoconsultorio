@@ -16,6 +16,7 @@ import { planosCobrancaService } from "../../../services/planos-cobranca/planos-
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { Loading } from "../../../components/layout/loading";
 import { SkeletonFormPlanoCobranca } from "../skeleton/skeleton-formulario/skeleton";
+import { mascaraMoney } from "../../../utils/moneyFormat";
 
 export function FormularioPlanoCobranca() {
 
@@ -24,7 +25,6 @@ export function FormularioPlanoCobranca() {
     const isEdicao = Boolean(id_plano_cobranca);
 
     const [tipoCobranca, setTipoCobranca] = useState<"SESSAO" | "PACOTE" | "MENSAL">("SESSAO");
-    const [valor, setValor] = useState("");
     const [ativo, setAtivo] = useState(true);
     const [loadingPlano, setloadingPlano] = useState(isEdicao);
     const [loadingSalvar, setLoadingSalvar] = useState(false);
@@ -59,7 +59,6 @@ export function FormularioPlanoCobranca() {
                         forma_cobranca: planoSelecionado.forma_cobranca || "SESSAO"
                     });
                     setTipoCobranca((planoSelecionado.forma_cobranca as "SESSAO" | "PACOTE" | "MENSAL") || "SESSAO");
-                    setValor(planoSelecionado.valor_padrao?.toString() || "");
                     setAtivo(ativoPlano);
                 }
             } catch (error) {
@@ -205,10 +204,12 @@ export function FormularioPlanoCobranca() {
                             <div className={styles["inputs-valor"]}>
                                 <InputValor
                                     name="Valor do Plano (R$) *"
-                                    value={valor}
+                                    value={mascaraMoney(planosCobranca.valor_padrao?.toString() || "")}
                                     onChange={(value) => {
-                                        setValor(value);
-                                        handleChange("valor_padrao", value);
+                                        setPlanosCobranca(prev => ({
+                                            ...prev,
+                                            valor_padrao: Number(value.replace(/\./g, '').replace(',', '.')) || 0
+                                        }));
                                     }}
                                 />
                                 <Input

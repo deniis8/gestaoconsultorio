@@ -8,6 +8,7 @@ import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.t
 import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
 import { SkeletonVisualizarCobranca } from "../skeleton/skeleton-visualizar/skeleton";
 import styles from "./visualizacao-cobranca.module.css";
+import { mascaraMoney } from "../../../utils/moneyFormat";
 
 
 export function PlanoCobrancaVisualizacao() {
@@ -58,7 +59,7 @@ export function PlanoCobrancaVisualizacao() {
                     <div className={styles.informacoes}>
                         <Label name="Nome do Pacote" value={planoCobraca?.nome ?? ""} />
                         <Label name="Forma de Cobrança" value={planoCobraca?.forma_cobranca ?? ""} />
-                        <Label name="Valor Padrão" value={planoCobraca?.valor_padrao?.toString() ?? ""} />
+                        <Label name="Valor Padrão" value={mascaraMoney(planoCobraca?.valor_padrao?.toString() ?? "")} />
                         <Label name="Quantidade Padrão de Sessões" value={planoCobraca?.quantidade_padrao_sessoes?.toString() ?? ""} />
                         <Label name="Ativo" value={planoCobraca?.ativo ? "Sim" : "Não"} />
                     </div>

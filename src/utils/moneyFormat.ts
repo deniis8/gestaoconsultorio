@@ -1,6 +1,14 @@
-export const formatMoney = (valor: string): string => {
-  // Converte para número caso receba uma string com pontos/vírgulas
-  const numero = parseFloat(valor.replace(/[^\d,-]/g, '').replace(',', '.'));
+export const mascaraMoney = (valor: string): string => {
+  // Remove espaços
+  let limpo = valor.replace(/\s/g, '');
+  
+  // Se tem AMBOS ponto e vírgula, remove pontos (são separadores de milhar PT-BR)
+  if (limpo.includes('.') && limpo.includes(',')) {
+    limpo = limpo.replace(/\./g, '');
+  }
+  
+  // Converter vírgula para ponto para parseFloat funcionar corretamente
+  const numero = parseFloat(limpo.replace(',', '.'));
 
   // Retorna 0,00 se o valor for inválido
   if (isNaN(numero)) return '0,00';
@@ -11,3 +19,28 @@ export const formatMoney = (valor: string): string => {
     maximumFractionDigits: 2
   }).format(numero);
 };
+
+export const formatMoney = (valor: string): string => {
+  let valorNumerico = valor.replace(/\D/g, '');
+
+  if (valorNumerico.length === 0) {
+    return '';
+  }
+
+  // Remove zeros à esquerda
+  valorNumerico = valorNumerico.replace(/^0+(?!$)/, '');
+
+  // Valores menores que R$ 1,00
+  if (valorNumerico.length <= 2) {
+    return `0,${valorNumerico.padStart(2, '0')}`;
+  }
+
+  // Separa reais e centavos
+  let inteiro = valorNumerico.slice(0, -2);
+  const decimal = valorNumerico.slice(-2);
+
+  // Aplica separador de milhar
+  inteiro = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+  return `${inteiro},${decimal}`;
+}

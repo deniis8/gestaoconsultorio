@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import styles from "./input-valor.module.css";
+import { formatMoney } from "../../../utils/moneyFormat";
 
 type InputValorProps = {
   name?: string;
@@ -20,25 +21,8 @@ export function InputValor({
 }: InputValorProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
 
-  function formatCurrency(valor: string) {
-    // Remove tudo o que não for dígito numérico
-    const numeros = valor.replace(/\D/g, "");
-
-    // Se o campo for esvaziado, retorna string vazia para limpar o input
-    if (!numeros) return "";
-
-    // Aplica a lógica de centavos dividindo por 100
-    const numero = Number(numeros) / 100;
-
-    // Formata usando pt-BR com 2 casas decimais obrigatórias, sem o símbolo da moeda
-    return numero.toLocaleString("pt-BR", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-  }
-
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const formatado = formatCurrency(event.target.value);
+    const formatado = formatMoney(event.target.value);
 
     onChange?.(formatado);
   }
