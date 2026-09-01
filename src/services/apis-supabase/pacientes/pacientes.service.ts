@@ -11,8 +11,11 @@ export class PacientesService {
 
     async buscarPorNome(nome: string): Promise<Paciente[]> {
 
+        const termo = nome.trim();
+        const filtro = termo ? `%${termo}%` : "%";
+
         return api<Paciente[]>(
-            `${ENDPOINTS.pacientes}?nome_completo=eq.${encodeURIComponent(nome)}`
+            `${ENDPOINTS.pacientes}?nome_completo=ilike.${encodeURIComponent(filtro)}`
         );
     }
 

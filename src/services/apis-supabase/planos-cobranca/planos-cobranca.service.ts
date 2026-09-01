@@ -23,6 +23,15 @@ export class PlanosCobrancaService {
         );
     }
 
+    async buscarPorNome(nome: string): Promise<PlanosCobranca[]> {
+        const termo = nome.trim();
+        const filtro = termo ? `%${termo}%` : "%";
+
+        return api<PlanosCobranca[]>(
+            `${ENDPOINTS.planos_cobranca}?nome=ilike.${encodeURIComponent(filtro)}`
+        );
+    }
+
     async inserir(planoCobranca: Omit<PlanosCobranca, "id_plano_cobranca">): Promise<PlanosCobranca[]> {
 
         return api<PlanosCobranca[]>(ENDPOINTS.planos_cobranca, {

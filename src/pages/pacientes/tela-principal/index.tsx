@@ -23,10 +23,9 @@ type PacienteTableRow = {
 export function Pacientes() {
     const navigate = useNavigate();
     const [pacientes, setPacientes] = useState<Paciente[] | null>(null);
+    const [loadingPacientes, setLoadingPacientes] = useState(true);
+    const [nomePesquisado, setNomePesquisado] = useState("");
 
-    const [loadingPacientes, setLoadingPacientes] = useState(false);
-
-    
     useEffect(() => {
         async function fetchPacientes() {
             try {
@@ -45,31 +44,43 @@ export function Pacientes() {
         fetchPacientes();
     }, []);
 
-    
+
     const rows: PacienteTableRow[] = (pacientes || []).map((paciente) => ({
         id_paciente: paciente.id_paciente || "",
         paciente: paciente.nome_completo || "",
         telefone: paciente.telefone_principal || "",
         email: paciente.email || "",
 
-        
+
         idade: paciente.data_nascimento
             ? new Date().getFullYear() -
-              new Date(paciente.data_nascimento).getFullYear()
+            new Date(paciente.data_nascimento).getFullYear()
             : "N/A",
 
-        
+
         original: paciente,
     }));
 
-    
+
     const handleRowClick = (id_paciente: string) => {
         navigate(`/pacientes/visualizacao/${id_paciente}`);
-    }    
+    }
 
-    return loadingPacientes ? (
-        <SkeletonPacientes />
-    ) : (
+    const handleSearch = async (searchTerm: string) => {
+        try {
+            setLoadingPacientes(true);
+
+            const pacientes = await pacientesService.buscarPorNome(searchTerm);
+
+            setPacientes(pacientes);
+        } catch (error) {
+            console.error("Erro ao buscar pacientes:", error);
+        } finally {
+            setLoadingPacientes(false);
+        }
+    };
+
+    return (
         <div className={styles["container-principal"]}>
             <Header
                 title="Pacientes"
@@ -86,36 +97,45 @@ export function Pacientes() {
 
             <Card>
                 <div className={styles["container-pesquisa"]}>
-                    <InputPesquisar placeholder="Buscar paciente" />
+                    <div className={styles['pesquisar']}>
+                        <InputPesquisar
+                            placeholder="Buscar paciente"
+                            value={nomePesquisado}
+                            onChange={(e) => setNomePesquisado(e.target.value)}
+                        />
+                        <Button type="submit" icon="search" onClick={() => handleSearch(nomePesquisado)}>Buscar</Button>
+                    </div>
 
-                    <Table
-                        columns={[
-                            {
-                                key: "paciente",
-                                header: "Paciente",
-                            },
-                            {
-                                key: "telefone",
-                                header: "Telefone",
-                            },
-                            {
-                                key: "email",
-                                header: "E-mail",
-                            },
-                            {
-                                key: "idade",
-                                header: "Idade",
-                            },
-                        ]}
-                        data={rows}
-                        onRowClick={(item) => {
-                            handleRowClick(item.id_paciente ?? "");
-                        }}
-
-                        
-                    />
+                    {loadingPacientes ? (
+                        <SkeletonPacientes />
+                    ) : (
+                        <Table
+                            columns={[
+                                {
+                                    key: "paciente",
+                                    header: "Paciente",
+                                },
+                                {
+                                    key: "telefone",
+                                    header: "Telefone",
+                                },
+                                {
+                                    key: "email",
+                                    header: "E-mail",
+                                },
+                                {
+                                    key: "idade",
+                                    header: "Idade",
+                                },
+                            ]}
+                            data={rows}
+                            onRowClick={(item) => {
+                                handleRowClick(item.id_paciente ?? "");
+                            }}
+                        />
+                    )}
                 </div>
             </Card>
         </div>
-    );
+    )
 }

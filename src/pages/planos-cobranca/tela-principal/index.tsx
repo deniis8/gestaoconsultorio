@@ -15,7 +15,8 @@ export function PlanoCobranca() {
 
     const navigate = useNavigate();
     const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca[]>([]);
-    const [loadingCobranca, setLoadingCobranca] = useState(false);
+    const [loadingCobranca, setLoadingCobranca] = useState(true);
+    const [nomePesquisado, setNomePesquisado] = useState("");
 
     useEffect(() => {
         async function carregarPlanos() {
@@ -37,9 +38,19 @@ export function PlanoCobranca() {
         navigate(`/planos-cobranca/visualizacao/${id_plano}`);
     }
 
-    return loadingCobranca ? (
-        <SkeletonPlanosCobranca />
-    ) : (
+    const handleSearch = async (searchTerm: string) => {
+        try {
+            setLoadingCobranca(true);
+            const planos = await planosCobrancaService.buscarPorNome(searchTerm);
+            setPlanosCobranca(planos);
+        } catch (error) {
+            console.error("Erro ao buscar planos:", error);
+        } finally {
+            setLoadingCobranca(false);
+        }
+    };
+
+    return (
         <div className={styles['container-principal']}>
             <Header
                 title="Planos de Cobrança"
@@ -50,29 +61,41 @@ export function PlanoCobranca() {
 
             <Card>
                 <div className={styles['container-pesquisa']}>
-                    <InputPesquisar placeholder="Buscar planos" />
-                    <Table
-                        columns={[
-                            { key: "nome", header: "Nome" },
-                            { key: "formaCobranca", header: "Forma de Cobrança" },
-                            { key: "valorPadrao", header: "Valor Padrão" },
-                            { key: "sessoesPadrao", header: "Sessões no Pacote" },
-                            { key: "status", header: "Status" },
-                        ]}
-                        data={planosCobranca.map((plano) => ({
-                            id_plano_cobranca: plano.id_plano_cobranca ?? "",
-                            nome: plano.nome,
-                            formaCobranca: plano.forma_cobranca,
-                            valorPadrao: mascaraMoney(plano.valor_padrao?.toString() || ""),
-                            sessoesPadrao: plano.quantidade_padrao_sessoes,
-                            status: plano.ativo ? "Ativo" : "Inativo",
-                        }))}
-                        onRowClick={(item) => {
-                            handleRowClick(item.id_plano_cobranca ?? "");
-                        }}
-                    />
+                    <div className={styles['pesquisar']}>
+                        <InputPesquisar
+                            placeholder="Buscar planos"
+                            value={nomePesquisado}
+                            onChange={(e) => setNomePesquisado(e.target.value)}
+                        />
+                        <Button type="submit" icon="search" onClick={() => handleSearch(nomePesquisado)}>Buscar</Button>
+                    </div>
+
+                    {loadingCobranca ? (
+                        <SkeletonPlanosCobranca />
+                    ) : (
+                        <Table
+                            columns={[
+                                { key: "nome", header: "Nome" },
+                                { key: "formaCobranca", header: "Forma de Cobrança" },
+                                { key: "valorPadrao", header: "Valor Padrão" },
+                                { key: "sessoesPadrao", header: "Sessões no Pacote" },
+                                { key: "status", header: "Status" },
+                            ]}
+                            data={planosCobranca.map((plano) => ({
+                                id_plano_cobranca: plano.id_plano_cobranca ?? "",
+                                nome: plano.nome,
+                                formaCobranca: plano.forma_cobranca,
+                                valorPadrao: mascaraMoney(plano.valor_padrao?.toString() || ""),
+                                sessoesPadrao: plano.quantidade_padrao_sessoes,
+                                status: plano.ativo ? "Ativo" : "Inativo",
+                            }))}
+                            onRowClick={(item) => {
+                                handleRowClick(item.id_plano_cobranca ?? "");
+                            }}
+                        />
+                    )}
                 </div>
             </Card>
         </div>
-    )
+    );
 }

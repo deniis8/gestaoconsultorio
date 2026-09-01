@@ -14,3 +14,9 @@
   flex-direction: column;
   gap: 16px;
 }
+
+.pesquisar {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
