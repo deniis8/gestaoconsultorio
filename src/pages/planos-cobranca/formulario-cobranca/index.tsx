@@ -12,7 +12,7 @@ import { InputValor } from "../../../components/ui/input-valor";
 import { SlEnergy } from "react-icons/sl";
 import { BsBoxSeam } from "react-icons/bs";
 import { LuCalendarDays } from "react-icons/lu";
-import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { Loading } from "../../../components/layout/loading";
 import { SkeletonFormPlanoCobranca } from "../skeleton/skeleton-formulario/skeleton";

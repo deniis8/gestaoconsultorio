@@ -12,10 +12,10 @@ import { Header } from "../../../components/layout/header";
 import { InputValor } from "../../../components/ui/input-valor";
 import { useEffect, useState } from "react";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
-import { pacientesService } from "../../../services/pacientes/pacientes.service";
-import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
+import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.types";
-import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
+import { pacientePlanoService } from "../../../services/apis-supabase/paciente-plano/paciente-plano.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
 import { SkeletonFormPaciente } from "../skeleton/skeleton-formulario/skeleton";
 

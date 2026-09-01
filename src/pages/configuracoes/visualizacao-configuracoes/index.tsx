@@ -5,7 +5,7 @@ import { Card } from "../../../components/ui/card";
 import { Label } from "../../../components/ui/label";
 import styles from "./visualizacao.module.css";
 import { useEffect, useState } from "react";
-import { usuariosService } from "../../../services/usuarios/usuarios.service";
+import { usuariosService } from "../../../services/apis-supabase/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
 import { Skeletonfiguracoes } from "../skeleton/skeleton";
 import { useAuth } from "../../../hooks/useAuth";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
-import { pacientesService } from "../../../services/pacientes/pacientes.service";
+import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
 import styles from "./visualizacao-pacientes.module.css";
 import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/label";
@@ -10,9 +10,9 @@ import { Header } from "../../../components/layout/header";
 import { formatSimpleDate } from "../../../utils/dataFormat";
 import { formatCPF } from "../../../utils/cpfFormat";
 import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.types";
-import { pacientePlanoService } from "../../../services/paciente-plano/paciente-plano.service";
+import { pacientePlanoService } from "../../../services/apis-supabase/paciente-plano/paciente-plano.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
-import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
 import { SkeletonVisualizarPaciente } from "../skeleton/skeleton-visualizar/skeleton";
 

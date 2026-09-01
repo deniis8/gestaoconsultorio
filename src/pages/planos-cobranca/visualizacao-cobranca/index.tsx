@@ -5,7 +5,7 @@ import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Label } from "../../../components/ui/label";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
-import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { SkeletonVisualizarCobranca } from "../skeleton/skeleton-visualizar/skeleton";
 import styles from "./visualizacao-cobranca.module.css";
 import { mascaraMoney } from "../../../utils/moneyFormat";

@@ -1,6 +1,6 @@
-import { Paciente } from "../../types/pacientes/pacientes.types";
-import { api } from "../api/api";
-import { ENDPOINTS } from "../api/endpoints";
+import { Paciente } from "../../../types/pacientes/pacientes.types";
+import { api } from "../../api/api";
+import { ENDPOINTS } from "../../api/endpoints";
 
 export class PacientesService {
 

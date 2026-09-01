@@ -5,7 +5,7 @@ import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input-comum";
 import { TextArea } from "../../../components/ui/textArea";
 import styles from "./edicao.module.css";
-import { usuariosService } from "../../../services/usuarios/usuarios.service";
+import { usuariosService } from "../../../services/apis-supabase/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";

@@ -1,6 +1,6 @@
-import { api } from "../api/api";
-import { ENDPOINTS } from "../api/endpoints";
-import { Usuario } from "../../types/usuarios/usuarios.types";
+import { api } from "../../api/api";
+import { ENDPOINTS } from "../../api/endpoints";
+import { Usuario } from "../../../types/usuarios/usuarios.types";
 
 export class UsuariosService {
 

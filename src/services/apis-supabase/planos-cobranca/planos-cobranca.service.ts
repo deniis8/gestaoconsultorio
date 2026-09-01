@@ -1,6 +1,6 @@
-import { api } from "../api/api";
-import { ENDPOINTS } from "../api/endpoints";
-import { PlanosCobranca } from "../../types/planos-cobranca/planos-cobranca.types";
+import { api } from "../../api/api";
+import { ENDPOINTS } from "../../api/endpoints";
+import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 
 export class PlanosCobrancaService {
 

@@ -6,7 +6,7 @@ import { InputPesquisar } from "../../../components/ui/input-pesquisar";
 import { Table } from "../../../components/ui/table";
 import styles from "./cobranca.module.css";
 import { useEffect, useState } from "react";
-import { planosCobrancaService } from "../../../services/planos-cobranca/planos-cobranca.service";
+import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { SkeletonPlanosCobranca } from "../skeleton/skeleton-principal/skeleton";
 import { mascaraMoney } from "../../../utils/moneyFormat";
