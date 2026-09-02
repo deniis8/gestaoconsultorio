@@ -15,6 +15,7 @@ type ComboboxProps = {
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   id?: string;
   disabled?: boolean;
+  className?: string;
 };
 
 export function Combobox({
@@ -26,11 +27,12 @@ export function Combobox({
   onChange,
   id,
   disabled = false,
+  className,
 }: ComboboxProps) {
   const selectId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
 
   return (
-    <div className={styles.campo}>
+    <div className={[styles.campo, className].filter(Boolean).join(" ")}>
       {label && (
         <label htmlFor={selectId}>
           {label}
@@ -39,8 +41,8 @@ export function Combobox({
 
       <select
         id={selectId}
-        name={selectId}
-        value={value}
+        name={name ?? selectId}
+        value={value ?? ""}
         onChange={onChange}
         disabled={disabled}
         className={styles.select}

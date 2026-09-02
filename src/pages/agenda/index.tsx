@@ -8,6 +8,7 @@ import styles from "./agenda.module.css";
 import { agendaService } from "../../services/apis-supabase/agenda/pacientes.service";
 import { useEffect, useState } from "react";
 import { Agenda } from "../../types/agenda/agenda.types";
+import { FormularioAgenda } from "./formulario-agenda";
 
 const locales = {
     "pt-BR": ptBR,
@@ -60,6 +61,7 @@ export function Agendamentos() {
 
     const [agendamentos, setAgendamentos] = useState<Agenda[] | null>(null);
     const [dataAtual, setDataAtual] = useState(new Date());
+    const [modalAberto, setModalAberto] = useState(false);
 
     const eventos = (agendamentos ?? []).map((agendamento) => {
         const start = parseDataHora(agendamento.data_agendamento, agendamento.hora_inicio);
@@ -98,10 +100,14 @@ export function Agendamentos() {
                 title="Agenda"
                 subtitle="Gerencie seus horários e consultas"
             >
-                <Button type="submit" icon="add">
+                <Button type="button" icon="add" onClick={() => setModalAberto(true)}>
                     Nova Consulta
                 </Button>
             </Header>
+
+            {modalAberto ? (
+                <FormularioAgenda onClose={() => setModalAberto(false)} />
+            ) : null}
 
             <div className={styles["calendar-container"]}>
                 <Calendar
