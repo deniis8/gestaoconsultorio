@@ -7,6 +7,7 @@ import { pacientesService } from "../../../services/apis-supabase/pacientes/paci
 import { Input } from "../../../components/ui/input-comum";
 import { InputData } from "../../../components/ui/input-data";
 import { TextArea } from "../../../components/ui/textArea";
+import { agendaService } from "../../../services/apis-supabase/agenda/pacientes.service";
 
 type FormularioAgendaProps = {
     onClose?: () => void;
@@ -41,6 +42,7 @@ export function FormularioAgenda({ onClose }: FormularioAgendaProps) {
     const [tipoConsultaSelecionado, setTipoConsultaSelecionado] = useState("");
     const [statusSelecionado, setStatusSelecionado] = useState("");
     const [frequenciaSelecionada, setFrequenciaSelecionada] = useState("");
+
     useEffect(() => {
         async function fetchPacientes() {
             try {
@@ -66,6 +68,23 @@ export function FormularioAgenda({ onClose }: FormularioAgendaProps) {
             document.body.style.overflow = previousOverflow;
         };
     }, []);
+
+    const handleSalvarConsulta = () => {
+        agendaService.inserir({
+            id_paciente_plano: "",
+            id_paciente: "",
+            data_agendamento: "",
+            hora_inicio: "",
+            hora_fim: "",
+            tipo_consulta: "",
+            status_sessao: "",
+            frequencia: "",
+            data_fim_recorrencia: "",
+            id_grupo_recorrencia: "",
+            observacoes: "",
+            id_usuario: ""
+        });
+    };
 
     return (
         <div className={styles.overlay} role="presentation">
@@ -153,7 +172,7 @@ export function FormularioAgenda({ onClose }: FormularioAgendaProps) {
 
                     <div className={styles['linha-botao']}>
                         <Button variant="warning" onClick={onClose}>Cancelar</Button>
-                        <Button variant="success" >Salvar Consulta</Button>
+                        <Button variant="success" onClick={handleSalvarConsulta}>Salvar Consulta</Button>
                     </div>
 
                 </div>
