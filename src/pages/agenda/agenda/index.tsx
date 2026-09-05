@@ -1,14 +1,14 @@
-import { Header } from "../../components/layout/header";
-import { Button } from "../../components/ui/button";
+import { Header } from "../../../components/layout/header";
+import { Button } from "../../../components/ui/button";
 import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import styles from "./agenda.module.css";
-import { agendaService } from "../../services/apis-supabase/agenda/pacientes.service";
+import { agendaService } from "../../../services/apis-supabase/agenda/pacientes.service";
 import { useEffect, useState } from "react";
-import { Agenda } from "../../types/agenda/agenda.types";
-import { FormularioAgenda } from "./formulario-agenda";
+import { Agenda } from "../../../types/agenda/agenda.types";
+import { FormularioAgenda } from "../formulario-agenda";
 
 const locales = {
     "pt-BR": ptBR,

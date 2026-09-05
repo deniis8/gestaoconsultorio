@@ -4,7 +4,7 @@ import { Dashboard } from "./pages/dashboard";
 import { Pacientes } from "./pages/pacientes/tela-principal";
 import { Relatorios } from "./pages/relatorios";
 import { Financeiro } from "./pages/financeiro";
-import { Agendamentos } from "./pages/agenda";
+import { Agendamentos } from "./pages/agenda/agenda";
 import { FormularioPaciente } from "./pages/pacientes/formulario-paciente";
 import { PlanoCobranca } from "./pages/planos-cobranca/tela-principal";
 import { ConfiguracoesVisualizacao } from "./pages/configuracoes/visualizacao-configuracoes";

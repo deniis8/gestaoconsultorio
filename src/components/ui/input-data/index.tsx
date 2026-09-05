@@ -7,6 +7,7 @@ type InputDataProps = {
   type?: HTMLInputTypeAttribute;
   id?: string;
   value?: string;
+  disabled?: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -16,6 +17,7 @@ export function InputData({
   type = "date",
   id,
   value,
+  disabled = false,
   onChange,
 }: InputDataProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
@@ -34,6 +36,8 @@ export function InputData({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
+        step={type === "time" ? 60 : undefined}
         className={styles.input}
       />
     </div>
