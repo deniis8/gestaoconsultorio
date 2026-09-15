@@ -6,6 +6,12 @@ import { financeiroService } from "../apis-supabase/financeiro/financeiro.servic
 import { pacientePlanoService } from "../apis-supabase/paciente-plano/paciente-plano.service";
 import { pacientesService } from "../apis-supabase/pacientes/pacientes.service";
 import { planosCobrancaService } from "../apis-supabase/planos-cobranca/planos-cobranca.service";
+import { formatarMoeda } from "../../utils/financeiroFormat";
+
+export type AvaliacaoCobranca = {
+    mensagemConfirmacao: string;
+    confirmarEGerar: () => Promise<void>;
+};
 
 async function nomeDoPaciente(id_paciente?: string): Promise<string> {
     if (!id_paciente) return "Paciente";
@@ -13,11 +19,7 @@ async function nomeDoPaciente(id_paciente?: string): Promise<string> {
     return paciente?.nome_completo || "Paciente";
 }
 
-async function gerarCobrancaAvulsa(agendamento: Agenda, pacientePlano: PacientePlano): Promise<void> {
-    const existentes = await financeiroService.buscarPorIdAgenda(agendamento.id_agenda!);
-    if (existentes.length > 0) return;
-
-    const nomePaciente = await nomeDoPaciente(agendamento.id_paciente);
+async function inserirCobrancaAvulsa(agendamento: Agenda, pacientePlano: PacientePlano, nomePaciente: string, valor: number): Promise<void> {
     const dataSessao = String(agendamento.data_agendamento);
 
     await financeiroService.inserir({
@@ -25,7 +27,7 @@ async function gerarCobrancaAvulsa(agendamento: Agenda, pacientePlano: PacienteP
         id_agenda: agendamento.id_agenda,
         descricao: `Sessão avulsa - ${nomePaciente}`,
         origem: "AGENDA_AVULSO",
-        valor: pacientePlano.valor_contratado ?? 0,
+        valor,
         referencia_inicio: dataSessao,
         referencia_fim: dataSessao,
         data_cobranca: format(new Date(), "yyyy-MM-dd"),
@@ -36,21 +38,16 @@ async function gerarCobrancaAvulsa(agendamento: Agenda, pacientePlano: PacienteP
 
 // Conta por quantidade total de sessões Realizado do contrato, não por sequência cronológica:
 // sessões "puladas" (ex: sessão 4 nunca vira Realizado, mas a 5ª sim) ainda contam para fechar o ciclo.
-async function gerarCobrancasMensaisPendentes(pacientePlano: PacientePlano): Promise<void> {
-    const tamanhoCiclo = pacientePlano.quantidade_contratada_sessoes || 0;
-    if (tamanhoCiclo <= 0 || !pacientePlano.id_paciente_plano) return;
-
-    const realizados = await agendaService.listarRealizadosPorPacientePlano(pacientePlano.id_paciente_plano);
-    const ciclosCompletos = Math.floor(realizados.length / tamanhoCiclo);
-    if (ciclosCompletos === 0) return;
-
-    const cobrancasExistentes = await financeiroService.buscarPorIdPacientePlanoEOrigem(pacientePlano.id_paciente_plano, "AGENDA_MENSAL");
-    if (cobrancasExistentes.length >= ciclosCompletos) return;
-
-    const nomePaciente = await nomeDoPaciente(pacientePlano.id_paciente);
-
-    for (let ciclo = cobrancasExistentes.length; ciclo < ciclosCompletos; ciclo++) {
-        const sessoesDoCiclo = realizados.slice(ciclo * tamanhoCiclo, ciclo * tamanhoCiclo + tamanhoCiclo);
+async function inserirCobrancasMensais(
+    pacientePlano: PacientePlano,
+    realizadosOrdenados: Agenda[],
+    tamanhoCiclo: number,
+    ciclosJaExistentes: number,
+    ciclosCompletos: number,
+    nomePaciente: string
+): Promise<void> {
+    for (let ciclo = ciclosJaExistentes; ciclo < ciclosCompletos; ciclo++) {
+        const sessoesDoCiclo = realizadosOrdenados.slice(ciclo * tamanhoCiclo, ciclo * tamanhoCiclo + tamanhoCiclo);
         const dataInicio = String(sessoesDoCiclo[0].data_agendamento);
         const dataFim = String(sessoesDoCiclo[sessoesDoCiclo.length - 1].data_agendamento);
 
@@ -68,21 +65,67 @@ async function gerarCobrancasMensaisPendentes(pacientePlano: PacientePlano): Pro
     }
 }
 
-export async function gerarFinanceiroPorSessaoRealizada(agendamento: Agenda): Promise<void> {
-    if (!agendamento.id_paciente_plano || !agendamento.id_agenda) return;
+/**
+ * Avalia se marcar este agendamento como Realizado vai gerar uma cobrança (Avulso ou Mensal),
+ * sem gerar nada ainda. Retorna uma mensagem para confirmação com o usuário e uma função
+ * que efetivamente cria o(s) lançamento(s) caso ele confirme. Retorna null se nada será gerado
+ * (ex: plano Pacote, sem plano ativo, ciclo Mensal ainda incompleto, ou cobrança já existente).
+ */
+export async function avaliarCobrancaPorSessaoRealizada(agendamento: Agenda): Promise<AvaliacaoCobranca | null> {
+    if (!agendamento.id_paciente_plano || !agendamento.id_agenda) return null;
 
     const [pacientePlano] = await pacientePlanoService.buscarPorIdPacientePlano(agendamento.id_paciente_plano);
-    if (!pacientePlano?.id_plano_cobranca) return;
+    if (!pacientePlano?.id_plano_cobranca) return null;
 
     const [planoCobranca] = await planosCobrancaService.buscarPorId(pacientePlano.id_plano_cobranca);
-    if (!planoCobranca) return;
+    if (!planoCobranca) return null;
 
     if (planoCobranca.forma_cobranca === "SESSAO") {
-        await gerarCobrancaAvulsa(agendamento, pacientePlano);
-    } else if (planoCobranca.forma_cobranca === "MENSAL") {
-        await gerarCobrancasMensaisPendentes(pacientePlano);
+        const existentes = await financeiroService.buscarPorIdAgenda(agendamento.id_agenda);
+        if (existentes.length > 0) return null;
+
+        const nomePaciente = await nomeDoPaciente(agendamento.id_paciente);
+        const valor = pacientePlano.valor_contratado ?? 0;
+
+        return {
+            mensagemConfirmacao: `Esta sessão vai gerar uma cobrança de ${formatarMoeda(valor)} para ${nomePaciente}. Confirmar?`,
+            confirmarEGerar: () => inserirCobrancaAvulsa(agendamento, pacientePlano, nomePaciente, valor)
+        };
     }
-    // PACOTE não gera cobrança aqui - ver gerarFinanceiroPorContratacaoPacote
+
+    if (planoCobranca.forma_cobranca === "MENSAL") {
+        const idPacientePlano = pacientePlano.id_paciente_plano;
+        const tamanhoCiclo = pacientePlano.quantidade_contratada_sessoes || 0;
+        if (tamanhoCiclo <= 0 || !idPacientePlano) return null;
+
+        const realizadosAtuais = await agendaService.listarRealizadosPorPacientePlano(idPacientePlano);
+        const jaContabilizada = realizadosAtuais.some((r) => r.id_agenda === agendamento.id_agenda);
+        const realizados = jaContabilizada ? realizadosAtuais : [...realizadosAtuais, agendamento];
+        realizados.sort((a, b) => String(a.data_agendamento).localeCompare(String(b.data_agendamento)));
+
+        const ciclosCompletos = Math.floor(realizados.length / tamanhoCiclo);
+        if (ciclosCompletos === 0) return null;
+
+        const cobrancasExistentes = await financeiroService.buscarPorIdPacientePlanoEOrigem(idPacientePlano, "AGENDA_MENSAL");
+        const novosCiclos = ciclosCompletos - cobrancasExistentes.length;
+        if (novosCiclos <= 0) return null;
+
+        const nomePaciente = await nomeDoPaciente(pacientePlano.id_paciente);
+        const valorTotal = (pacientePlano.valor_contratado ?? 0) * novosCiclos;
+
+        const mensagem = novosCiclos === 1
+            ? `Esta sessão completa o ciclo mensal e vai gerar uma cobrança de ${formatarMoeda(valorTotal)} para ${nomePaciente}. Confirmar?`
+            : `Esta sessão completa ${novosCiclos} ciclos mensais e vai gerar ${novosCiclos} cobranças, totalizando ${formatarMoeda(valorTotal)}, para ${nomePaciente}. Confirmar?`;
+
+        return {
+            mensagemConfirmacao: mensagem,
+            confirmarEGerar: () => inserirCobrancasMensais(
+                pacientePlano, realizados, tamanhoCiclo, cobrancasExistentes.length, ciclosCompletos, nomePaciente
+            )
+        };
+    }
+
+    return null;
 }
 
 export async function gerarFinanceiroPorContratacaoPacote(pacientePlano: PacientePlano): Promise<void> {

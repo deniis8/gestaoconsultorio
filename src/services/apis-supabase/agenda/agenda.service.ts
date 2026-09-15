@@ -49,26 +49,6 @@ export class AgendaService {
             }
         );
     }
-
-    async excluir(id: string) {
-
-        return api<void>(
-            `${ENDPOINTS.agenda}?id_agenda=eq.${id}`,
-            {
-                method: "DELETE"
-            }
-        );
-    }
-
-    async excluirPorGrupoRecorrencia(id_grupo_recorrencia: string) {
-
-        return api<void>(
-            `${ENDPOINTS.agenda}?id_grupo_recorrencia=eq.${id_grupo_recorrencia}`,
-            {
-                method: "DELETE"
-            }
-        );
-    }
 }
 
 export const agendaService = new AgendaService();

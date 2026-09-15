@@ -58,16 +58,6 @@ export class FinanceiroService {
             }
         );
     }
-
-    async excluir(id_financeiro: string) {
-
-        return api<void>(
-            `${ENDPOINTS.financeiro}?id_financeiro=eq.${id_financeiro}`,
-            {
-                method: "DELETE"
-            }
-        );
-    }
 }
 
 export const financeiroService = new FinanceiroService();

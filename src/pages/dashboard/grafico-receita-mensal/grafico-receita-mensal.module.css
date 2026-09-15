@@ -1,0 +1,66 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.svg {
+  width: 100%;
+  height: 220px;
+  display: block;
+  overflow: visible;
+}
+
+.barra {
+  fill: var(--color-primary);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.barra:hover,
+.barra.ativa {
+  opacity: 0.85;
+}
+
+.grade {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.eixo-label {
+  fill: var(--color-text-secondary);
+  font-size: 10px;
+}
+
+.mes-label {
+  fill: var(--color-text-secondary);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+.mes-label.ativa {
+  fill: var(--color-text);
+  font-weight: 700;
+}
+
+.tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 8px));
+  background: var(--color-text);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 6px 14px rgba(17, 24, 39, 0.2);
+  z-index: 1;
+}
+
+.tooltip-mes {
+  display: block;
+  font-weight: 400;
+  font-size: 0.68rem;
+  opacity: 0.8;
+  text-transform: capitalize;
+}

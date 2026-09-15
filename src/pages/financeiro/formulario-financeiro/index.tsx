@@ -12,7 +12,6 @@ import { InputValor } from "../../../components/ui/input-valor";
 import { TextArea } from "../../../components/ui/textArea";
 import { Label } from "../../../components/ui/label";
 import { Loading } from "../../../components/layout/loading";
-import { confirmar } from "../../../components/layout/mensagem";
 import styles from "./formulario-financeiro.module.css";
 import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
 import { pacientePlanoService } from "../../../services/apis-supabase/paciente-plano/paciente-plano.service";
@@ -34,7 +33,6 @@ export function FormularioFinanceiro() {
 
     const [loadingFinanceiro, setLoadingFinanceiro] = useState(isEdicao);
     const [salvando, setSalvando] = useState(false);
-    const [excluindo, setExcluindo] = useState(false);
 
     const [pacientes, setPacientes] = useState<{ label: string; value: string }[]>([]);
     const [pacienteSelecionado, setPacienteSelecionado] = useState("");
@@ -168,7 +166,7 @@ export function FormularioFinanceiro() {
                 descricao: descricao.trim(),
                 valor: valorNumerico,
                 data_vencimento: dataVencimento,
-                data_pagamento: status === "Pago" ? dataPagamento : undefined,
+                data_pagamento: dataPagamento || undefined,
                 status,
                 observacoes: observacoes || undefined
             };
@@ -194,31 +192,6 @@ export function FormularioFinanceiro() {
         }
     };
 
-    const handleExcluir = async () => {
-        if (!idFinanceiro) return;
-
-        const confirmou = await confirmar({
-            title: "Excluir lançamento?",
-            text: "Essa ação não pode ser desfeita.",
-            icon: "warning"
-        });
-
-        if (!confirmou) return;
-
-        try {
-            setExcluindo(true);
-            await financeiroService.excluir(idFinanceiro);
-            toast.success("Lançamento excluído com sucesso.");
-            navigate(-1);
-        } catch (error) {
-            console.error("Erro ao excluir lançamento:", error);
-            toast.error("Não foi possível excluir o lançamento.");
-        } finally {
-            setExcluindo(false);
-        }
-    };
-
-    const carregandoAcao = salvando || excluindo;
     const tituloFinanceiro = isEdicao ? "Editar Lançamento" : "Novo Lançamento";
     const subtituloFinanceiro = isEdicao
         ? "Altere os dados do lançamento financeiro."
@@ -296,20 +269,15 @@ export function FormularioFinanceiro() {
                     </Card>
 
                     <div className={styles["linha-botao"]}>
-                        {isEdicao && (
-                            <Button variant="danger" icon="delete" onClick={handleExcluir} disabled={carregandoAcao}>
-                                Excluir
-                            </Button>
-                        )}
-                        <Button variant="warning" onClick={() => navigate(-1)} disabled={carregandoAcao}>Cancelar</Button>
-                        <Button variant="success" onClick={handleSalvar} disabled={carregandoAcao}>
+                        <Button variant="warning" onClick={() => navigate(-1)} disabled={salvando}>Cancelar</Button>
+                        <Button variant="success" onClick={handleSalvar} disabled={salvando}>
                             {isEdicao ? "Salvar Alterações" : "Salvar Lançamento"}
                         </Button>
                     </div>
                 </>
             )}
 
-            <Loading loading={carregandoAcao} />
+            <Loading loading={salvando} />
         </div>
     );
 }

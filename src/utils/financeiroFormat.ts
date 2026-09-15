@@ -1,3 +1,5 @@
+import { mascaraMoney } from "./moneyFormat";
+
 export const LABELS_ORIGEM_FINANCEIRO: Record<string, string> = {
   MANUAL: "Lançamento Manual",
   AGENDA_AVULSO: "Sessão Avulsa",
@@ -8,6 +10,10 @@ export const LABELS_ORIGEM_FINANCEIRO: Record<string, string> = {
 export const formatarOrigemFinanceiro = (origem?: string): string => {
   if (!origem) return "";
   return LABELS_ORIGEM_FINANCEIRO[origem] ?? origem;
+};
+
+export const formatarMoeda = (valor: number): string => {
+  return `R$ ${mascaraMoney(valor.toString())}`;
 };
 
 export const CORES_STATUS_FINANCEIRO: Record<string, string> = {

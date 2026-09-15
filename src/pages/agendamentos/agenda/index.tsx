@@ -9,6 +9,7 @@ import { agendaService } from "../../../services/apis-supabase/agenda/agenda.ser
 import { useCallback, useEffect, useState } from "react";
 import { Agenda } from "../../../types/agenda/agenda.types";
 import { FormularioAgenda, SlotSelecionado } from "../formulario-agenda";
+import { CORES_STATUS_AGENDA } from "../../../utils/agendaFormat";
 
 const locales = {
     "pt-BR": ptBR,
@@ -41,13 +42,7 @@ const mensagens = {
     showMore: (total: number) => `+ ${total} consultas`,
 };
 
-const CORES_STATUS: Record<string, string> = {
-    Agendado: "#5B9BD5",
-    Confirmado: "#2FA84F",
-    Realizado: "#7E8A97",
-    Cancelado: "#D9534F",
-    Falta: "#E0A800",
-};
+const LEGENDA_STATUS = Object.entries(CORES_STATUS_AGENDA).map(([status, cor]) => ({ status, cor }));
 
 type EventoAgenda = {
     id: string;
@@ -119,6 +114,15 @@ export function Agendamentos() {
             ) : null}
 
             <div className={styles["calendar-container"]}>
+                <div className={styles["legenda"]}>
+                    {LEGENDA_STATUS.map(({ status, cor }) => (
+                        <span key={status} className={styles["legenda-item"]}>
+                            <span className={styles["legenda-ponto"]} style={{ backgroundColor: cor }} />
+                            {status}
+                        </span>
+                    ))}
+                </div>
+
                 <Calendar
                     localizer={localizer}
                     date={dataAtual}
@@ -130,7 +134,7 @@ export function Agendamentos() {
                     views={["month", "week", "day"]}
                     step={30}
                     timeslots={2}
-                    style={{ height: 700 }}
+                    style={{ height: 640 }}
                     culture="pt-BR"
                     messages={mensagens}
                     selectable
@@ -141,8 +145,8 @@ export function Agendamentos() {
                     }}
                     eventPropGetter={(event) => ({
                         style: {
-                            backgroundColor: CORES_STATUS[(event as EventoAgenda).status ?? ""] ?? "#5B9BD5",
-                            borderRadius: "8px",
+                            backgroundColor: CORES_STATUS_AGENDA[(event as EventoAgenda).status ?? ""] ?? "#5B9BD5",
+                            borderRadius: "6px",
                             border: "none",
                             color: "#fff",
                         },

@@ -45,6 +45,7 @@ export function PlanoCobrancaVisualizacao() {
                         title="Planos de Cobrança"
                         subtitle="Modelos de cobrança disponíveis para vincular aos pacientes"
                     >
+                        <Button type="submit" onClick={() => navigate(-1)} icon="back">Voltar</Button>
                     </Header>
                 </div>
                 <Card title="Informações do Plano de Cobrança"

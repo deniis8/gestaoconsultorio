@@ -15,8 +15,10 @@ import { LuCalendarDays } from "react-icons/lu";
 import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.types";
 import { Loading } from "../../../components/layout/loading";
+import { confirmar } from "../../../components/layout/mensagem";
 import { SkeletonFormPlanoCobranca } from "../skeleton/skeleton-formulario/skeleton";
 import { mascaraMoney } from "../../../utils/moneyFormat";
+import { isErroChaveEstrangeira } from "../../../utils/apiErrorFormat";
 
 export function FormularioPlanoCobranca() {
 
@@ -28,13 +30,14 @@ export function FormularioPlanoCobranca() {
     const [ativo, setAtivo] = useState(true);
     const [loadingPlano, setloadingPlano] = useState(isEdicao);
     const [loadingSalvar, setLoadingSalvar] = useState(false);
+    const [excluindo, setExcluindo] = useState(false);
 
 
     const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca>({
         nome: "",
         forma_cobranca: "",
         valor_padrao: 0,
-        quantidade_padrao_sessoes: 0,
+        quantidade_padrao_sessoes: 1,
         ativo: true
     });
 
@@ -113,7 +116,7 @@ export function FormularioPlanoCobranca() {
                     nome: planosCobranca.nome || "",
                     forma_cobranca: planosCobranca.forma_cobranca || "SESSAO",
                     valor_padrao: planosCobranca.valor_padrao || 0,
-                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 0 : (planosCobranca.quantidade_padrao_sessoes || 0),
+                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 1 : (planosCobranca.quantidade_padrao_sessoes || 0),
                     ativo: planosCobranca.ativo
                 });
                 toast.success("Plano atualizado com sucesso!");
@@ -122,7 +125,7 @@ export function FormularioPlanoCobranca() {
                     nome: planosCobranca.nome || "",
                     forma_cobranca: planosCobranca.forma_cobranca || "SESSAO",
                     valor_padrao: planosCobranca.valor_padrao || 0,
-                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 0 : (planosCobranca.quantidade_padrao_sessoes || 0),
+                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 1 : (planosCobranca.quantidade_padrao_sessoes || 0),
                     ativo: planosCobranca.ativo
                 });
                 toast.success("Plano salvo com sucesso!");
@@ -135,6 +138,34 @@ export function FormularioPlanoCobranca() {
             setLoadingSalvar(false);
         }
     }
+
+    const handleExcluir = async () => {
+        if (!id_plano_cobranca) return;
+
+        const confirmou = await confirmar({
+            title: "Excluir plano de cobrança?",
+            text: "Essa ação não pode ser desfeita.",
+            icon: "warning"
+        });
+
+        if (!confirmou) return;
+
+        try {
+            setExcluindo(true);
+            await planosCobrancaService.excluir(id_plano_cobranca);
+            toast.success("Plano excluído com sucesso.");
+            navigate("/planos-cobranca");
+        } catch (error) {
+            console.error("Erro ao excluir plano:", error);
+            toast.error(
+                isErroChaveEstrangeira(error)
+                    ? "Não é possível excluir: este plano já foi contratado por um ou mais pacientes."
+                    : "Não foi possível excluir o plano."
+            );
+        } finally {
+            setExcluindo(false);
+        }
+    };
 
     const tituloPlano = isEdicao ? "Alterar Plano" : "Novo Plano de Cobrança";
     const subtituloPlano = isEdicao
@@ -171,7 +202,7 @@ export function FormularioPlanoCobranca() {
                                     className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
                                     onClick={() => {
                                         setTipoCobranca("SESSAO");
-                                        setPlanosCobranca(prev => ({ ...prev, forma_cobranca: "SESSAO", quantidade_padrao_sessoes: 0 }));
+                                        setPlanosCobranca(prev => ({ ...prev, forma_cobranca: "SESSAO", quantidade_padrao_sessoes: 1 }));
                                     }}
                                 >
                                     <div className={styles["cobranca-item"]}>
@@ -250,13 +281,18 @@ export function FormularioPlanoCobranca() {
                         </Card>
 
                         <div className={styles['linha-botao']}>
-                            <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
-                            <Button variant="success" onClick={() => handleSalvarPlano()}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
+                            {isEdicao && (
+                                <Button variant="danger" icon="delete" onClick={handleExcluir} disabled={loadingSalvar || excluindo}>
+                                    Excluir
+                                </Button>
+                            )}
+                            <Button variant="warning" onClick={() => navigate(-1)} disabled={loadingSalvar || excluindo}>Cancelar</Button>
+                            <Button variant="success" onClick={() => handleSalvarPlano()} disabled={loadingSalvar || excluindo}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
                         </div>
                     </>
                 )}
             </div>
-            <Loading loading={loadingSalvar} />
+            <Loading loading={loadingSalvar || excluindo} />
         </>
     )
 }

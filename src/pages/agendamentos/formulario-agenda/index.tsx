@@ -4,18 +4,17 @@ import { addDays, addMonths, differenceInMinutes, format, isAfter } from "date-f
 import { Button } from "../../../components/ui/button";
 import { Header } from "../../../components/layout/header";
 import { Loading } from "../../../components/layout/loading";
-import { confirmar, confirmarComOpcoes } from "../../../components/layout/mensagem";
+import { confirmar } from "../../../components/layout/mensagem";
 import styles from "./formulario-agenda.module.css";
 import { Combobox } from "../../../components/ui/combobox";
 import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
 import { pacientePlanoService } from "../../../services/apis-supabase/paciente-plano/paciente-plano.service";
 import { agendaService } from "../../../services/apis-supabase/agenda/agenda.service";
-import { gerarFinanceiroPorSessaoRealizada } from "../../../services/financeiro/gerarFinanceiro";
+import { avaliarCobrancaPorSessaoRealizada, AvaliacaoCobranca } from "../../../services/financeiro/gerarFinanceiro";
 import { Agenda } from "../../../types/agenda/agenda.types";
 import { Input } from "../../../components/ui/input-comum";
 import { InputData } from "../../../components/ui/input-data";
 import { TextArea } from "../../../components/ui/textArea";
-
 export type SlotSelecionado = { start: Date; end: Date };
 
 type FormularioAgendaProps = {
@@ -59,14 +58,6 @@ function calcularHoraFim(inicio: Date, duracaoMin: number): Date {
     return new Date(inicio.getTime() + duracaoMin * 60_000);
 }
 
-function mensagemErroExclusao(error: unknown): string {
-    const mensagem = error instanceof Error ? error.message : String(error);
-    if (mensagem.includes("23503")) {
-        return "Não é possível excluir: já existe um lançamento financeiro vinculado a esta consulta.";
-    }
-    return "Não foi possível excluir a consulta.";
-}
-
 function gerarDatasRecorrencia(
     dataInicial: Date,
     frequencia: "Semanal" | "Quinzenal" | "Mensal",
@@ -93,7 +84,6 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
 
     const [carregando, setCarregando] = useState(isEdicao);
     const [salvando, setSalvando] = useState(false);
-    const [excluindo, setExcluindo] = useState(false);
 
     const [pacientes, setPacientes] = useState<{ label: string; value: string }[]>([]);
     const [pacienteSelecionado, setPacienteSelecionado] = useState("");
@@ -248,6 +238,32 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
 
             if (isEdicao && idAgenda) {
                 const fim = calcularHoraFim(inicioBase, duracao);
+                const tornandoRealizado = statusSelecionado === "Realizado" && statusOriginal !== "Realizado";
+
+                let avaliacaoCobranca: AvaliacaoCobranca | null = null;
+
+                if (tornandoRealizado) {
+                    try {
+                        avaliacaoCobranca = await avaliarCobrancaPorSessaoRealizada({
+                            id_agenda: idAgenda,
+                            id_paciente_plano: idPacientePlano,
+                            id_paciente: pacienteSelecionado,
+                            data_agendamento: dataConsulta
+                        });
+                    } catch (erroAvaliacao) {
+                        console.error("Erro ao avaliar geração de financeiro:", erroAvaliacao);
+                    }
+
+                    if (avaliacaoCobranca) {
+                        const confirmou = await confirmar({
+                            title: "Gerar cobrança?",
+                            text: avaliacaoCobranca.mensagemConfirmacao,
+                            icon: "info"
+                        });
+
+                        if (!confirmou) return;
+                    }
+                }
 
                 await agendaService.atualizar(idAgenda, {
                     data_agendamento: dataConsulta,
@@ -260,14 +276,10 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
 
                 toast.success("Consulta atualizada com sucesso!");
 
-                if (statusSelecionado === "Realizado" && statusOriginal !== "Realizado") {
+                if (avaliacaoCobranca) {
                     try {
-                        await gerarFinanceiroPorSessaoRealizada({
-                            id_agenda: idAgenda,
-                            id_paciente_plano: idPacientePlano,
-                            id_paciente: pacienteSelecionado,
-                            data_agendamento: dataConsulta
-                        });
+                        await avaliacaoCobranca.confirmarEGerar();
+                        toast.success("Cobrança gerada com sucesso.");
                     } catch (erroFinanceiro) {
                         console.error("Erro ao gerar financeiro da consulta:", erroFinanceiro);
                         toast.error("Consulta salva, mas houve um erro ao gerar o lançamento financeiro. Verifique manualmente em Financeiro.");
@@ -336,62 +348,6 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
             setSalvando(false);
         }
     };
-
-    const handleExcluir = async () => {
-        if (!idAgenda) return;
-
-        if (idGrupoRecorrencia) {
-            const escolha = await confirmarComOpcoes({
-                title: "Excluir consulta recorrente",
-                text: "Esta consulta faz parte de uma série recorrente. O que deseja excluir?",
-                icon: "warning",
-                confirmButtonText: "Excluir apenas esta",
-                denyButtonText: "Excluir toda a série"
-            });
-
-            if (escolha === "cancel") return;
-
-            try {
-                setExcluindo(true);
-                if (escolha === "deny") {
-                    await agendaService.excluirPorGrupoRecorrencia(idGrupoRecorrencia);
-                    toast.success("Série de consultas excluída com sucesso.");
-                } else {
-                    await agendaService.excluir(idAgenda);
-                    toast.success("Consulta excluída com sucesso.");
-                }
-                onSalvo();
-            } catch (error) {
-                console.error("Erro ao excluir consulta:", error);
-                toast.error(mensagemErroExclusao(error));
-            } finally {
-                setExcluindo(false);
-            }
-            return;
-        }
-
-        const confirmou = await confirmar({
-            title: "Excluir consulta?",
-            text: "Essa ação não pode ser desfeita.",
-            icon: "warning"
-        });
-
-        if (!confirmou) return;
-
-        try {
-            setExcluindo(true);
-            await agendaService.excluir(idAgenda);
-            toast.success("Consulta excluída com sucesso.");
-            onSalvo();
-        } catch (error) {
-            console.error("Erro ao excluir consulta:", error);
-            toast.error(mensagemErroExclusao(error));
-        } finally {
-            setExcluindo(false);
-        }
-    };
-
-    const carregandoAcao = salvando || excluindo;
 
     return (
         <div className={styles.overlay} role="presentation">
@@ -500,20 +456,15 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
                     />
 
                     <div className={styles["linha-botao"]}>
-                        {isEdicao && (
-                            <Button variant="danger" icon="delete" onClick={handleExcluir} disabled={carregandoAcao}>
-                                Excluir
-                            </Button>
-                        )}
-                        <Button variant="warning" onClick={onClose} disabled={carregandoAcao}>Cancelar</Button>
-                        <Button variant="success" onClick={handleSalvarConsulta} disabled={carregandoAcao}>
+                        <Button variant="warning" onClick={onClose} disabled={salvando}>Cancelar</Button>
+                        <Button variant="success" onClick={handleSalvarConsulta} disabled={salvando}>
                             {isEdicao ? "Salvar Alterações" : "Salvar Consulta"}
                         </Button>
                     </div>
                 </div>
             </div>
 
-            <Loading loading={carregando || carregandoAcao} />
+            <Loading loading={carregando || salvando} />
         </div>
     );
 }

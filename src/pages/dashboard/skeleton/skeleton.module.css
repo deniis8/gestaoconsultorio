@@ -1,0 +1,26 @@
+.linha-indicadores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.linha-duas-colunas {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.card-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+@media (max-width: 900px) {
+    .linha-indicadores,
+    .linha-duas-colunas {
+        grid-template-columns: 1fr;
+    }
+}

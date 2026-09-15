@@ -19,7 +19,9 @@ import { pacientePlanoService } from "../../../services/apis-supabase/paciente-p
 import { mascaraMoney } from "../../../utils/moneyFormat";
 import { SkeletonFormPaciente } from "../skeleton/skeleton-formulario/skeleton";
 import { Loading } from "../../../components/layout/loading";
+import { confirmar } from "../../../components/layout/mensagem";
 import { gerarFinanceiroPorContratacaoPacote } from "../../../services/financeiro/gerarFinanceiro";
+import { isErroChaveEstrangeira } from "../../../utils/apiErrorFormat";
 
 export function FormularioPaciente() {
 
@@ -29,6 +31,7 @@ export function FormularioPaciente() {
     const isEdicao = Boolean(idPaciente);
     const [loadingPaciente, setLoadingPaciente] = useState(isEdicao);
     const [salvando, setSalvando] = useState(false);
+    const [excluindo, setExcluindo] = useState(false);
 
     const [paciente, setPaciente] = useState<Paciente>({
         id_paciente: "",
@@ -157,6 +160,25 @@ export function FormularioPaciente() {
         }));
     }
 
+    async function handleSelecionarPlanoCobranca(id_plano_cobranca: string) {
+        setPacientePlano((prev) => ({ ...prev, id_plano_cobranca }));
+
+        if (!id_plano_cobranca) return;
+
+        try {
+            const [planoSelecionado] = await planosCobrancaService.buscarPorId(id_plano_cobranca);
+            if (!planoSelecionado) return;
+
+            setValor(mascaraMoney(planoSelecionado.valor_padrao != null ? String(planoSelecionado.valor_padrao) : ""));
+            setPacientePlano((prev) => ({
+                ...prev,
+                quantidade_contratada_sessoes: planoSelecionado.quantidade_padrao_sessoes ?? 0
+            }));
+        } catch (error) {
+            console.error("Erro ao buscar valores padrão do plano de cobrança:", error);
+        }
+    }
+
     function validar(): string | null {
         if (!paciente.nome_completo?.trim()) return "Informe o nome completo do paciente.";
         if (!paciente.data_nascimento) return "Informe a data de nascimento.";
@@ -243,6 +265,34 @@ export function FormularioPaciente() {
             setSalvando(false);
         }
     }
+
+    const handleExcluir = async () => {
+        if (!idPaciente) return;
+
+        const confirmou = await confirmar({
+            title: "Excluir paciente?",
+            text: "Essa ação não pode ser desfeita.",
+            icon: "warning"
+        });
+
+        if (!confirmou) return;
+
+        try {
+            setExcluindo(true);
+            await pacientesService.excluir(idPaciente);
+            toast.success("Paciente excluído com sucesso.");
+            navigate("/pacientes");
+        } catch (error) {
+            console.error("Erro ao excluir paciente:", error);
+            toast.error(
+                isErroChaveEstrangeira(error)
+                    ? "Não é possível excluir: existem agendamentos, planos ou lançamentos financeiros vinculados a este paciente."
+                    : "Não foi possível excluir o paciente."
+            );
+        } finally {
+            setExcluindo(false);
+        }
+    };
 
     const [valor, setValor] = useState("");
 
@@ -382,10 +432,7 @@ export function FormularioPaciente() {
                         placeholder="Selecione um plano"
                         value={pacientePlano.id_plano_cobranca || ""}
                         options={planosCobrancaOptions}
-                        onChange={(e) => setPacientePlano((prev) => ({
-                            ...prev,
-                            id_plano_cobranca: e.target.value
-                        }))}
+                        onChange={(e) => handleSelecionarPlanoCobranca(e.target.value)}
                     />
                 </div>
                 <div className={styles['linha-campo']}>
@@ -448,12 +495,17 @@ export function FormularioPaciente() {
             </Card>
 
             <div className={styles['linha-botao']}>
-                <Button variant="warning" onClick={() => navigate(-1)} disabled={salvando}>Cancelar</Button>
-                <Button variant="success" onClick={() => handleSalvarCliente()} disabled={salvando}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
+                {isEdicao && (
+                    <Button variant="danger" icon="delete" onClick={handleExcluir} disabled={salvando || excluindo}>
+                        Excluir
+                    </Button>
+                )}
+                <Button variant="warning" onClick={() => navigate(-1)} disabled={salvando || excluindo}>Cancelar</Button>
+                <Button variant="success" onClick={() => handleSalvarCliente()} disabled={salvando || excluindo}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
             </div>
         </>
             )}
-            <Loading loading={salvando} />
+            <Loading loading={salvando || excluindo} />
         </div>
     )
 }

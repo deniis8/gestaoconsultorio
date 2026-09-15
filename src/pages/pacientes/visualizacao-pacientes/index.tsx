@@ -15,6 +15,7 @@ import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.t
 import { planosCobrancaService } from "../../../services/apis-supabase/planos-cobranca/planos-cobranca.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
 import { SkeletonVisualizarPaciente } from "../skeleton/skeleton-visualizar/skeleton";
+import statusPlano from "../../../mocks/mock-status-plano.json";
 
 export function VisualizacaoPacientes() {
 
@@ -32,7 +33,7 @@ export function VisualizacaoPacientes() {
 
                 const [pacienteCarregado, planosPacienteCarregado] = await Promise.all([
                     pacientesService.buscarPorId(idPaciente),
-                    pacientePlanoService.buscarPorIdPaciente(idPaciente)
+                    pacientePlanoService.buscarUltimoPorIdPaciente(idPaciente)
                 ]);
 
                 if (pacienteCarregado.length > 0) {
@@ -69,6 +70,7 @@ export function VisualizacaoPacientes() {
                         title="Paciente"
                         subtitle="Informações do paciente"
                     >
+                        <Button type="submit" onClick={() => navigate(-1)} icon="back">Voltar</Button>
                     </Header>
                 </div>
                 <Card title="Dados pessoais"
@@ -104,7 +106,10 @@ export function VisualizacaoPacientes() {
                     <Label name="Data de Término" value={pacientePlano?.data_fim ? formatSimpleDate(String(pacientePlano.data_fim)) : ""} />
                     <Label name="Valor Contratado" value={pacientePlano?.valor_contratado != null ? mascaraMoney(pacientePlano.valor_contratado.toString()) : ""} />
                     <Label name="Sessões Contratadas" value={pacientePlano?.quantidade_contratada_sessoes != null ? String(pacientePlano.quantidade_contratada_sessoes) : ""} />
-                    <Label name="Status" value={pacientePlano?.status ?? ""} />
+                    <Label
+                        name="Status"
+                        value={statusPlano.find((s) => s.codigo === pacientePlano?.status)?.nome ?? pacientePlano?.status ?? ""}
+                    />
                 </Card>
 
                 <Card title="Observações">
