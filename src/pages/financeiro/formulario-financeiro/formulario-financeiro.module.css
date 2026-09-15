@@ -8,3 +8,18 @@
   box-sizing: border-box;
   padding-right: 20px;
 }
+
+.linha-campo {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.linha-botao {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin: 16px 0;
+  gap: 20px;
+}

@@ -3,7 +3,9 @@ import { Layout } from "./layouts";
 import { Dashboard } from "./pages/dashboard";
 import { Pacientes } from "./pages/pacientes/tela-principal";
 import { Relatorios } from "./pages/relatorios";
-import { Financeiro } from "./pages/financeiro";
+import { Financeiro } from "./pages/financeiro/tela-principal";
+import { FormularioFinanceiro } from "./pages/financeiro/formulario-financeiro";
+import { VisualizacaoFinanceiro } from "./pages/financeiro/visualizacao-financeiro";
 import { Agendamentos } from "./pages/agendamentos/agenda";
 import { FormularioPaciente } from "./pages/pacientes/formulario-paciente";
 import { PlanoCobranca } from "./pages/planos-cobranca/tela-principal";
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "/financeiro",
         element: <Financeiro />
+      },
+      {
+        path: "/financeiro/formulario/:id_financeiro?",
+        element: <FormularioFinanceiro />
+      },
+      {
+        path: "/financeiro/visualizacao/:id_financeiro",
+        element: <VisualizacaoFinanceiro />
       },
       {
         path: "/planos-cobranca",

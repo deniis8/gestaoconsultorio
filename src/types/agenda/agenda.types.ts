@@ -1,7 +1,7 @@
 export interface Agenda {
     id_agenda?: string;
     id_paciente_plano: string;
-    id_paciente: string | Date;
+    id_paciente: string;
     data_agendamento?: string | Date;
     hora_inicio?: string | Date;
     hora_fim?: string | Date;

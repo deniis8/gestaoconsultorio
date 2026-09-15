@@ -4,8 +4,8 @@ export interface PacientePlano {
     id_plano_cobranca?: string;
     valor_contratado?: number;
     quantidade_contratada_sessoes?: number;
-    data_inicio?: Date | string;
-    data_fim?: Date | string;
+    data_inicio?: string;
+    data_fim?: string;
     status?: string;
     id_usuario?: string;
 }

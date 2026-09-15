@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button"
 import { Input } from "../../components/ui/input-comum"
 import styles from "./login.module.css"
@@ -27,18 +27,26 @@ export function Login() {
         }
     }, [user, loading, navigate]);
 
-    const handleLogin = async () => {
+    if (loading || user) {
+        return <Loading loading={true} />;
+    }
+
+    const handleLogin = async (event: FormEvent) => {
+        event.preventDefault();
+
+        if (loadingLogin) return;
+
         try {
             setLoginError(false);
             setLoadingLogin(true);
-            const data = await login(email, password);
-            setLoadingLogin(false);
-            console.log("Sucesso: ", data)
+            await login(email.trim(), password);
             navigate("/dashboard");
         } catch (error) {
             setLoginError(true);
+            setPassword("");
+            console.error("Erro ao efetuar login:", error);
+        } finally {
             setLoadingLogin(false);
-            console.log("E-mail ou senha inválidos" + error)
         }
     }
 
@@ -81,13 +89,15 @@ export function Login() {
                             <h2 className={styles['h2-header-login']}>Entre com sua conta para continuar</h2>
                         </div>
 
-                        <div className={styles['inputs']}>
+                        <form className={styles['inputs']} onSubmit={handleLogin}>
                             <Input
                                 name="E-mail"
                                 type="email"
                                 value={email}
                                 error={loginError}
                                 icon="email"
+                                autoComplete="email"
+                                disabled={loadingLogin}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                             <div className={styles["senha"]}>
@@ -97,9 +107,12 @@ export function Login() {
                                     value={password}
                                     error={loginError}
                                     icon="password"
+                                    autoComplete="current-password"
+                                    disabled={loadingLogin}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
+                                    type="button"
                                     className={styles["button-senha"]}
                                 >Esqueci minha senha</button>
                             </div>
@@ -109,8 +122,8 @@ export function Login() {
                                     <span className={styles["texto-invalido"]}>Dados de acesso inválidos.</span>
                                 </div>
                             )}
-                            <Button type="submit" onClick={() => handleLogin()}>Entrar</Button>
-                        </div>
+                            <Button type="submit" disabled={loadingLogin}>Entrar</Button>
+                        </form>
                     </div>
                 </div>
             </div>

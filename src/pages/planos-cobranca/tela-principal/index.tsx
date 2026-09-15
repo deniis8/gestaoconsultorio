@@ -11,6 +11,12 @@ import { PlanosCobranca } from "../../../types/planos-cobranca/planos-cobranca.t
 import { SkeletonPlanosCobranca } from "../skeleton/skeleton-principal/skeleton";
 import { mascaraMoney } from "../../../utils/moneyFormat";
 
+const LABELS_FORMA_COBRANCA: Record<string, string> = {
+    SESSAO: "Por Sessão",
+    PACOTE: "Pacote",
+    MENSAL: "Mensal",
+};
+
 export function PlanoCobranca() {
 
     const navigate = useNavigate();
@@ -24,7 +30,6 @@ export function PlanoCobranca() {
                 setLoadingCobranca(true);
                 const planos = await planosCobrancaService.listar();
                 setPlanosCobranca(planos);
-                console.log(planosCobranca);
             } catch (error) {
                 console.error("Erro ao buscar usuários:", error);
             } finally {
@@ -84,7 +89,7 @@ export function PlanoCobranca() {
                             data={planosCobranca.map((plano) => ({
                                 id_plano_cobranca: plano.id_plano_cobranca ?? "",
                                 nome: plano.nome,
-                                formaCobranca: plano.forma_cobranca,
+                                formaCobranca: LABELS_FORMA_COBRANCA[plano.forma_cobranca] ?? plano.forma_cobranca,
                                 valorPadrao: mascaraMoney(plano.valor_padrao?.toString() || ""),
                                 sessoesPadrao: plano.quantidade_padrao_sessoes,
                                 status: plano.ativo ? "Ativo" : "Inativo",

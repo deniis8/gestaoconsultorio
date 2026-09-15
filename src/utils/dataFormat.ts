@@ -14,3 +14,28 @@ export const formatSimpleDate = (dateString: string): string => {
 
   return `${day}/${month}/${year}`;
 };
+
+/**
+ * Calcula a idade a partir de uma data de nascimento no formato AAAA-MM-DD.
+ * Considera mês/dia (não é só "ano atual - ano de nascimento").
+ * @param dataNascimento - Exemplo: "1992-04-12"
+ */
+export const calcularIdade = (dataNascimento: string): number | null => {
+  if (!dataNascimento) return null;
+
+  const [anoNascimento, mesNascimento, diaNascimento] = dataNascimento.split('-').map(Number);
+  if (!anoNascimento || !mesNascimento || !diaNascimento) return null;
+
+  const hoje = new Date();
+  const anoAtual = hoje.getFullYear();
+  const mesAtual = hoje.getMonth() + 1;
+  const diaAtual = hoje.getDate();
+
+  let idade = anoAtual - anoNascimento;
+  const aniversarioJaOcorreuEsteAno =
+    mesAtual > mesNascimento || (mesAtual === mesNascimento && diaAtual >= diaNascimento);
+
+  if (!aniversarioJaOcorreuEsteAno) idade--;
+
+  return idade;
+};

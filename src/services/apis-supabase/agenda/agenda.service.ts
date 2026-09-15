@@ -9,17 +9,17 @@ export class AgendaService {
         return api<Agenda[]>(ENDPOINTS.agenda);
     }
 
-    async buscarPorNome(nome: string): Promise<Agenda[]> {
-
-        return api<Agenda[]>(
-            `${ENDPOINTS.agenda}?nome_completo=eq.${encodeURIComponent(nome)}`
-        );
-    }
-
     async buscarPorId(id_agenda: string): Promise<Agenda[]> {
 
         return api<Agenda[]>(
             `${ENDPOINTS.agenda}?id_agenda=eq.${id_agenda}`
+        );
+    }
+
+    async listarRealizadosPorPacientePlano(id_paciente_plano: string): Promise<Agenda[]> {
+
+        return api<Agenda[]>(
+            `${ENDPOINTS.agenda}?id_paciente_plano=eq.${id_paciente_plano}&status_sessao=eq.Realizado&order=data_agendamento.asc`
         );
     }
 
@@ -28,6 +28,14 @@ export class AgendaService {
         return api<Agenda[]>(ENDPOINTS.agenda, {
             method: "POST",
             body: JSON.stringify(agenda)
+        });
+    }
+
+    async inserirVarios(agendas: Omit<Agenda, "id_agenda">[]): Promise<Agenda[]> {
+
+        return api<Agenda[]>(ENDPOINTS.agenda, {
+            method: "POST",
+            body: JSON.stringify(agendas)
         });
     }
 
@@ -46,6 +54,16 @@ export class AgendaService {
 
         return api<void>(
             `${ENDPOINTS.agenda}?id_agenda=eq.${id}`,
+            {
+                method: "DELETE"
+            }
+        );
+    }
+
+    async excluirPorGrupoRecorrencia(id_grupo_recorrencia: string) {
+
+        return api<void>(
+            `${ENDPOINTS.agenda}?id_grupo_recorrencia=eq.${id_grupo_recorrencia}`,
             {
                 method: "DELETE"
             }

@@ -4,12 +4,14 @@ import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
 import { Input } from "../../../components/ui/input-comum";
 import { TextArea } from "../../../components/ui/textArea";
+import { Loading } from "../../../components/layout/loading";
 import styles from "./edicao.module.css";
 import { usuariosService } from "../../../services/apis-supabase/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Skeletonfiguracoes } from "../skeleton/skeleton";
+import { SkeletonConfiguracoes } from "../skeleton/skeleton";
+import { useAuth } from "../../../hooks/useAuth";
 
 
 export function ConfiguracoesEdicao() {
@@ -17,6 +19,8 @@ export function ConfiguracoesEdicao() {
     const [usuario, setUsuario] = useState<Usuario | null>(null);
     const navigate = useNavigate();
     const [loadingUsuario, setLoadingUsuario] = useState(false);
+    const [salvando, setSalvando] = useState(false);
+    const { user, loading } = useAuth();
 
     function handleChange(
         campo: keyof Usuario,
@@ -32,49 +36,53 @@ export function ConfiguracoesEdicao() {
         );
     }
 
-    function handleSalvar() {
-
+    async function handleSalvar() {
         if (!usuario) {
             toast.error("Não foi possível carregar os dados do usuário.");
             return;
         }
-        const alteracaoUsuario = usuariosService.atualizar(usuario.id_usuario, {
-            nome_completo: usuario.nome_completo,
-            crp: usuario.crp,
-            telefone: usuario.telefone,
-            sobre_voce: usuario.sobre_voce
-        }).
-            then(() => {
-                console.log(alteracaoUsuario);
-                navigate(-1);
-                toast.success("As informações do usuário foram salvas!");
-            }).catch((error) => {
-                console.error("Erro ao atualizar usuário:", error);
-                toast.error("Não foi possível salvar as alterações.");
-            })
+
+        try {
+            setSalvando(true);
+            await usuariosService.atualizar(usuario.id_usuario, {
+                nome_completo: usuario.nome_completo,
+                crp: usuario.crp,
+                telefone: usuario.telefone,
+                sobre_voce: usuario.sobre_voce
+            });
+            toast.success("As informações do usuário foram salvas!");
+            navigate(-1);
+        } catch (error) {
+            console.error("Erro ao atualizar usuário:", error);
+            toast.error("Não foi possível salvar as alterações.");
+        } finally {
+            setSalvando(false);
+        }
     }
 
     useEffect(() => {
+        if (loading || !user) return;
+
         async function carregarUsuario() {
             try {
                 setLoadingUsuario(true);
-                const usuario = await usuariosService.listar();
+                const usuario = await usuariosService.buscarPorId(user!.id);
                 if (usuario.length > 0) {
                     setUsuario(usuario[0]);
                 }
-                console.log(usuario);
             } catch (error) {
-                console.error("Erro ao buscar usuários:", error);
+                console.error("Erro ao buscar usuário:", error);
             } finally {
                 setLoadingUsuario(false);
             }
         }
         carregarUsuario();
-    }, [])
+    }, [user, loading])
 
     return (
         loadingUsuario ? (
-            <Skeletonfiguracoes />) : (
+            <SkeletonConfiguracoes />) : (
+            <>
             <div className={styles['container-principal']}>
                 <div>
                     <Header
@@ -106,7 +114,6 @@ export function ConfiguracoesEdicao() {
                             value={usuario?.email ?? ""}
                             placeholder="Digite seu e-mail" type="email"
                             disabled={true}
-                            onChange={(e) => handleChange("email", e.target.value)}
                         />
                         <Input
                             name="Telefone"
@@ -123,9 +130,11 @@ export function ConfiguracoesEdicao() {
                         onChange={(e) => handleChange("sobre_voce", e.target.value)}
                     />
                     <div className={styles['botao-salvar']}>
-                        <Button variant="success" onClick={() => handleSalvar()}>Salvar Alterações</Button>
+                        <Button variant="success" onClick={() => handleSalvar()} disabled={salvando}>Salvar Alterações</Button>
                     </div>
                 </Card>
-            </div>)
+            </div>
+            <Loading loading={salvando} />
+            </>)
     )
 }

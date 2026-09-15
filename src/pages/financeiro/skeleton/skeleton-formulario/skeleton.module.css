@@ -1,0 +1,31 @@
+.container-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.card-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.linha-campo {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.campo {
+    flex: 1;
+    min-width: 220px;
+}
+
+.linha-botao {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 16px 0;
+    gap: 20px;
+}

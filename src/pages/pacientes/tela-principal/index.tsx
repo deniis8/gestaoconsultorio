@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
 import { SkeletonPacientes } from "../skeleton/skeleton-principal/skeleton";
+import { calcularIdade } from "../../../utils/dataFormat";
 
 
 type PacienteTableRow = {
@@ -53,8 +54,7 @@ export function Pacientes() {
 
 
         idade: paciente.data_nascimento
-            ? new Date().getFullYear() -
-            new Date(paciente.data_nascimento).getFullYear()
+            ? calcularIdade(paciente.data_nascimento.toString()) ?? "N/A"
             : "N/A",
 
 

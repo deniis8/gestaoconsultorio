@@ -4,7 +4,7 @@ import { Card } from "../../../components/ui/card";
 import { Header } from "../../../components/layout/header";
 import styles from "./skeleton.module.css"
 
-export function Skeletonfiguracoes() {
+export function SkeletonConfiguracoes() {
     return (
         <div className={styles['container-principal']}>
             <div>

@@ -7,15 +7,15 @@ import styles from "./visualizacao.module.css";
 import { useEffect, useState } from "react";
 import { usuariosService } from "../../../services/apis-supabase/usuarios/usuarios.service";
 import { Usuario } from "../../../types/usuarios/usuarios.types";
-import { Skeletonfiguracoes } from "../skeleton/skeleton";
+import { SkeletonConfiguracoes } from "../skeleton/skeleton";
 import { useAuth } from "../../../hooks/useAuth";
 
 export function ConfiguracoesVisualizacao() {
     const navigate = useNavigate();
     const [usuario, setUsuario] = useState<Usuario | null>(null);
-    const [loadingUSuario, setLoadingUsuario] = useState(false);
+    const [loadingUsuario, setLoadingUsuario] = useState(false);
     const { user, loading } = useAuth();
-    
+
 
     useEffect(() => {
         async function carregarUsuario() {
@@ -24,16 +24,16 @@ export function ConfiguracoesVisualizacao() {
             }
             if (!user) {
                 navigate("/");
+                return;
             }
             try {
                 setLoadingUsuario(true);
-                const usuario = await usuariosService.listar();
+                const usuario = await usuariosService.buscarPorId(user.id);
                 if (usuario.length > 0) {
                     setUsuario(usuario[0]);
                 }
-                console.log(usuario);
             } catch (error) {
-                console.error("Erro ao buscar usuários:", error);
+                console.error("Erro ao buscar usuário:", error);
             } finally {
                 setLoadingUsuario(false);
             }
@@ -42,8 +42,8 @@ export function ConfiguracoesVisualizacao() {
     }, [user, loading, navigate])
 
     return (
-        loadingUSuario ? (
-            <Skeletonfiguracoes />) : (
+        loadingUsuario ? (
+            <SkeletonConfiguracoes />) : (
             <div className={styles['container-principal']}>
                 <div>
                     <Header

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../../../components/layout/header";
 import { Button } from "../../../components/ui/button";
 import { Card } from "../../../components/ui/card";
@@ -15,16 +15,18 @@ export function PlanoCobrancaVisualizacao() {
     const navigate = useNavigate();
     const [planoCobraca, setPlanoCobranca] = useState<PlanosCobranca | null>(null);
     const [loadingPlanoCobranca, setLoadingPlanoCobranca] = useState(false);
+    const { id_plano_cobranca } = useParams();
 
     useEffect(() => {
+        if (!id_plano_cobranca) return;
+
         async function carregarPlanoCobranca() {
             try {
                 setLoadingPlanoCobranca(true);
-                const plano = await planosCobrancaService.buscarPorId(window.location.pathname.split("/").pop() || "");
+                const plano = await planosCobrancaService.buscarPorId(id_plano_cobranca!);
                 if (plano.length > 0) {
                     setPlanoCobranca(plano[0]);
                 }
-                console.log(plano);
             } catch (error) {
                 console.error("Erro ao buscar planos de cobrança:", error);
             } finally {
@@ -32,7 +34,7 @@ export function PlanoCobrancaVisualizacao() {
             }
         }
         carregarPlanoCobranca();
-    }, [])
+    }, [id_plano_cobranca])
 
     return (
         loadingPlanoCobranca ? (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Paciente } from "../../../types/pacientes/pacientes.types";
 import { pacientesService } from "../../../services/apis-supabase/pacientes/pacientes.service";
 import styles from "./visualizacao-pacientes.module.css";
@@ -23,7 +23,7 @@ export function VisualizacaoPacientes() {
     const [pacientePlano, setPacientePlano] = useState<PacientePlano | null>(null);
     const [planosCobranca, setPlanosCobranca] = useState<PlanosCobranca | null>(null);
     const [loadingPaciente, setLoadingPaciente] = useState(false);
-    const idPaciente = window.location.pathname.split("/").pop() || "";
+    const { id_paciente: idPaciente = "" } = useParams();
 
     useEffect(() => {
         async function carregarDadosPaciente() {

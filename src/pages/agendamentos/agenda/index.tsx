@@ -5,10 +5,10 @@ import { format, parse, startOfWeek, getDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import styles from "./agenda.module.css";
-import { agendaService } from "../../../services/apis-supabase/agenda/pacientes.service";
-import { useEffect, useState } from "react";
+import { agendaService } from "../../../services/apis-supabase/agenda/agenda.service";
+import { useCallback, useEffect, useState } from "react";
 import { Agenda } from "../../../types/agenda/agenda.types";
-import { FormularioAgenda } from "../formulario-agenda";
+import { FormularioAgenda, SlotSelecionado } from "../formulario-agenda";
 
 const locales = {
     "pt-BR": ptBR,
@@ -41,58 +41,62 @@ const mensagens = {
     showMore: (total: number) => `+ ${total} consultas`,
 };
 
-const parseDataHora = (data?: string | Date, hora?: string | Date) => {
-    if (!data) return null;
-
-    const dataTexto = typeof data === "string" ? data.slice(0, 10) : data.toISOString().slice(0, 10);
-
-    if (typeof hora === "string" && hora.includes(":")) {
-        return new Date(`${dataTexto}T${hora}`);
-    }
-
-    if (typeof hora === "string" && /^\d{4}-\d{2}-\d{2}$/.test(hora)) {
-        return new Date(`${hora}T09:00:00`);
-    }
-
-    return new Date(`${dataTexto}T09:00:00`);
+const CORES_STATUS: Record<string, string> = {
+    Agendado: "#5B9BD5",
+    Confirmado: "#2FA84F",
+    Realizado: "#7E8A97",
+    Cancelado: "#D9534F",
+    Falta: "#E0A800",
 };
+
+type EventoAgenda = {
+    id: string;
+    title: string;
+    start: Date;
+    end: Date;
+    status?: string;
+    observacoes?: string;
+};
+
+type ModalAgendaState =
+    | { modo: "fechado" }
+    | { modo: "criacao"; slot?: SlotSelecionado }
+    | { modo: "edicao"; idAgenda: string };
 
 export function Agendamentos() {
 
     const [agendamentos, setAgendamentos] = useState<Agenda[] | null>(null);
     const [dataAtual, setDataAtual] = useState(new Date());
-    const [modalAberto, setModalAberto] = useState(false);
+    const [modalAgenda, setModalAgenda] = useState<ModalAgendaState>({ modo: "fechado" });
 
-    const eventos = (agendamentos ?? []).map((agendamento) => {
-        const start = parseDataHora(agendamento.data_agendamento, agendamento.hora_inicio);
-        const end = parseDataHora(agendamento.data_agendamento, agendamento.hora_fim) ??
-            (start ? new Date(start.getTime() + 60 * 60 * 1000) : new Date());
+    const eventos: EventoAgenda[] = (agendamentos ?? []).map((agendamento) => ({
+        id: agendamento.id_agenda ?? "",
+        title: agendamento.tipo_consulta ?? "Consulta",
+        start: agendamento.hora_inicio ? new Date(agendamento.hora_inicio as string) : new Date(),
+        end: agendamento.hora_fim ? new Date(agendamento.hora_fim as string) : new Date(),
+        status: agendamento.status_sessao,
+        observacoes: agendamento.observacoes,
+    }));
 
-        return {
-            id: agendamento.id_agenda,
-            title: agendamento.tipo_consulta ?? "Consulta",
-            start: start ?? new Date(),
-            end: end,
-            status: agendamento.status_sessao,
-            observacoes: agendamento.observacoes,
-        };
-    });
+    const fetchAgendamentos = useCallback(async () => {
+        try {
+            const agendamentos = await agendaService.listar();
+            setAgendamentos(agendamentos);
+        } catch (error) {
+            console.error("Erro ao buscar agendamentos:", error);
+        }
+    }, []);
 
     useEffect(() => {
-            async function fetchAgendamentos() {
-                try {
-                    const agendamentos = await agendaService.listar();
-                    setAgendamentos(agendamentos);
+        fetchAgendamentos();
+    }, [fetchAgendamentos]);
 
-                    console.log("Agendamentos carregados:", agendamentos);
+    const fecharModal = () => setModalAgenda({ modo: "fechado" });
 
-                } catch (error) {
-                    console.error("Erro ao buscar agendamentos:", error);
-                }
-            }
-
-            fetchAgendamentos();
-        }, []);
+    const handleSalvo = () => {
+        fecharModal();
+        fetchAgendamentos();
+    };
 
     return (
         <div className={styles["container-principal"]}>
@@ -100,13 +104,18 @@ export function Agendamentos() {
                 title="Agenda"
                 subtitle="Gerencie seus horários e consultas"
             >
-                <Button type="button" icon="add" onClick={() => setModalAberto(true)}>
+                <Button type="button" icon="add" onClick={() => setModalAgenda({ modo: "criacao" })}>
                     Nova Consulta
                 </Button>
             </Header>
 
-            {modalAberto ? (
-                <FormularioAgenda onClose={() => setModalAberto(false)} />
+            {modalAgenda.modo !== "fechado" ? (
+                <FormularioAgenda
+                    idAgenda={modalAgenda.modo === "edicao" ? modalAgenda.idAgenda : undefined}
+                    slotSelecionado={modalAgenda.modo === "criacao" ? modalAgenda.slot : undefined}
+                    onClose={fecharModal}
+                    onSalvo={handleSalvo}
+                />
             ) : null}
 
             <div className={styles["calendar-container"]}>
@@ -124,9 +133,15 @@ export function Agendamentos() {
                     style={{ height: 700 }}
                     culture="pt-BR"
                     messages={mensagens}
+                    selectable
+                    onSelectSlot={(slotInfo) => setModalAgenda({ modo: "criacao", slot: { start: slotInfo.start, end: slotInfo.end } })}
+                    onSelectEvent={(evento) => {
+                        const id = (evento as EventoAgenda).id;
+                        if (id) setModalAgenda({ modo: "edicao", idAgenda: id });
+                    }}
                     eventPropGetter={(event) => ({
                         style: {
-                            backgroundColor: event.status === "Agendada" ? "#5B9BD5" : "#7E8A97",
+                            backgroundColor: CORES_STATUS[(event as EventoAgenda).status ?? ""] ?? "#5B9BD5",
                             borderRadius: "8px",
                             border: "none",
                             color: "#fff",

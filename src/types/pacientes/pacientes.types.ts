@@ -1,7 +1,7 @@
 export interface Paciente {
     id_paciente?: string;
     nome_completo?: string;
-    data_nascimento?: string | Date;
+    data_nascimento?: string;
     cpf?: string;
     telefone_principal?: string;
     telefone_secundario?: string;

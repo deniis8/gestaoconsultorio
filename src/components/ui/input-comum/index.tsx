@@ -15,7 +15,8 @@ type InputProps = {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   icon?: ButtonIcon;
   error?: boolean;
-  disabled?: boolean
+  disabled?: boolean;
+  autoComplete?: string;
 };
 
 export function Input({
@@ -27,7 +28,8 @@ export function Input({
   onChange,
   error = false,
   icon,
-  disabled = false
+  disabled = false,
+  autoComplete
 }: InputProps) {
   const inputId = id ?? name?.toLowerCase().replace(/\s+/g, "-");
 
@@ -63,6 +65,7 @@ export function Input({
           value={value}
           onChange={onChange}
           disabled={disabled}
+          autoComplete={autoComplete}
           className={`
             ${styles.input}
             ${icon ? styles["input-with-icon"] : ""}

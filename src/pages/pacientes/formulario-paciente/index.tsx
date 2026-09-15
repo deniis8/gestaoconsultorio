@@ -18,6 +18,8 @@ import { PacientePlano } from "../../../types/paciente-plano/paciente-plano.type
 import { pacientePlanoService } from "../../../services/apis-supabase/paciente-plano/paciente-plano.service";
 import { mascaraMoney } from "../../../utils/moneyFormat";
 import { SkeletonFormPaciente } from "../skeleton/skeleton-formulario/skeleton";
+import { Loading } from "../../../components/layout/loading";
+import { gerarFinanceiroPorContratacaoPacote } from "../../../services/financeiro/gerarFinanceiro";
 
 export function FormularioPaciente() {
 
@@ -26,6 +28,7 @@ export function FormularioPaciente() {
     const idPaciente = id_paciente;
     const isEdicao = Boolean(idPaciente);
     const [loadingPaciente, setLoadingPaciente] = useState(isEdicao);
+    const [salvando, setSalvando] = useState(false);
 
     const [paciente, setPaciente] = useState<Paciente>({
         id_paciente: "",
@@ -59,14 +62,10 @@ export function FormularioPaciente() {
 
     const [planosCobrancaOptions, setPlanosCobrancaOptions] = useState<{ label: string; value: string }[]>([]);
 
-    function formatDateForInput(value?: string | Date) {
-    if (!value) return "";
-    if (value instanceof Date) {
-        return value.toISOString().slice(0, 10);
+    function formatDateForInput(value?: string) {
+        if (!value) return "";
+        return value.slice(0, 10);
     }
-
-    return value.toString().slice(0, 10);
-}
 
     useEffect(() => {
         if (!isEdicao || !idPaciente) {
@@ -77,28 +76,40 @@ export function FormularioPaciente() {
          const listarPaciente = async () => {
             try {
                 setLoadingPaciente(true);
-                const [pacienteSelecionado, planoSelecionado, planosDisponiveis] = await Promise.all([
+                const [pacienteSelecionado, planoSelecionado, planosAtivos] = await Promise.all([
                     pacientesService.buscarPorId(idPaciente!),
-                    pacientePlanoService.buscarPorIdPaciente(idPaciente!),
-                    planosCobrancaService.listar()
+                    pacientePlanoService.buscarUltimoPorIdPaciente(idPaciente!),
+                    planosCobrancaService.listarAtivos()
                 ]);
 
                 if (pacienteSelecionado.length > 0) {
                     setPaciente(pacienteSelecionado[0]);
                 }
 
+                let opcoesPlanos = planosAtivos.map((plano) => ({
+                    label: plano.nome,
+                    value: plano.id_plano_cobranca ?? ""
+                }));
+
                 if (planoSelecionado.length > 0) {
                     const plano = planoSelecionado[0];
                     setPacientePlano(plano);
                     setValor(mascaraMoney(plano.valor_contratado != null ? String(plano.valor_contratado) : ""));
+
+                    // paciente pode ter um plano hoje inativo; garante que ele apareça no combo para não ficar em branco
+                    const planoContratadoEstaAtivo = opcoesPlanos.some((opcao) => opcao.value === plano.id_plano_cobranca);
+                    if (plano.id_plano_cobranca && !planoContratadoEstaAtivo) {
+                        const planoInativo = await planosCobrancaService.buscarPorId(plano.id_plano_cobranca);
+                        if (planoInativo[0]) {
+                            opcoesPlanos = [
+                                ...opcoesPlanos,
+                                { label: `${planoInativo[0].nome} (inativo)`, value: planoInativo[0].id_plano_cobranca ?? "" }
+                            ];
+                        }
+                    }
                 }
 
-                setPlanosCobrancaOptions(
-                    planosDisponiveis.map((plano) => ({
-                        label: plano.nome,
-                        value: plano.id_plano_cobranca ?? ""
-                    }))
-                );
+                setPlanosCobrancaOptions(opcoesPlanos);
             } catch (error) {
                 console.error("Erro ao carregar paciente:", error);
                 toast.error("Não foi possível carregar o paciente para edição.");
@@ -114,7 +125,7 @@ export function FormularioPaciente() {
     useEffect(() => {
         const listarPlanosDisponiveis = async () => {
             try {
-                const planosDisponiveis = await planosCobrancaService.listar();
+                const planosDisponiveis = await planosCobrancaService.listarAtivos();
                 setPlanosCobrancaOptions(
                     planosDisponiveis.map((plano) => ({
                         label: plano.nome,
@@ -146,13 +157,26 @@ export function FormularioPaciente() {
         }));
     }
 
+    function validar(): string | null {
+        if (!paciente.nome_completo?.trim()) return "Informe o nome completo do paciente.";
+        if (!paciente.data_nascimento) return "Informe a data de nascimento.";
+        if (!paciente.telefone_principal?.trim()) return "Informe o telefone principal.";
+        if (!pacientePlano.id_plano_cobranca) return "Selecione um plano de cobrança antes de salvar.";
+        if (!pacientePlano.data_inicio) return "Informe a data de início do plano.";
+        if (!valor || Number(valor.replace(/\./g, '').replace(',', '.')) <= 0) return "Informe o valor contratado do plano.";
+        if (!pacientePlano.quantidade_contratada_sessoes) return "Informe a quantidade de sessões contratadas.";
+        return null;
+    }
+
     const handleSalvarCliente = async () => {
+        const erro = validar();
+        if (erro) {
+            toast.error(erro);
+            return;
+        }
 
         try {
-            if (!pacientePlano.id_plano_cobranca) {
-                toast.error("Selecione um plano de cobrança antes de salvar.");
-                return;
-            }
+            setSalvando(true);
 
             const payloadPaciente = {
                 nome_completo: paciente?.nome_completo || "",
@@ -194,21 +218,29 @@ export function FormularioPaciente() {
                 status: pacientePlano.status || "ativo"
             };
 
-            console.log("Payload do paciente:", payloadPaciente);
-            console.log("Payload do plano do paciente:", payloadPacientePlano);
-
             if (isEdicao && pacientePlano.id_paciente_plano) {
                 await pacientePlanoService.atualizar(pacientePlano.id_paciente_plano, payloadPacientePlano);
                 toast.success("Paciente e plano atualizados com sucesso!");
             } else {
-                await pacientePlanoService.inserir(payloadPacientePlano as Omit<PacientePlano, "id_paciente_plano">);
+                const [pacientePlanoInserido] = await pacientePlanoService.inserir(payloadPacientePlano as Omit<PacientePlano, "id_paciente_plano">);
                 toast.success("Paciente e plano salvos com sucesso!");
+
+                if (pacientePlanoInserido) {
+                    try {
+                        await gerarFinanceiroPorContratacaoPacote(pacientePlanoInserido);
+                    } catch (erroFinanceiro) {
+                        console.error("Erro ao gerar financeiro do pacote:", erroFinanceiro);
+                        toast.error("Paciente salvo, mas houve um erro ao gerar a cobrança do pacote. Lance manualmente em Financeiro.");
+                    }
+                }
             }
 
             navigate(-1);
         } catch (error) {
             console.error("Erro ao salvar paciente:", error);
             toast.error("Não foi possível salvar o paciente. Erro: " + (error instanceof Error ? error.message : String(error)));
+        } finally {
+            setSalvando(false);
         }
     }
 
@@ -380,13 +412,7 @@ export function FormularioPaciente() {
                     <InputValor
                         name="Valor Contratado (R$ *)"
                         value={valor}
-                        onChange={(nextValue) => {
-                            setValor(nextValue);
-                            setPacientePlano((prev) => ({
-                                ...prev,
-                                valor_contratado: valor.replace(',', '.') ? Number(nextValue.replace(',', '.')) : 0
-                            }));
-                        }}
+                        onChange={(nextValue) => setValor(nextValue)}
                     />
                     <Input
                         name="Sessões Contratadas *"
@@ -422,11 +448,12 @@ export function FormularioPaciente() {
             </Card>
 
             <div className={styles['linha-botao']}>
-                <Button variant="warning" onClick={() => navigate(-1)}>Cancelar</Button>
-                <Button variant="success" onClick={() => handleSalvarCliente()}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
+                <Button variant="warning" onClick={() => navigate(-1)} disabled={salvando}>Cancelar</Button>
+                <Button variant="success" onClick={() => handleSalvarCliente()} disabled={salvando}>{isEdicao ? "Confirmar" : "Salvar"}</Button>
             </div>
         </>
             )}
+            <Loading loading={salvando} />
         </div>
     )
 }

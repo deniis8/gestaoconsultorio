@@ -9,10 +9,17 @@ export class PacientePlanoService {
         return api<PacientePlano[]>(ENDPOINTS.paciente_plano);
     }
 
-    async buscarPorId(id_plano_cobranca: string): Promise<PacientePlano[]> {
+    async buscarPorIdPlanoCobranca(id_plano_cobranca: string): Promise<PacientePlano[]> {
 
         return api<PacientePlano[]>(
             `${ENDPOINTS.paciente_plano}?id_plano_cobranca=eq.${id_plano_cobranca}`
+        );
+    }
+
+    async buscarPorIdPacientePlano(id_paciente_plano: string): Promise<PacientePlano[]> {
+
+        return api<PacientePlano[]>(
+            `${ENDPOINTS.paciente_plano}?id_paciente_plano=eq.${id_paciente_plano}`
         );
     }
 
@@ -20,6 +27,13 @@ export class PacientePlanoService {
 
         return api<PacientePlano[]>(
             `${ENDPOINTS.paciente_plano}?id_paciente=eq.${id_paciente}&status=eq.ativo`
+        );
+    }
+
+    async buscarUltimoPorIdPaciente(id_paciente: string): Promise<PacientePlano[]> {
+
+        return api<PacientePlano[]>(
+            `${ENDPOINTS.paciente_plano}?id_paciente=eq.${id_paciente}&order=created_at.desc&limit=1`
         );
     }
 

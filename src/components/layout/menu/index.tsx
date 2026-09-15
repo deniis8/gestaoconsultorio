@@ -174,13 +174,16 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link
-                                to="/"
-                                onClick={handleLogout}
+                            <a
+                                href="/"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    handleLogout();
+                                }}
                             >
                                 <RxExit size={18} />
                                 <span>Sair</span>
-                            </Link>
+                            </a>
 
                         </li>
 

@@ -90,7 +90,22 @@ export function FormularioPlanoCobranca() {
         }));
     }
 
+    function validar(): string | null {
+        if (!planosCobranca.nome?.trim()) return "Informe o nome do plano.";
+        if (!planosCobranca.valor_padrao || planosCobranca.valor_padrao <= 0) return "Informe o valor do plano.";
+        if (tipoCobranca !== "SESSAO" && (!planosCobranca.quantidade_padrao_sessoes || planosCobranca.quantidade_padrao_sessoes <= 0)) {
+            return "Informe a quantidade de sessões do plano.";
+        }
+        return null;
+    }
+
     const handleSalvarPlano = async () => {
+        const erro = validar();
+        if (erro) {
+            toast.error(erro);
+            return;
+        }
+
         try {
             setLoadingSalvar(true);
             if (isEdicao && id_plano_cobranca) {
@@ -98,26 +113,26 @@ export function FormularioPlanoCobranca() {
                     nome: planosCobranca.nome || "",
                     forma_cobranca: planosCobranca.forma_cobranca || "SESSAO",
                     valor_padrao: planosCobranca.valor_padrao || 0,
-                    quantidade_padrao_sessoes: planosCobranca.quantidade_padrao_sessoes || 0,
+                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 0 : (planosCobranca.quantidade_padrao_sessoes || 0),
                     ativo: planosCobranca.ativo
                 });
                 toast.success("Plano atualizado com sucesso!");
             } else {
-                const novoPlano = await planosCobrancaService.inserir({
+                await planosCobrancaService.inserir({
                     nome: planosCobranca.nome || "",
                     forma_cobranca: planosCobranca.forma_cobranca || "SESSAO",
                     valor_padrao: planosCobranca.valor_padrao || 0,
-                    quantidade_padrao_sessoes: planosCobranca.quantidade_padrao_sessoes || 0,
+                    quantidade_padrao_sessoes: tipoCobranca === "SESSAO" ? 0 : (planosCobranca.quantidade_padrao_sessoes || 0),
                     ativo: planosCobranca.ativo
                 });
-                console.log(novoPlano);
                 toast.success("Plano salvo com sucesso!");
             }
-            setLoadingSalvar(false);
             navigate(-1);
         } catch (error) {
             console.error("Erro ao salvar plano:", error);
             toast.error("Não foi possível salvar o plano. Erro: " + (error instanceof Error ? error.message : String(error)));
+        } finally {
+            setLoadingSalvar(false);
         }
     }
 
@@ -156,7 +171,7 @@ export function FormularioPlanoCobranca() {
                                     className={`${styles["cobranca-sessao"]} ${tipoCobranca === "SESSAO" ? styles["cobranca-sessao-selecionado"] : ""}`}
                                     onClick={() => {
                                         setTipoCobranca("SESSAO");
-                                        handleChange("forma_cobranca", "SESSAO");
+                                        setPlanosCobranca(prev => ({ ...prev, forma_cobranca: "SESSAO", quantidade_padrao_sessoes: 0 }));
                                     }}
                                 >
                                     <div className={styles["cobranca-item"]}>

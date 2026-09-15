@@ -13,3 +13,19 @@ export const confirmar = async (
 
     return resultado.isConfirmed;
 };
+
+export const confirmarComOpcoes = async (
+    options: SweetAlertOptions
+): Promise<'confirm' | 'deny' | 'cancel'> => {
+    const resultado = await Swal.fire({
+        showCancelButton: true,
+        showDenyButton: true,
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true,
+        ...options,
+    });
+
+    if (resultado.isConfirmed) return 'confirm';
+    if (resultado.isDenied) return 'deny';
+    return 'cancel';
+};

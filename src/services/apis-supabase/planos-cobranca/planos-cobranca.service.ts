@@ -9,14 +9,14 @@ export class PlanosCobrancaService {
         return api<PlanosCobranca[]>(ENDPOINTS.planos_cobranca);
     }
 
-    async buscarPorId(id_plano_cobranca: string): Promise<PlanosCobranca[]> {
+    async listarAtivos(): Promise<PlanosCobranca[]> {
 
         return api<PlanosCobranca[]>(
-            `${ENDPOINTS.planos_cobranca}?id_plano_cobranca=eq.${id_plano_cobranca}`
+            `${ENDPOINTS.planos_cobranca}?ativo=eq.true`
         );
     }
 
-    async buscarPorIdUsuario(id_plano_cobranca: string): Promise<PlanosCobranca[]> {
+    async buscarPorId(id_plano_cobranca: string): Promise<PlanosCobranca[]> {
 
         return api<PlanosCobranca[]>(
             `${ENDPOINTS.planos_cobranca}?id_plano_cobranca=eq.${id_plano_cobranca}`
@@ -51,7 +51,7 @@ export class PlanosCobrancaService {
         );
     }
 
-    async excluir(id: number) {
+    async excluir(id: string) {
 
         return api<void>(
             `${ENDPOINTS.planos_cobranca}?id_plano_cobranca=eq.${id}`,
