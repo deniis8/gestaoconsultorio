@@ -1,3 +1,9 @@
+.seletor-tipo {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
 .container-principal {
   display: flex;
   flex-direction: column;

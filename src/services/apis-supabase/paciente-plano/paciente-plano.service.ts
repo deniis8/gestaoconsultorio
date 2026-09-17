@@ -37,6 +37,13 @@ export class PacientePlanoService {
         );
     }
 
+    async listarPorIdPaciente(id_paciente: string): Promise<PacientePlano[]> {
+
+        return api<PacientePlano[]>(
+            `${ENDPOINTS.paciente_plano}?id_paciente=eq.${id_paciente}`
+        );
+    }
+
     async inserir(planoCobranca: Omit<PacientePlano, "id_paciente_plano">): Promise<PacientePlano[]> {
 
         return api<PacientePlano[]>(ENDPOINTS.paciente_plano, {

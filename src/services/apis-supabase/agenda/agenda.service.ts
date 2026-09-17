@@ -23,6 +23,16 @@ export class AgendaService {
         );
     }
 
+    async buscarPorPacienteEPeriodo(id_paciente: string, dataInicio?: string, dataFim?: string): Promise<Agenda[]> {
+
+        let query = `${ENDPOINTS.agenda}?id_paciente=eq.${id_paciente}`;
+        if (dataInicio) query += `&data_agendamento=gte.${dataInicio}`;
+        if (dataFim) query += `&data_agendamento=lte.${dataFim}`;
+        query += `&order=data_agendamento.asc,hora_inicio.asc`;
+
+        return api<Agenda[]>(query);
+    }
+
     async inserir(agenda: Omit<Agenda, "id_agenda">): Promise<Agenda[]> {
 
         return api<Agenda[]>(ENDPOINTS.agenda, {

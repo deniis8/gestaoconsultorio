@@ -40,6 +40,24 @@ export class FinanceiroService {
         );
     }
 
+    async buscarPorPacientePlanoEPeriodo(
+        idsPacientePlano: string[],
+        dataInicio?: string,
+        dataFim?: string,
+        status?: string
+    ): Promise<Financeiro[]> {
+
+        if (idsPacientePlano.length === 0) return [];
+
+        let query = `${ENDPOINTS.financeiro}?id_paciente_plano=in.(${idsPacientePlano.join(",")})`;
+        if (dataInicio) query += `&data_cobranca=gte.${dataInicio}`;
+        if (dataFim) query += `&data_cobranca=lte.${dataFim}`;
+        if (status) query += `&status=eq.${encodeURIComponent(status)}`;
+        query += `&order=data_cobranca.asc`;
+
+        return api<Financeiro[]>(query);
+    }
+
     async inserir(financeiro: Omit<Financeiro, "id_financeiro">): Promise<Financeiro[]> {
 
         return api<Financeiro[]>(ENDPOINTS.financeiro, {

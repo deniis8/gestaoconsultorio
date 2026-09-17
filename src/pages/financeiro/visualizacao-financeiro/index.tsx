@@ -59,7 +59,9 @@ export function VisualizacaoFinanceiro() {
             <Header
                 title="Financeiro"
                 subtitle="Informações do lançamento"
-            />
+            >
+                <Button type="submit" icon="back" onClick={() => navigate(-1)}>Voltar</Button>
+            </Header>
             <Card
                 title="Dados do Lançamento"
                 actions={

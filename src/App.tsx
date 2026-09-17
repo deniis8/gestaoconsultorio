@@ -1,8 +1,9 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import { Layout } from "./layouts";
+import { Loading } from "./components/layout/loading";
 import { Dashboard } from "./pages/dashboard";
 import { Pacientes } from "./pages/pacientes/tela-principal";
-import { Relatorios } from "./pages/relatorios";
 import { Financeiro } from "./pages/financeiro/tela-principal";
 import { FormularioFinanceiro } from "./pages/financeiro/formulario-financeiro";
 import { VisualizacaoFinanceiro } from "./pages/financeiro/visualizacao-financeiro";
@@ -15,6 +16,13 @@ import { Login } from "./pages/login";
 import { FormularioPlanoCobranca } from "./pages/planos-cobranca/formulario-cobranca";
 import { PlanoCobrancaVisualizacao } from "./pages/planos-cobranca/visualizacao-cobranca";
 import { VisualizacaoPacientes } from "./pages/pacientes/visualizacao-pacientes";
+import { NaoEncontrado } from "./pages/nao-encontrado";
+
+// Lazy: Relatórios carrega xlsx/jspdf (bibliotecas pesadas, com dependências como
+// html2canvas) só quando a rota é acessada, em vez de inflar o bundle inicial de todo mundo.
+const Relatorios = lazy(() =>
+  import("./pages/relatorios").then((modulo) => ({ default: modulo.Relatorios }))
+);
 
 const router = createBrowserRouter([
   {
@@ -70,7 +78,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/relatorios",
-        element: <Relatorios />
+        element: (
+          <Suspense fallback={<Loading loading={true} />}>
+            <Relatorios />
+          </Suspense>
+        )
       },
       {
         path: "/configuracoes",
@@ -79,6 +91,10 @@ const router = createBrowserRouter([
       {
         path: "/configuracoes/editar",
         element: <ConfiguracoesEdicao />
+      },
+      {
+        path: "*",
+        element: <NaoEncontrado />
       }
     ]
   }

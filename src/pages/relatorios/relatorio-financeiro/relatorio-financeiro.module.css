@@ -1,0 +1,59 @@
+.linha-campo {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-bottom: 16px;
+}
+
+.linha-campo > * {
+  flex: 1;
+  min-width: 160px;
+}
+
+.resumo-chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--color-background);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.chip-ponto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.chip-total {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: var(--font-size-label);
+  font-weight: 600;
+}
+
+.acoes-exportar {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
