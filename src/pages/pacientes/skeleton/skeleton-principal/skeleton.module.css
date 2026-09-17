@@ -46,3 +46,18 @@
 .linha:last-child {
     border-bottom: none;
 }
+
+@media (max-width: 768px) {
+    .container-principal {
+        width: calc(100% - 30px);
+        max-width: none;
+        margin-left: 15px;
+        padding-right: 15px;
+    }
+
+    .linha-cabecalho,
+    .linha {
+        grid-template-columns: 1.5fr 1fr 1.5fr 0.8fr;
+        gap: 12px;
+    }
+}
