@@ -15,3 +15,16 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px 32px;
 }
+
+@media (max-width: 768px) {
+  .container-principal {
+    width: calc(100% - 30px);
+    max-width: none;
+    margin-left: 15px;
+    padding-right: 15px;
+  }
+
+  .informacoes {
+    grid-template-columns: 1fr;
+  }
+}

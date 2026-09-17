@@ -2,7 +2,9 @@ import {
     LuCalendar,
     LuDollarSign,
     LuLayoutDashboard,
-    LuSettings
+    LuMenu,
+    LuSettings,
+    LuX
 } from 'react-icons/lu';
 import { BsBox2 } from "react-icons/bs";
 import { TbChartInfographic } from 'react-icons/tb';
@@ -12,14 +14,38 @@ import { RxExit } from "react-icons/rx";
 
 import styles from "./menu.module.css";
 import { logout } from '../../../services/auth/authService';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loading } from '../loading';
 import { confirmar } from '../mensagem';
+import { useAuth } from '../../../hooks/useAuth';
+import { usuariosService } from '../../../services/apis-supabase/usuarios/usuarios.service';
+import { Usuario } from '../../../types/usuarios/usuarios.types';
 
 export function Menu() {
     const location = useLocation();
     const navigate = useNavigate();
     const [loadingLogout, setLoadingLogout] = useState(false);
+    const [menuAberto, setMenuAberto] = useState(false);
+    const { user } = useAuth();
+    const [usuario, setUsuario] = useState<Usuario | null>(null);
+
+    const fecharMenu = () => setMenuAberto(false);
+
+    useEffect(() => {
+        if (!user) return;
+        const userId = user.id;
+
+        async function carregarUsuario() {
+            try {
+                const [usuarioCarregado] = await usuariosService.buscarPorId(userId);
+                setUsuario(usuarioCarregado ?? null);
+            } catch (error) {
+                console.error('Erro ao buscar usuário do menu:', error);
+            }
+        }
+
+        carregarUsuario();
+    }, [user]);
 
     const isActive = (path: string) => {
         return path === '/'
@@ -37,6 +63,7 @@ export function Menu() {
                 setLoadingLogout(true);
                 await logout();
                 setLoadingLogout(false);
+                fecharMenu();
                 navigate('/');
             } catch (error) {
                 setLoadingLogout(false);
@@ -48,7 +75,30 @@ export function Menu() {
 
     return (
         loadingLogout ? (<Loading loading={loadingLogout} />) : (
-            <div className={styles['container-menu']}>
+            <>
+                {/* Barra superior — só aparece no mobile */}
+                <div className={styles['barra-mobile']}>
+                    <button
+                        type="button"
+                        className={styles['botao-abrir-menu']}
+                        onClick={() => setMenuAberto(true)}
+                        aria-label="Abrir menu"
+                    >
+                        <LuMenu size={22} />
+                    </button>
+                    <span className={styles['barra-mobile-titulo']}>Cammis</span>
+                </div>
+
+                {/* Backdrop — só quando o menu está aberto no mobile */}
+                {menuAberto && (
+                    <div
+                        className={styles['backdrop']}
+                        onClick={fecharMenu}
+                        role="presentation"
+                    />
+                )}
+
+            <div className={`${styles['container-menu']} ${menuAberto ? styles['aberto'] : ''}`}>
 
                 {/* Cabeçalho */}
                 <div className={styles['cabecalho']}>
@@ -59,6 +109,15 @@ export function Menu() {
                     <h3 className={styles['h3-menu']}>
                         Gestão de Consultório
                     </h3>
+
+                    <button
+                        type="button"
+                        className={styles['botao-fechar-menu']}
+                        onClick={fecharMenu}
+                        aria-label="Fechar menu"
+                    >
+                        <LuX size={20} />
+                    </button>
                 </div>
 
                 <hr />
@@ -76,7 +135,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/dashboard">
+                            <Link to="/dashboard" onClick={fecharMenu}>
                                 <LuLayoutDashboard size={18} />
                                 <span>Dashboard</span>
                             </Link>
@@ -90,7 +149,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/pacientes">
+                            <Link to="/pacientes" onClick={fecharMenu}>
                                 <GoPeople size={18} />
                                 <span>Pacientes</span>
                             </Link>
@@ -104,7 +163,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/agenda">
+                            <Link to="/agenda" onClick={fecharMenu}>
                                 <LuCalendar size={18} />
                                 <span>Agenda</span>
                             </Link>
@@ -118,7 +177,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/financeiro">
+                            <Link to="/financeiro" onClick={fecharMenu}>
                                 <LuDollarSign size={18} />
                                 <span>Financeiro</span>
                             </Link>
@@ -132,7 +191,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/planos-cobranca">
+                            <Link to="/planos-cobranca" onClick={fecharMenu}>
                                 <BsBox2 size={18} />
                                 <span>Planos de Cobrança</span>
                             </Link>
@@ -146,7 +205,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/relatorios">
+                            <Link to="/relatorios" onClick={fecharMenu}>
                                 <TbChartInfographic size={18} />
                                 <span>Relatórios</span>
                             </Link>
@@ -160,7 +219,7 @@ export function Menu() {
                                     : styles['li-menu']
                             }
                         >
-                            <Link to="/configuracoes">
+                            <Link to="/configuracoes" onClick={fecharMenu}>
                                 <LuSettings size={18} />
                                 <span>Configurações</span>
                             </Link>
@@ -197,16 +256,20 @@ export function Menu() {
 
                     <div className={styles['rodape']}>
                         <h3 className={styles['nome-profissional']}>
-                            Camila Patricio
+                            {usuario?.nome_completo || 'Usuário'}
                         </h3>
 
-                        <h4 className={styles['crp']}>
-                            CRP: 123456
-                        </h4>
+                        {usuario?.crp && (
+                            <h4 className={styles['crp']}>
+                                CRP: {usuario.crp}
+                            </h4>
+                        )}
                     </div>
                 </div>
 
-            </div>)
+            </div>
+            </>
+        )
 
     );
 }

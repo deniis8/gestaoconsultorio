@@ -86,3 +86,16 @@
   margin-top: 8px;
   border-radius: 16px;
 }
+
+@media (max-width: 768px) {
+  .container-principal {
+    width: calc(100% - 30px);
+    max-width: none;
+    margin-left: 15px;
+    padding-right: 15px;
+  }
+
+  .container-informacoes-pessoais {
+    padding: 16px;
+  }
+}

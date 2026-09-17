@@ -1,6 +1,6 @@
 import { Header } from "../../../components/layout/header";
 import { Button } from "../../../components/ui/button";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -58,9 +58,12 @@ type ModalAgendaState =
     | { modo: "criacao"; slot?: SlotSelecionado }
     | { modo: "edicao"; idAgenda: string };
 
+const ehTelaPequena = () => typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
+
 export function Agendamentos() {
 
     const [agendamentos, setAgendamentos] = useState<Agenda[] | null>(null);
+    const [view, setView] = useState<View>(() => (ehTelaPequena() ? "day" : "week"));
     const [dataAtual, setDataAtual] = useState(new Date());
     const [modalAgenda, setModalAgenda] = useState<ModalAgendaState>({ modo: "fechado" });
 
@@ -130,7 +133,8 @@ export function Agendamentos() {
                     events={eventos}
                     startAccessor="start"
                     endAccessor="end"
-                    defaultView="week"
+                    view={view}
+                    onView={setView}
                     views={["month", "week", "day"]}
                     step={30}
                     timeslots={2}

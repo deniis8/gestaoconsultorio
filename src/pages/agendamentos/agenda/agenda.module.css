@@ -17,6 +17,7 @@
   box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
   padding: 16px;
   margin-top: 16px;
+  overflow-x: auto;
 }
 
 .legenda {
@@ -190,5 +191,10 @@
   .calendar-container :global(.rbc-toolbar-label) {
     width: 100%;
     margin: 8px 0;
+  }
+
+  .calendar-container :global(.rbc-month-view),
+  .calendar-container :global(.rbc-time-view) {
+    min-width: 640px;
   }
 }

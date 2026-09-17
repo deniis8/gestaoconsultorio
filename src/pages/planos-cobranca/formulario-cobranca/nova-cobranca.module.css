@@ -198,3 +198,26 @@
   font-size: 12px;
   color: var(--color-text-secondary);
 }
+
+@media (max-width: 768px) {
+  .container-principal {
+    width: calc(100% - 30px);
+    max-width: none;
+    margin-left: 15px;
+    padding-right: 15px;
+  }
+
+  .formas-cobranca {
+    flex-direction: column;
+  }
+
+  .cobranca-sessao,
+  .cobranca-pacote,
+  .cobranca-mensal {
+    height: auto;
+  }
+
+  .inputs-valor {
+    flex-direction: column;
+  }
+}

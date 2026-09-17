@@ -90,7 +90,7 @@ export function FormularioAgenda({ idAgenda, slotSelecionado, onClose, onSalvo }
     const [idPacientePlano, setIdPacientePlano] = useState("");
     const [idGrupoRecorrencia, setIdGrupoRecorrencia] = useState<string | undefined>(undefined);
 
-    const [dataConsulta, setDataConsulta] = useState("");
+    const [dataConsulta, setDataConsulta] = useState(() => format(new Date(), "yyyy-MM-dd"));
     const [horaInicio, setHoraInicio] = useState("");
     const [duracaoMinutos, setDuracaoMinutos] = useState("60");
 

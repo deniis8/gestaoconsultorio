@@ -14,3 +14,21 @@
   box-sizing: border-box;
   padding-right: 20px;
 }
+
+@media (max-width: 768px) {
+  .container-principal {
+    width: calc(100% - 30px);
+    max-width: none;
+    margin-left: 15px;
+    padding-right: 15px;
+  }
+
+  .seletor-tipo {
+    flex-wrap: wrap;
+  }
+
+  .seletor-tipo button {
+    flex: 1;
+    min-width: 140px;
+  }
+}
