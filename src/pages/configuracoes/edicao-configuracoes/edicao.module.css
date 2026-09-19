@@ -30,8 +30,8 @@
   flex-direction: column;
   margin-top: 12px;
   border: 1px solid var(--color-border);
-  background-color: #FFFFFF;
-  border-radius: 16px;
+  background-color: var(--color-surface);
+  border-radius: 12px;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -84,7 +84,6 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 8px;
-  border-radius: 16px;
 }
 
 @media (max-width: 768px) {

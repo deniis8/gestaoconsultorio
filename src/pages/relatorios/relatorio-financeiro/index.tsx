@@ -14,6 +14,7 @@ import { Financeiro } from "../../../types/financeiro/financeiro.types";
 import { formatarMoeda, formatarOrigemFinanceiro, CORES_STATUS_FINANCEIRO } from "../../../utils/financeiroFormat";
 import { formatSimpleDate } from "../../../utils/dataFormat";
 import { exportarParaExcel, exportarParaPdf } from "../../../utils/exportarRelatorio";
+import { estiloBadgeStatus } from "../../../utils/statusBadge";
 
 const STATUS_OPTIONS = [
     { label: "Todos", value: "" },
@@ -194,7 +195,7 @@ export function RelatorioFinanceiro() {
                                 render: (item) => (
                                     <span
                                         className={styles["status-badge"]}
-                                        style={{ backgroundColor: CORES_STATUS_FINANCEIRO[item.status] ?? "#7E8A97" }}
+                                        style={estiloBadgeStatus(CORES_STATUS_FINANCEIRO[item.status] ?? "#7E8A97")}
                                     >
                                         {item.status}
                                     </span>

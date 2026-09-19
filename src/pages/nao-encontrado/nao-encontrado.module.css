@@ -11,17 +11,18 @@
 }
 
 .codigo {
+  font-family: var(--font-family-display);
   font-size: 5rem;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-primary);
   line-height: 1;
 }
 
 .titulo {
   color: var(--color-text);
-  font-family: var(--font-family);
-  font-size: var(--font-size-h1);
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-display);
+  font-weight: 600;
   margin: 16px 0 8px;
 }
 

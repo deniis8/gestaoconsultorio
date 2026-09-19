@@ -47,8 +47,7 @@
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: 12px;
-  color: #fff;
+  border-radius: 8px;
   font-size: var(--font-size-label);
   font-weight: 600;
 }

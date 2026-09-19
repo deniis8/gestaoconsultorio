@@ -5,7 +5,7 @@
 
 .card-skeleton {
     width: 100%;
-    background-color: #FFFFFF;
+    background-color: var(--color-surface);
     box-sizing: border-box;
     padding: 24px;
     margin-bottom: 20px;

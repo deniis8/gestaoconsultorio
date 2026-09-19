@@ -9,6 +9,19 @@
     background-color: var(--color-primary);
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.header::before {
+    content: "";
+    position: absolute;
+    right: -120px;
+    bottom: -120px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    background: rgba(184, 99, 47, 0.16);
 }
 
 .icone {
@@ -17,6 +30,8 @@
     flex-direction: row;
     gap: 12px;
     margin: 50px 50px 0 50px;
+    position: relative;
+    z-index: 1;
 }
 
 .logo {
@@ -25,29 +40,39 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #8365FF;
-    color: white;
-    border-radius: 12px;
+    background: var(--color-clay);
+    color: var(--color-clay-text);
+    border-radius: 10px;
 }
 
 .my-app {
     color: var(--color-primary-text);
+    font-family: var(--font-family-display);
+    font-size: var(--font-size-h1);
+    font-weight: 600;
 }
 
 .titles {
     color: var(--color-primary-text);
-    margin: 100px 50px 0 50px;
+    margin: 90px 50px 0 50px;
+    position: relative;
+    z-index: 1;
 }
 
 .h1-header {
-    margin-top: 37px;
-    font-weight: 700;
-
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-family: var(--font-family-display);
+    font-size: 2.4rem;
+    line-height: 1.15;
+    font-weight: 600;
 }
 
 .h4-header {
     font-weight: 400;
-    color: #c1b9df;
+    font-size: var(--font-size-h2);
+    color: rgba(255, 255, 255, 0.78);
+    max-width: 420px;
 }
 
 .formulario {
@@ -55,6 +80,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--color-surface);
 }
 
 .formulario-login {
@@ -72,14 +98,16 @@
 }
 
 .h1-header-login {
-    font-size: var(--font-size-h1);
-    font-weight: 700;
+    font-family: var(--font-family-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--color-text);
     margin: 0;
 }
 
 .h2-header-login {
     font-size: var(--font-size-h2);
-    color: var(--color-secondary);
+    color: var(--color-text-secondary);
     font-weight: 400;
     margin: 0;
 }
@@ -89,27 +117,30 @@
     align-items: center;
     flex-direction: row;
     gap: 10px;
-    margin-top: 10px;
+    flex-wrap: wrap;
+    margin-top: 28px;
     margin-left: 50px;
+    position: relative;
+    z-index: 1;
 }
 
 .tags-itens {
-    border: 1px solid var(--color-border);
-    border-color: #8365FF;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
-    background: #8365FF;
-    color: white;
-    font-weight: 300;
-    padding: 4px 10px 4px 10px;
-
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    font-weight: 400;
+    padding: 4px 12px;
 }
 
 .footer {
-    position: fixed;
-    bottom: 20px;
-    left: 50px;
-    color: #c1b9df;
-    font-weight: 300;
+    position: relative;
+    z-index: 1;
+    margin: auto 50px 24px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .inputs {
@@ -129,9 +160,9 @@
     align-items: center;
     justify-content: center;
     border: 1px solid var(--color-danger);
-    background-color: #f7c5c5;
-    border-radius: 5px;
-    height: 30px;
+    background-color: rgba(166, 67, 47, 0.08);
+    border-radius: 8px;
+    height: 34px;
     gap: 8px;
 }
 
@@ -141,12 +172,15 @@
 
 .texto-invalido{
     color: var(--color-danger);
+    font-size: 13px;
 }
 
-.button-senha {  
+.button-senha {
     align-self: flex-end;
     margin-top: 8px;
-    font-weight: 100;
+    font-size: 13px;
+    font-weight: 500;
+    background: none;
     border: 0;
     color: var(--color-primary);
     cursor: pointer;
@@ -154,6 +188,11 @@
 
 .button-senha:hover{
     color: var(--color-primary-hover);
+}
+
+.button-senha:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
 }
 
 @media (max-width: 768px) {
@@ -172,6 +211,10 @@
 
     .titles {
         margin: 20px 20px 24px 20px;
+    }
+
+    .h1-header {
+        font-size: 1.9rem;
     }
 
     .tags,

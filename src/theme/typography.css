@@ -1,16 +1,18 @@
 :root {
 
-    /* Fonte */
+    /* Fonte de UI — texto corrido, formulários, tabelas */
+    --font-family: "Inter", system-ui, sans-serif;
 
-    --font-family: "Inter", "Poppins", sans-serif;
+    /* Fonte de destaque — títulos de página, hero do Login, números do Dashboard */
+    --font-family-display: "Fraunces", "Georgia", serif;
 
         /* Títulos */
 
-    --font-size-display:30px;
-    --font-size-h1:20px;
-    --font-size-h2:16px;
-    --font-size-h3:14px;
-    --font-size-h4:12px;
+    --font-size-display: 32px;
+    --font-size-h1: 22px;
+    --font-size-h2: 16px;
+    --font-size-h3: 14px;
+    --font-size-h4: 12px;
 
     /* Button */
 
@@ -27,7 +29,7 @@
     /* Tabela */
 
     --font-size-table-td: 14px;
-    --font-size-table-th: 14px;
+    --font-size-table-th: 13px;
 
     /* Icon */
 

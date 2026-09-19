@@ -28,8 +28,10 @@
 .indicador-valor {
   display: block;
   color: var(--color-text);
-  font-size: 1.6rem;
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: 1.7rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .indicador-valor.alerta {
@@ -54,8 +56,7 @@
 .status-badge {
   display: inline-block;
   padding: 4px 10px;
-  border-radius: 12px;
-  color: #fff;
+  border-radius: 8px;
   font-size: var(--font-size-label);
   font-weight: 600;
 }

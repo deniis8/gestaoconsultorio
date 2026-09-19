@@ -14,6 +14,7 @@ import { Agenda } from "../../../types/agenda/agenda.types";
 import { CORES_STATUS_AGENDA } from "../../../utils/agendaFormat";
 import { formatSimpleDate } from "../../../utils/dataFormat";
 import { exportarParaExcel, exportarParaPdf } from "../../../utils/exportarRelatorio";
+import { estiloBadgeStatus } from "../../../utils/statusBadge";
 
 const STATUS_ATENDIMENTO = ["Agendado", "Confirmado", "Realizado", "Cancelado", "Falta"];
 
@@ -172,7 +173,7 @@ export function RelatorioAtendimentos() {
                                 render: (item) => (
                                     <span
                                         className={styles["status-badge"]}
-                                        style={{ backgroundColor: CORES_STATUS_AGENDA[item.status_sessao] ?? "#7E8A97" }}
+                                        style={estiloBadgeStatus(CORES_STATUS_AGENDA[item.status_sessao] ?? "#7E8A97")}
                                     >
                                         {item.status_sessao}
                                     </span>

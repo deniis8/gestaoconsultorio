@@ -17,7 +17,7 @@ export const formatarMoeda = (valor: number): string => {
 };
 
 export const CORES_STATUS_FINANCEIRO: Record<string, string> = {
-  Pendente: "#E0A800",
-  Pago: "#2FA84F",
-  Cancelado: "#D9534F",
+  Pendente: "#B8863A",
+  Pago: "#3F7A52",
+  Cancelado: "#A6432F",
 };
