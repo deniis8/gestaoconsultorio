@@ -7,8 +7,8 @@
 .label {
   color: var(--color-text);
   font-size: var(--font-size-label);
-  margin-bottom: 2px;
-  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 6px;
   font-family: var(--font-family);
 }
 
@@ -26,5 +26,6 @@
 
 .textarea:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 110, 100, 0.15);
 }

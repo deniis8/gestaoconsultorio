@@ -15,6 +15,7 @@ import {
 } from "../../types/dashboard/dashboard.types";
 import { CORES_STATUS_AGENDA } from "../../utils/agendaFormat";
 import { formatarMoeda } from "../../utils/financeiroFormat";
+import { estiloBadgeStatus } from "../../utils/statusBadge";
 import { GraficoReceitaMensal } from "./grafico-receita-mensal";
 import { SkeletonDashboard } from "./skeleton/skeleton";
 
@@ -151,7 +152,7 @@ export function Dashboard() {
                                         render: (item) => (
                                             <span
                                                 className={styles["status-badge"]}
-                                                style={{ backgroundColor: CORES_STATUS_AGENDA[item.status] ?? "#7E8A97" }}
+                                                style={estiloBadgeStatus(CORES_STATUS_AGENDA[item.status] ?? "#7E8A97")}
                                             >
                                                 {item.status}
                                             </span>

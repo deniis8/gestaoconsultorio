@@ -14,6 +14,7 @@ import { SkeletonFinanceiro } from "../skeleton/skeleton-principal/skeleton";
 import { formatarOrigemFinanceiro, CORES_STATUS_FINANCEIRO } from "../../../utils/financeiroFormat";
 import { formatSimpleDate } from "../../../utils/dataFormat";
 import { mascaraMoney } from "../../../utils/moneyFormat";
+import { estiloBadgeStatus } from "../../../utils/statusBadge";
 
 type FinanceiroTableRow = {
     id_financeiro: string;
@@ -126,7 +127,7 @@ export function Financeiro() {
                                     render: (item) => (
                                         <span
                                             className={styles["status-badge"]}
-                                            style={{ backgroundColor: CORES_STATUS_FINANCEIRO[item.status] ?? "#7E8A97" }}
+                                            style={estiloBadgeStatus(CORES_STATUS_FINANCEIRO[item.status] ?? "#7E8A97")}
                                         >
                                             {item.status}
                                         </span>

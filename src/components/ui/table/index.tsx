@@ -45,7 +45,7 @@ export function Table<T extends Record<string, unknown>>({
               style={{ cursor: onRowClick ? "pointer" : "default" }}
             >
               {columns.map((column) => (
-                <td key={String(column.key)} className={styles.td}>
+                <td key={String(column.key)} className={styles.td} data-label={column.header}>
                   {column.render ? column.render(item) : String(item[column.key] ?? "")}
                 </td>
               ))}

@@ -1,43 +1,47 @@
 :root {
 
-    /* Primary */
-    --color-primary: #6D4AFF;
-    --color-primary-hover: #5B39F0;
+    /* Primary — pinho profundo: calma, foco, sem ser o roxo-SaaS genérico */
+    --color-primary: #2F6E64;
+    --color-primary-hover: #255A52;
     --color-primary-text: #FFFFFF;
 
-    /* Secondary */
-    --color-secondary: #6B7280;
-    --color-secondary-hover: #4B5563;
+    /* Secondary — cinza-sálvia, mais quente que um cinza neutro de estoque */
+    --color-secondary: #5B6660;
+    --color-secondary-hover: #46504B;
     --color-secondary-text: #FFFFFF;
 
     /* Success */
-    --color-success: #22C55E;
-    --color-success-hover: #12863d;
+    --color-success: #3F7A52;
+    --color-success-hover: #2F5F3F;
     --color-success-text: #FFFFFF;
 
     /* Warning */
-    --color-warning: #F59E0B;
-    --color-warning-hover: #D97706;
+    --color-warning: #B8863A;
+    --color-warning-hover: #9C6F2C;
     --color-warning-text: #FFFFFF;
 
     /* Danger */
-    --color-danger: #EF4444;
-    --color-danger-hover: #DC2626;
+    --color-danger: #A6432F;
+    --color-danger-hover: #8A3626;
     --color-danger-text: #FFFFFF;
 
+    /* Clay — único acento quente, usado de propósito em um só lugar de destaque por tela */
+    --color-clay: #B8632F;
+    --color-clay-hover: #9C5227;
+    --color-clay-text: #FFFFFF;
+
     /* Fundo */
-    --color-background: #f3f3f3;
+    --color-background: #F5F6F3;
     --color-surface: #FFFFFF;
 
     /* Texto */
-    --color-text: #1A1A1A;
-    --color-text-secondary: #737373;
+    --color-text: #242B27;
+    --color-text-secondary: #6B7570;
 
     /* Bordas */
-    --color-border: #ebe5e5;
-    --color-border-secondary: #acacac;
+    --color-border: #E4E7E2;
+    --color-border-secondary: #C7CCC6;
 
-    /* Estados */
-    --color-success: #16A34A;
-    --color-warning: #F59E0B;
+    /* Elevação — reservada pra elementos de fato flutuantes (modal, dropdown), não pra cards */
+    --shadow-float: 0 16px 40px rgba(36, 43, 39, 0.18);
 }

@@ -15,11 +15,11 @@
   font-size: var(--font-size-input);
   box-sizing: border-box;
   font-family: var(--font-family);
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   color: var(--color-text);
   appearance: none;
   cursor: pointer;
-  background-image: linear-gradient(45deg, transparent 50%, #64748b 50%), linear-gradient(135deg, #64748b 50%, transparent 50%);
+  background-image: linear-gradient(45deg, transparent 50%, var(--color-text-secondary) 50%), linear-gradient(135deg, var(--color-text-secondary) 50%, transparent 50%);
   background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
   background-size: 6px 6px, 6px 6px;
   background-repeat: no-repeat;
@@ -27,11 +27,12 @@
 
 .select:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 110, 100, 0.15);
 }
 
 .select:disabled {
-  background-color: #f3f4f6;
-  color: #9ca3af;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   cursor: not-allowed;
 }

@@ -14,11 +14,12 @@
   font-size: var(--font-size-input);
   box-sizing: border-box;
   font-family: var(--font-family);
-  background-color: #ffffff;
+  background-color: var(--color-surface);
   color: var(--color-text);
 }
 
 .input:focus {
   outline: none;
-  border-color: #4f46e5;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(47, 110, 100, 0.15);
 }

@@ -13,8 +13,7 @@
 .calendar-container {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(17, 24, 39, 0.05);
+  border-radius: 12px;
   padding: 16px;
   margin-top: 16px;
   overflow-x: auto;
@@ -47,8 +46,8 @@
 }
 
 .calendar-container :global(.rbc-calendar) {
-  background: #fff;
-  border-radius: 14px;
+  background: var(--color-surface);
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -63,8 +62,9 @@
 }
 
 .calendar-container :global(.rbc-toolbar-label) {
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: 1.15rem;
+  font-weight: 600;
   color: var(--color-text);
   text-transform: capitalize;
 }
@@ -76,18 +76,19 @@
 }
 
 .calendar-container :global(.rbc-btn-group button) {
-  background: #f5f3ff;
-  border: 1px solid #e7e1ff;
-  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
   border-radius: 8px;
   padding: 6px 12px;
   font-size: 0.85rem;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .calendar-container :global(.rbc-btn-group button:hover) {
-  background: #efe9ff;
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 .calendar-container :global(.rbc-btn-group button.rbc-active) {
@@ -98,12 +99,10 @@
 }
 
 .calendar-container :global(.rbc-header) {
-  background: #f8f9fb;
+  background: var(--color-background);
   color: var(--color-text);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.8rem;
   padding: 9px 6px;
   border-bottom: 1px solid var(--color-border);
 }
@@ -112,7 +111,7 @@
 .calendar-container :global(.rbc-time-view),
 .calendar-container :global(.rbc-agenda-view) {
   border: 1px solid var(--color-border);
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -122,22 +121,21 @@
 }
 
 .calendar-container :global(.rbc-today) {
-  background: #f6f3ff;
+  background: rgba(47, 110, 100, 0.06);
 }
 
 .calendar-container :global(.rbc-event) {
   border: none !important;
   border-radius: 6px !important;
-  box-shadow: 0 4px 10px rgba(17, 24, 39, 0.12);
+  box-shadow: none;
   padding: 3px 7px;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: opacity 0.15s ease;
 }
 
 .calendar-container :global(.rbc-event:hover) {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(17, 24, 39, 0.18);
+  opacity: 0.85;
 }
 
 .calendar-container :global(.rbc-event-label) {
@@ -146,7 +144,7 @@
 }
 
 .calendar-container :global(.rbc-current-time-indicator) {
-  background-color: var(--color-primary);
+  background-color: var(--color-clay);
   height: 2px;
 }
 
@@ -163,7 +161,7 @@
 }
 
 .calendar-container :global(.rbc-off-range-bg) {
-  background: #fafafa;
+  background: var(--color-background);
 }
 
 .calendar-container :global(.rbc-show-more) {

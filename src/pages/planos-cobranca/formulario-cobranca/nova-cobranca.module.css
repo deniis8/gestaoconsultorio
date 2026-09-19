@@ -36,29 +36,34 @@
   gap: 16px;
 }
 
-.cobranca-sessao {
+.cobranca-sessao,
+.cobranca-pacote,
+.cobranca-mensal {
   display: flex;
   flex-direction: column;
-  background-color: #FFFFFF;
+  background-color: var(--color-surface);
   align-items: start;
   border: 1px solid var(--color-border);
   width: 100%;
   height: 90px;
-  border-radius: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
-.cobranca-sessao:hover {
-  border: 1px solid var(--color-primary-hover);
-}
-
-.cobranca-sessao-selecionado {
+.cobranca-sessao:hover,
+.cobranca-pacote:hover,
+.cobranca-mensal:hover {
   border-color: var(--color-primary);
-  background-color: #eff4fa;
-  box-shadow:
-    0 0 0 3px rgba(109, 74, 255, 0.15),
-    0 8px 20px rgba(109, 74, 255, 0.12);
-  transform: translateY(-2px);
-  animation: selecionado 0.2s ease;
+}
+
+.cobranca-sessao-selecionado,
+.cobranca-pacote-selecionado,
+.cobranca-mensal-selecionado {
+  border-color: var(--color-primary);
+  background-color: rgba(47, 110, 100, 0.06);
+  box-shadow: 0 0 0 3px rgba(47, 110, 100, 0.14);
+  transform: translateY(-1px);
 }
 
 .cobranca-item {
@@ -73,16 +78,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
-  background-color: #DBEAFE;
+  background-color: rgba(47, 110, 100, 0.12);
+  color: var(--color-primary);
   width: 30px;
   height: 30px;
 }
 
 .cobranca-sessao-nome {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
+  color: var(--color-text);
 }
 
 .cobranca-sessao-descricao {
@@ -90,44 +96,21 @@
   color: var(--color-text-secondary);
 }
 
-.cobranca-pacote {
-  display: flex;
-  flex-direction: column;
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
-  width: 100%;
-  height: 90px;
-  border-radius: 15px;
-}
-
-.cobranca-pacote:hover {
-  border: 1px solid var(--color-primary-hover);
-}
-
-.cobranca-pacote-selecionado {
-  border-color: var(--color-primary);
-  background-color: #e8f7ed;
-  box-shadow:
-    0 0 0 3px rgba(109, 74, 255, 0.15),
-    0 8px 20px rgba(109, 74, 255, 0.12);
-  transform: translateY(-2px);
-  animation: selecionado 0.2s ease;
-}
-
 .cobranca-pacote-ico {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
-  background-color: #DCFCE7;
+  background-color: rgba(184, 99, 47, 0.14);
+  color: var(--color-clay);
   width: 30px;
   height: 30px;
 }
 
 .cobranca-pacote-nome {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
+  color: var(--color-text);
 }
 
 .cobranca-pacote-descricao {
@@ -135,48 +118,13 @@
   color: var(--color-text-secondary);
 }
 
-.cobranca-mensal {
-  display: flex;
-  flex-direction: column;
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
-  width: 100%;
-  height: 90px;
-  border-radius: 15px;
-}
-
-.cobranca-mensal:hover {
-  border: 1px solid var(--color-primary-hover);
-}
-
-.cobranca-mensal-selecionado {
-  border-color: var(--color-primary);
-  background-color: #f3ecfa;
-  box-shadow:
-    0 0 0 3px rgba(109, 74, 255, 0.15),
-    0 8px 20px rgba(109, 74, 255, 0.12);
-  transform: translateY(-2px);
-  animation: selecionado 0.2s ease;
-}
-
-@keyframes selecionado {
-  from {
-    transform: scale(0.98);
-    opacity: 0.9;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
 .cobranca-mensal-ico {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
-  background-color: #F3E8FF;
+  background-color: var(--color-background);
+  color: var(--color-text-secondary);
   width: 30px;
   height: 30px;
 }
@@ -190,8 +138,9 @@
 }
 
 .cobranca-mensal-nome {
-  font-weight: 700;
+  font-weight: 600;
   font-size: 14px;
+  color: var(--color-text);
 }
 
 .cobranca-mensal-descricao {
@@ -219,5 +168,16 @@
 
   .inputs-valor {
     flex-direction: column;
+  }
+
+  .linha-botao {
+    position: sticky;
+    bottom: 0;
+    margin: 16px -15px 0;
+    padding: 12px 15px calc(12px + env(safe-area-inset-bottom, 0px));
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    box-shadow: 0 -6px 14px rgba(36, 43, 39, 0.06);
+    z-index: 5;
   }
 }
